@@ -1,0 +1,50 @@
+name: aqromis_application
+description: Aqromis application developed by HISAZ.
+
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  location: ^3.2.4
+  uhf_c72_plugin: ^0.0.2
+  flutter_native_image: ^0.0.5+3
+  image_picker: ^0.6.7+22
+  shared_preferences: ^0.5.12+4
+  share: 0.6.5+3
+  lottie: ^1.0.1
+  confetti: ^0.5.5
+  soundpool: ^1.1.3
+  sqflite: ^2.0.0+3
+  http:
+  xml:
+  intl:
+
+  cupertino_icons: ^1.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/lottie/
+    - assets/sounds/
+
+  fonts:
+    - family: segoeui
+      fonts:
+        - asset: assets/fonts/segoeui.ttf
+        - asset: assets/fonts/segoeui-bold.ttf
+        - asset: assets/fonts/segoeui-italic.ttf
+        - asset: assets/fonts/segoeui-light.ttf
+        - asset: assets/fonts/segoeui-bolditalic.ttf
+        - asset: assets/fonts/segoeui-semibold.ttf
