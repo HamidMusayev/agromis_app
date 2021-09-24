@@ -317,7 +317,7 @@ class _HomeScreenState extends State<HomeScreen> {
         width: 60,
       ),
       applicationName: info.name,
-      applicationVersion: "v" + info.version.toString(),
+      applicationVersion: "v1.1 "+"service: v" + info.version.toString(),
       children: <Widget>[
         Text("Tərtibatçı: " + info.developerName),
         Text("E-mail: " + info.developerEmail),
