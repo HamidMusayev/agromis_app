@@ -39,12 +39,14 @@ class RFIDOperations {
       if(response.result.single.findElements("IsSuccessful").single.innerText == "true"){
         return "true";
       }
-      else{
+      else if (response.result.single.findElements("ErrorMessage").single.innerText == "Bu etiket artıq tanımlanıb!"){
         return response.result.single.findElements("ErrorMessage").single.innerText;
       }
-
+      else{
+        return "Server xətası baş verdi!";
+      }
     } else{
-        return "Sorgu xətası baş verdi!";
+        return "Bağlantı xətası verdi!";
     }
   }
 }

@@ -272,10 +272,19 @@ class _SetTreeScreenState extends State<SetTreeScreen> {
   }
 
   void saveAlanRFID() {
-    RFIDOperations.saveAlanRFID(AlanRFID(rfidTxt.text, _activeAlan.pin, _activeCesid.pin))
-        .then((value) => value == "true"
-        ? ScaffoldMessenger.of(context).showMaterialBanner(MaterialBanner(backgroundColor: Colors.green, content: Text("Yadda saxlanıldı! - ${rfidTxt.text} / ${_activeAlan.alanname}"), actions: [Container()]))
-        : showAlert(value),
-    );
+    if(rfidTxt.text == null || rfidTxt.text.isEmpty){
+      showAlert("RFID Boşdur!");
+    } else if(_activeAlan == null){
+      showAlert("Sıra seçilməyib!");
+    } else if(_activeCesid == null){
+      showAlert("Bitki növü seçilməyib!");
+    }
+    else{
+      RFIDOperations.saveAlanRFID(AlanRFID(rfidTxt.text, _activeAlan.pin, _activeCesid.pin))
+          .then((value) => value == "true"
+          ? ScaffoldMessenger.of(context).showMaterialBanner(MaterialBanner(backgroundColor: Colors.green, content: Text("Yadda saxlanıldı! - ${rfidTxt.text} / ${_activeAlan.alanname}"), actions: [Container()]))
+          : showAlert(value),
+      );
+    }
   }
 }
