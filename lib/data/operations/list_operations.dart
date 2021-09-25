@@ -1,3 +1,5 @@
+import 'package:aqromis_application/models/add_tree/alan.dart';
+import 'package:aqromis_application/models/add_tree/bitkicesit.dart';
 import 'package:aqromis_application/models/agronom.dart';
 import 'package:aqromis_application/models/garden.dart';
 import 'package:aqromis_application/models/response.dart';
@@ -64,6 +66,45 @@ class ListOperations {
       });
 
       return taskTypes;
+    } else{
+      return false;
+    }
+  }
+
+  static Future<dynamic> getAlanList() async {
+    final List<Alan> alans = [];
+    final String dataXML = "";
+
+    final Response response = await WebService.sendRequest("AlanList", dataXML);
+
+    if(response.isConnected){
+      response.result.single.findAllElements("Alan").forEach((element) {
+        alans.add(Alan(
+            element.findElements("PinAlan").single.innerText,
+            element.findElements("AlanName").single.innerText,
+            element.findElements("RFID").single.innerText));
+      });
+
+      return alans;
+    } else{
+      return false;
+    }
+  }
+
+  static Future<dynamic> getBitkiCesidList() async {
+    final List<BitkiCesid> bitkicesids = [];
+    final String dataXML = "";
+
+    final Response response = await WebService.sendRequest("BitkiCesidList", dataXML);
+
+    if(response.isConnected){
+      response.result.single.findAllElements("BitkiCesid").forEach((element) {
+        bitkicesids.add(BitkiCesid(
+            element.findElements("PinBitkiCesid").single.innerText,
+            element.findElements("BitkiCesidName").single.innerText));
+      });
+
+      return bitkicesids;
     } else{
       return false;
     }

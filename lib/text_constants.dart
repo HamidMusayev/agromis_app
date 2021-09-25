@@ -117,6 +117,7 @@ const String tMainMenu = "Əsas menyu";
 const String tSettings = "Tənzimləmələr";
 const String tAppDetail = "Tətbiq məlumatı";
 const String tShareApp = "Paylaş";
+const String tSetTree = "Ağac tanımlama";
 const String tFeedback = "Bizə bildirin";
 const String tLogOut = "Hesabdan çıx";
 const String tLogOutQuestion = "Hesabdan çıxmaq istədiyinizə əminsiniz?";

@@ -1,3 +1,4 @@
+import 'package:aqromis_application/models/add_tree/alan_rfid.dart';
 import 'package:aqromis_application/models/response.dart';
 import 'package:aqromis_application/models/rfid_garden_result.dart';
 import 'package:aqromis_application/utils/xml_parser.dart';
@@ -22,6 +23,28 @@ class RFIDOperations {
       return result;
     } else{
       return false;
+    }
+  }
+
+  static Future<dynamic> saveAlanRFID(AlanRFID alanRFID) async {
+    String dataXML = "<alanRFID>"
+        "<RFID>${alanRFID.rfid}</RFID>"
+        "<PinAlan>${alanRFID.pinalan}</PinAlan>"
+        "<PinBitkiCesid>${alanRFID.pinbitkicesid}</PinBitkiCesid>"
+        "</alanRFID>";
+
+    final Response response = await WebService.sendRequest("SaveAlanRFID", dataXML);
+
+    if(response.isConnected){
+      if(response.result.single.findElements("IsSuccessful").single.innerText == "true"){
+        return "true";
+      }
+      else{
+        return response.result.single.findElements("ErrorMessage").single.innerText;
+      }
+
+    } else{
+        return "Sorgu xətası baş verdi!";
     }
   }
 }

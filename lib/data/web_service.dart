@@ -55,7 +55,7 @@ class WebService{
         response.result = xml.XmlDocument.parse("<body><IsSuccessful>true</IsSuccessful></body>").findAllElements("body");
       } else if(methodName == "UserRegister" || methodName == "UserLogin" || methodName == "AddTask"){
         response.isConnected = false;
-      } else{
+      } else {
         await LocalDB().getData(methodName, sendDataXML).then((value) => response.result = xml.XmlDocument.parse(value).findAllElements("${methodName}Result"));
       }
 

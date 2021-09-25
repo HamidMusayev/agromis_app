@@ -1,6 +1,6 @@
 import 'package:aqromis_application/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:share/share.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class UpdateAppPage extends StatelessWidget {
   final String link;
@@ -20,8 +20,10 @@ class UpdateAppPage extends StatelessWidget {
                 children: <Widget>[
                   IconButton(
                     icon: Icon(Icons.download_rounded, color: kPrimaryColor),
-                    onPressed: (){
-                      Share.share(link);
+                    onPressed: () async {
+                      await canLaunch(link)
+                          ? await launch(link)
+                          : throw 'Link açılma xətası!';
                     },
                   ),
                   Text("Yüklə", style: TextStyle(fontSize: 14))

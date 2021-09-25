@@ -15,15 +15,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:location/location.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:share/share.dart';
 import 'package:aqromis_application/text_constants.dart' as Constants;
 import 'package:uhf_c72_plugin/uhf_c72_plugin.dart';
 import 'package:xml/xml.dart' as xml;
-
 import '../data/local_send_db.dart';
 import '../data/web_service.dart';
 import '../models/send_data_db.dart';
 import '../size_config.dart';
+import 'drawer/set_tree.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -36,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
   AppInfo _info = AppInfo(
       name: "AGROMIS",
       userTaskCount: 0,
-      version: 1.0,
+      version: 2,
       updatedDate: " ",
       downloadLink: " ",
       developerEmail: " ",
@@ -157,7 +156,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return _info.version == 1 ? Scaffold(
+    return _info.version == 2 ? Scaffold(
       appBar: AppBar(
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -201,21 +200,22 @@ class _HomeScreenState extends State<HomeScreen> {
               decoration: BoxDecoration(color: kWhiteColor),
             ),
             ListTile(
-              title: Text(Constants.tSettings),
-              leading: Icon(Icons.settings_rounded),
-              onTap: () => Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => SettingsScreen()))
-                  .then(onGoBack),
-            ),
-            ListTile(
-              title: Text(Constants.tShareApp),
-              leading: Icon(Icons.share_rounded),
-              onTap: () => Share.share(_info.downloadLink),
+              title: Text(Constants.tSetTree),
+              leading: Icon(Icons.park),
+              onTap: () =>  Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SetTreeScreen())),
             ),
             ListTile(
               title: Text(Constants.tAppDetail),
               leading: Icon(Icons.info_rounded),
               onTap: () => showAbout(_info),
+            ),
+            ListTile(
+              title: Text(Constants.tSettings),
+              leading: Icon(Icons.settings_rounded),
+              onTap: () => Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => SettingsScreen()))
+                  .then(onGoBack),
             ),
             ListTile(
               title: Text(Constants.tLogOut),
@@ -317,7 +317,7 @@ class _HomeScreenState extends State<HomeScreen> {
         width: 60,
       ),
       applicationName: info.name,
-      applicationVersion: "v1.1 "+"service: v" + info.version.toString(),
+      applicationVersion: "v" + info.version.toString(),
       children: <Widget>[
         Text("Tərtibatçı: " + info.developerName),
         Text("E-mail: " + info.developerEmail),
