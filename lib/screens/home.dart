@@ -250,8 +250,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: FlatButton(
                       splashColor: kInputFillColor,
                       padding: kDefaultPadding,
-                      onPressed: () => Navigator.push(
-                          context,
+                      onPressed: () => Navigator.push(context,
                           MaterialPageRoute(
                               builder: (context) => TasksScreen())),
                       shape: RoundedRectangleBorder(
