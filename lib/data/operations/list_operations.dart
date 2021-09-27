@@ -82,6 +82,7 @@ class ListOperations {
         alans.add(Alan(
             element.findElements("PinAlan").single.innerText,
             element.findElements("AlanName").single.innerText,
+            element.findElements("PinBitkiCesid").single.innerText,
             element.findElements("RFID").single.innerText));
       });
 

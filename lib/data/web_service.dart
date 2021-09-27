@@ -11,9 +11,9 @@ class WebService{
   static Future<Response> sendRequest(String methodName, String sendDataXML) async {
     var uri;
     if (kIsWeb) {
-      uri = Uri.parse("http://localhost:8081/agromis/agromisservice/service.asmx");
+      uri = Uri.parse("http://localhost:8081/agromis1/agromisservice/service.asmx");
     } else {
-      uri = Uri.parse("http://194.135.95.23:8081/agromis/agromisservice/service.asmx");
+      uri = Uri.parse("http://194.135.95.23:8081/agromis1/agromisservice/service.asmx");
     }
 
     Response response = Response(isConnected: true);

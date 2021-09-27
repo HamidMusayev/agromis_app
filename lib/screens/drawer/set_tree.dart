@@ -70,13 +70,7 @@ class _SetTreeScreenState extends State<SetTreeScreen> {
         iconTheme: IconThemeData(color: Colors.black),
         actions: [
           TextButton(
-              onPressed: () =>
-                setState(() {
-                  _found = false;
-                  rfidTxt.text=null;
-                  _activeCesid = null;
-                  _activeAlan = null;
-                }), child: Text("Sıfırla", style: TextStyle(color: Colors.red)))],
+              onPressed: () => reset(), child: Text("Sıfırla", style: TextStyle(color: Colors.red)))],
       ),
       body: SafeArea(
         child: Padding(
@@ -102,12 +96,17 @@ class _SetTreeScreenState extends State<SetTreeScreen> {
                   isExpanded: true,
                   hint: Text("Sıra seçin"),
                   underline: Container(),
-                  onChanged: (alan) => setState(() => _activeAlan = alan),
+                  onChanged: (alan) {
+                    setState(() {
+                      _activeAlan = alan;
+                      _activeCesid = _cesids.singleWhere((element) => element.pin == _activeAlan.pinbitkicesid);
+                    });
+                  },
                   items: _alans.map((alan) {
                     return DropdownMenuItem<Alan>(
                         value: alan, child: Row(
                           children: [
-                            Text(alan.pin + " - " + alan.alanname),
+                            Text(alan.pin + "-" + alan.alanname),
                             Spacer(),
                             Text(alan.rfid),
                           ],
@@ -281,10 +280,25 @@ class _SetTreeScreenState extends State<SetTreeScreen> {
     }
     else{
       RFIDOperations.saveAlanRFID(AlanRFID(rfidTxt.text, _activeAlan.pin, _activeCesid.pin))
-          .then((value) => value == "true"
-          ? ScaffoldMessenger.of(context).showMaterialBanner(MaterialBanner(backgroundColor: Colors.green, content: Text("Yadda saxlanıldı! - ${rfidTxt.text} / ${_activeAlan.alanname}"), actions: [Container()]))
-          : showAlert(value),
+          .then((value) {
+            if(value == "true"){
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: Colors.green, content: Text("Yadda saxlanıldı! - ${rfidTxt.text} / ${_activeAlan.alanname}")));
+              reset();
+            }
+            else{
+              showAlert(value);
+            }
+          }
       );
     }
+  }
+
+  void reset() {
+    setState(() {
+      _found = false;
+      rfidTxt.text=null;
+      _activeCesid = null;
+      _activeAlan = null;
+    });
   }
 }
