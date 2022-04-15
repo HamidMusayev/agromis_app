@@ -393,6 +393,9 @@ class _SetTreeScreenState extends State<SetTreeScreen> {
       _found = false;
       rfidTxt.clear();
       _activeCesit = null;
+      _activeTur = null;
+      _activeGarden = null;
+      _activeAlanDet = null;
       _activeAlan = null;
     });
   }
