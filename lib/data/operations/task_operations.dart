@@ -7,7 +7,7 @@ import 'package:xml/xml.dart' as xml;
 import '../shared_prefs.dart';
 import '../web_service.dart';
 
-class TaskOperations{
+class TaskOperations {
   static Future<dynamic> getTaskList(bool onlyCompleteds) async {
     final List<Task> tasks = [];
     User user = User.fromJson(await SharedData.readJson('user'));
@@ -16,9 +16,10 @@ class TaskOperations{
 
     final Response response = await WebService.sendRequest('TaskList', dataXML);
 
-    if(response.isConnected){
+    if (response.isConnected) {
       response.result.single.findAllElements('Task').forEach((element) {
-        tasks.add(Task(
+        tasks.add(
+          Task(
             int.parse(element.findElements('Pin').single.innerText),
             int.parse(element.findElements('TypePin').single.innerText),
             int.parse(element.findElements('GardenPin').single.innerText),
@@ -31,11 +32,13 @@ class TaskOperations{
             element.findElements('Type').single.innerText,
             element.findElements('Description').single.innerText,
             element.findElements('GardenName').single.innerText,
-            element.findElements('CreatedUser').single.innerText));
+            element.findElements('CreatedUser').single.innerText,
+          ),
+        );
       });
 
       return tasks;
-    } else{
+    } else {
       return false;
     }
   }
@@ -59,10 +62,16 @@ class TaskOperations{
 
     final Response response = await WebService.sendRequest('AddTask', dataXML);
 
-    if(response.isConnected){
-      final bool result = response.result.single.findElements('IsSuccessful').single.innerText == 'true' ? true : false;
+    if (response.isConnected) {
+      final bool result = response.result.single
+                  .findElements('IsSuccessful')
+                  .single
+                  .innerText ==
+              'true'
+          ? true
+          : false;
       return result;
-    } else{
+    } else {
       return false;
     }
   }
@@ -71,10 +80,17 @@ class TaskOperations{
     final String dataXML = '<taskId>$taskId</taskId>'
         '<readState>$readState</readState>';
 
-    final Response response = await WebService.sendRequest('ChangeTaskState', dataXML);
+    final Response response =
+        await WebService.sendRequest('ChangeTaskState', dataXML);
 
-    if(response.isConnected){
-      final bool result = response.result.single.findElements('IsSuccessful').single.innerText == 'true' ? true : false;
+    if (response.isConnected) {
+      final bool result = response.result.single
+                  .findElements('IsSuccessful')
+                  .single
+                  .innerText ==
+              'true'
+          ? true
+          : false;
       return result;
     } else {
       return false;
@@ -85,12 +101,12 @@ class TaskOperations{
     User user = User.fromJson(await SharedData.readJson('user'));
 
     var builder = xml.XmlBuilder();
-    builder.element('task', nest: (){
+    builder.element('task', nest: () {
       builder.element('TaskPin', nest: task.id);
       builder.element('TypePin', nest: task.typeId);
       builder.element('UserPin', nest: user.id);
       builder.element('GpsData', nest: 'gpsData');
-      builder.element('RFIDList', nest: (){
+      builder.element('RFIDList', nest: () {
         for (var element in rfids) {
           builder.element('string', nest: element.epc.substring(4));
         }
@@ -99,10 +115,17 @@ class TaskOperations{
 
     final String dataXml = builder.buildDocument().toString();
 
-    final Response response = await WebService.sendRequest('SendRFIDToTask', dataXml);
+    final Response response =
+        await WebService.sendRequest('SendRFIDToTask', dataXml);
 
-    if(response.isConnected){
-      final bool result = response.result.single.findElements('IsSuccessful').single.innerText == 'true' ? true : false;
+    if (response.isConnected) {
+      final bool result = response.result.single
+                  .findElements('IsSuccessful')
+                  .single
+                  .innerText ==
+              'true'
+          ? true
+          : false;
       return result;
     } else {
       return false;

@@ -1,6 +1,7 @@
-class AlanRFID{
+class AlanRFID {
   String rfid;
-  String pinalan;
-  String pinbitkicesid;
-  AlanRFID(this.rfid, this.pinalan, this.pinbitkicesid);
+  String pinabitki;
+  String pinbitkitur;
+  String pinbitkicesit;
+  AlanRFID(this.rfid, this.pinabitki, this.pinbitkitur, this.pinbitkicesit);
 }

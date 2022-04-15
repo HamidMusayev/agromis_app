@@ -1,5 +1,5 @@
-class BitkiCesid{
+class BitkiCesit {
   String pin;
-  String cesidname;
-  BitkiCesid(this.pin, this.cesidname);
+  String cesitname;
+  BitkiCesit(this.pin, this.cesitname);
 }

@@ -16,7 +16,7 @@ class WebService {
           'http://localhost:8081/agromis/agromisservice_denmo/service.asmx');
     } else {
       uri = Uri.parse(
-          'http://194.135.95.23:8081/agromis1/agromisservice/service.asmx');
+          'http://194.135.95.23:8081/agromis_goycay/agromisservice/service.asmx');
       //eger database deyiserse veb servisde queryler icindeki db leri de deyismeyi unutma
     }
 

@@ -2,7 +2,10 @@ import 'package:aqromis_application/data/operations/list_operations.dart';
 import 'package:aqromis_application/data/operations/rfid_operations.dart';
 import 'package:aqromis_application/models/add_tree/alan.dart';
 import 'package:aqromis_application/models/add_tree/alan_rfid.dart';
+import 'package:aqromis_application/models/add_tree/alandet.dart';
 import 'package:aqromis_application/models/add_tree/bitkicesit.dart';
+import 'package:aqromis_application/models/add_tree/bitkitur.dart';
+import 'package:aqromis_application/models/garden.dart';
 import 'package:flutter/material.dart';
 import 'package:aqromis_application/text_constants.dart' as Constants;
 import 'package:flutter/services.dart';
@@ -13,6 +16,8 @@ import 'package:uhf_c72_plugin/uhf_c72_plugin.dart';
 import '../../constants.dart';
 
 class SetTreeScreen extends StatefulWidget {
+  const SetTreeScreen({Key? key}) : super(key: key);
+
   @override
   _SetTreeScreenState createState() => _SetTreeScreenState();
 }
@@ -25,10 +30,17 @@ class _SetTreeScreenState extends State<SetTreeScreen> {
   List<TagEpc> data = [];
   Soundpool pool = Soundpool(streamType: StreamType.notification);
 
+  List<Garden> _gardens = [];
   List<Alan> _alans = [];
-  List<BitkiCesid> _cesids = [];
+  List<AlanDet> _alandets = [];
+  List<BitkiCesit> _cesids = [];
+  List<BitkiTur> _turs = [];
+
+  Garden? _activeGarden;
   Alan? _activeAlan;
-  BitkiCesid? _activeCesid;
+  AlanDet? _activeAlanDet;
+  BitkiCesit? _activeCesit;
+  BitkiTur? _activeTur;
 
   @override
   void initState() {
@@ -51,14 +63,20 @@ class _SetTreeScreenState extends State<SetTreeScreen> {
   }
 
   Future<void> getDropDownData() async {
-    await ListOperations.getAlanList().then((value) => value != false
-        ? setState(() => _alans = value)
-        : showAlert(Constants.tCantFindRFIDNetworkError));
-
-    await ListOperations.getBitkiCesidList().then((value) => value != false
-        ? setState(() => _cesids = value)
+    await ListOperations.getGardenList().then((value) => value != false
+        ? setState(() => _gardens = value)
         : showAlert(Constants.tCantFindRFIDNetworkError));
   }
+
+  // Future<void> getDropDownData() async {
+  //   await ListOperations.getAlanList().then((value) => value != false
+  //       ? setState(() => _alans = value)
+  //       : showAlert(Constants.tCantFindRFIDNetworkError));
+  //
+  //   await ListOperations.getBitkiCesitList().then((value) => value != false
+  //       ? setState(() => _cesids = value)
+  //       : showAlert(Constants.tCantFindRFIDNetworkError));
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -79,14 +97,33 @@ class _SetTreeScreenState extends State<SetTreeScreen> {
           padding: kSmallPadding,
           child: Column(
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                child: TextField(
-                    controller: rfidTxt,
-                    enabled: false,
-                    decoration:
-                        const InputDecoration(hintText: Constants.tRFID)),
+              TextField(
+                  controller: rfidTxt,
+                  enabled: false,
+                  decoration: const InputDecoration(hintText: Constants.tRFID)),
+              const SizedBox(height: 8),
+              Container(
+                padding: const EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                    color: Colors.blueGrey.shade50,
+                    borderRadius: const BorderRadius.all(kDefaultRadius)),
+                child: DropdownButton<Garden>(
+                  value: _activeGarden,
+                  icon: const Icon(Icons.arrow_drop_down_rounded),
+                  iconSize: 30,
+                  isExpanded: true,
+                  hint: const Text('Bağ seçin'),
+                  underline: Container(),
+                  onChanged: (val) async => await gardenChanged(val),
+                  items: _gardens.map((val) {
+                    return DropdownMenuItem<Garden>(
+                      value: val,
+                      child: Text(val.pin.toString() + '-' + val.name),
+                    );
+                  }).toList(),
+                ),
               ),
+              const SizedBox(height: 8),
               Container(
                 padding: const EdgeInsets.all(5),
                 decoration: BoxDecoration(
@@ -99,56 +136,97 @@ class _SetTreeScreenState extends State<SetTreeScreen> {
                   isExpanded: true,
                   hint: const Text('Sıra seçin'),
                   underline: Container(),
-                  onChanged: (alan) {
-                    _activeAlan = alan;
-                    for (BitkiCesid cesid in _cesids) {
-                      if (cesid.pin == _activeAlan?.pinbitkicesid) {
-                        _activeCesid = cesid;
-                      }
-                    }
-                    setState(() {});
-                  },
-                  items: _alans.map((alan) {
+                  onChanged: (val) async => await alanChanged(val),
+                  items: _alans.map((val) {
                     return DropdownMenuItem<Alan>(
-                        value: alan,
-                        child: Row(
-                          children: [
-                            Text(alan.pin + '-' + alan.alanname),
-                            const Spacer(),
-                            Text(alan.rfid),
-                          ],
-                        ));
+                      value: val,
+                      child: ListTile(
+                        title: Text(val.pin + '-' + val.alanname),
+                        subtitle: Text(val.rfid),
+                      ),
+                    );
                   }).toList(),
                 ),
               ),
+              const SizedBox(height: 8),
               Container(
-                margin: const EdgeInsets.symmetric(vertical: 8),
                 padding: const EdgeInsets.all(5),
                 decoration: BoxDecoration(
                     color: Colors.blueGrey.shade50,
                     borderRadius: const BorderRadius.all(kDefaultRadius)),
-                child: DropdownButton<BitkiCesid>(
-                  value: _activeCesid,
+                child: DropdownButton<AlanDet>(
+                  value: _activeAlanDet,
+                  icon: const Icon(Icons.arrow_drop_down_rounded),
+                  iconSize: 30,
+                  isExpanded: true,
+                  hint: const Text('Ağac seçin'),
+                  underline: Container(),
+                  onChanged: (val) async => await alanDetChanged(val),
+                  items: _alandets.map((val) {
+                    return DropdownMenuItem<AlanDet>(
+                      value: val,
+                      child: ListTile(
+                        title: Text('PIN_ALANDET-' +
+                            val.pin +
+                            ' / PINABITKI-' +
+                            val.pinabitki),
+                        subtitle: Text(val.epc),
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Container(
+                padding: const EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                    color: Colors.blueGrey.shade50,
+                    borderRadius: const BorderRadius.all(kDefaultRadius)),
+                child: DropdownButton<BitkiCesit>(
+                  value: _activeCesit,
+                  isExpanded: true,
+                  hint: const Text('Bitki Çeşidi seçin'),
+                  icon: const Icon(Icons.arrow_drop_down_rounded),
+                  iconSize: 30,
+                  underline: Container(),
+                  onChanged: (cesid) => setState(() => _activeCesit = cesid),
+                  items: _cesids.map((cesid) {
+                    return DropdownMenuItem<BitkiCesit>(
+                      value: cesid,
+                      child: Text(cesid.cesitname),
+                    );
+                  }).toList(),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Container(
+                padding: const EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                    color: Colors.blueGrey.shade50,
+                    borderRadius: const BorderRadius.all(kDefaultRadius)),
+                child: DropdownButton<BitkiTur>(
+                  value: _activeTur,
                   isExpanded: true,
                   hint: const Text('Bitki Növü seçin'),
                   icon: const Icon(Icons.arrow_drop_down_rounded),
                   iconSize: 30,
                   underline: Container(),
-                  onChanged: (cesid) => setState(() => _activeCesid = cesid),
-                  items: _cesids.map((cesid) {
-                    return DropdownMenuItem<BitkiCesid>(
-                        value: cesid, child: Text(cesid.cesidname));
+                  onChanged: (val) => setState(() => _activeTur = val),
+                  items: _turs.map((tur) {
+                    return DropdownMenuItem<BitkiTur>(
+                      value: tur,
+                      child: Text(tur.turname),
+                    );
                   }).toList(),
                 ),
               ),
+              const SizedBox(height: 8),
               _found
                   ? Expanded(
                       child: FlatButton(
                         padding: kSmallPadding,
                         color: kGreenColor,
-                        onPressed: () {
-                          saveAlanRFID();
-                        },
+                        onPressed: () async => saveAlanRFID(),
                         shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(kDefaultRadius)),
                         child: Row(
@@ -159,7 +237,7 @@ class _SetTreeScreenState extends State<SetTreeScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: const <Widget>[
                                   Icon(Icons.check_rounded,
-                                      size: 100, color: Colors.white),
+                                      size: 70, color: Colors.white),
                                   Text(
                                     Constants.tSave,
                                     style: TextStyle(
@@ -195,7 +273,7 @@ class _SetTreeScreenState extends State<SetTreeScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: const <Widget>[
                                   Icon(Icons.speaker_phone_rounded,
-                                      size: 100, color: Colors.white),
+                                      size: 70, color: Colors.white),
                                   Text(
                                     Constants.tRead,
                                     style: TextStyle(
@@ -278,14 +356,25 @@ class _SetTreeScreenState extends State<SetTreeScreen> {
   void saveAlanRFID() {
     if (rfidTxt.text.isEmpty) {
       showAlert('RFID Boşdur!');
+    } else if (_activeGarden == null) {
+      showAlert('Bağ seçilməyib!');
     } else if (_activeAlan == null) {
       showAlert('Sıra seçilməyib!');
-    } else if (_activeCesid == null) {
-      showAlert('Bitki növü seçilməyib!');
+    } else if (_activeAlanDet == null) {
+      showAlert('Cərgə seçilməyib!');
+    } else if (_activeCesit == null) {
+      showAlert('Çeşid seçilməyib!');
+    } else if (_activeTur == null) {
+      showAlert('Növ seçilməyib!');
     } else {
       RFIDOperations.saveAlanRFID(
-              AlanRFID(rfidTxt.text, _activeAlan!.pin, _activeCesid!.pin))
-          .then((value) {
+        AlanRFID(
+          rfidTxt.text,
+          _activeAlanDet!.pinabitki,
+          _activeTur!.pin,
+          _activeCesit!.pin,
+        ),
+      ).then((value) {
         if (value == 'true') {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               backgroundColor: Colors.green,
@@ -303,8 +392,38 @@ class _SetTreeScreenState extends State<SetTreeScreen> {
     setState(() {
       _found = false;
       rfidTxt.clear();
-      _activeCesid = null;
+      _activeCesit = null;
       _activeAlan = null;
     });
+  }
+
+  gardenChanged(Garden? val) async {
+    _activeGarden = val;
+
+    await ListOperations.getAlanList(_activeGarden!.pin.toString()).then(
+        (value) => value != false
+            ? setState(() => _alans = value)
+            : showAlert(Constants.tCantFindRFIDNetworkError));
+  }
+
+  alanChanged(Alan? val) async {
+    _activeAlan = val;
+
+    await ListOperations.getAlanDetList(_activeAlan!.pin.toString()).then(
+        (value) => value != false
+            ? setState(() => _alandets = value)
+            : showAlert(Constants.tCantFindRFIDNetworkError));
+  }
+
+  alanDetChanged(AlanDet? val) async {
+    _activeAlanDet = val;
+
+    await ListOperations.getBitkiCesitList().then((value) => value != false
+        ? setState(() => _cesids = value)
+        : showAlert(Constants.tCantFindRFIDNetworkError));
+
+    await ListOperations.getBitkiTurList().then((value) => value != false
+        ? setState(() => _turs = value)
+        : showAlert(Constants.tCantFindRFIDNetworkError));
   }
 }

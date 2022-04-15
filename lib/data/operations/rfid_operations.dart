@@ -37,8 +37,9 @@ class RFIDOperations {
   static Future<dynamic> saveAlanRFID(AlanRFID alanRFID) async {
     String dataXML = '<alanRFID>'
         '<RFID>${alanRFID.rfid}</RFID>'
-        '<PinAlan>${alanRFID.pinalan}</PinAlan>'
-        '<PinBitkiCesid>${alanRFID.pinbitkicesid}</PinBitkiCesid>'
+        '<PinABitki>${alanRFID.pinabitki}</PinABitki>'
+        '<PinABitkitur>${alanRFID.pinbitkitur}</PinABitkitur>'
+        '<PinABitkiCesit>${alanRFID.pinbitkicesit}</PinABitkiCesit>'
         '</alanRFID>';
 
     final Response response =
