@@ -4,5 +4,5 @@ class RFIDGardenResult{
   int maxTreeCount;
   int minTreeCount;
 
-  RFIDGardenResult({this.isOneTree, this.maxTreeCount, this.minTreeCount, this.isSuccess});
+  RFIDGardenResult({required this.isOneTree, required this.maxTreeCount, required this.minTreeCount, required this.isSuccess});
 }

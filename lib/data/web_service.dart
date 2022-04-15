@@ -7,40 +7,45 @@ import 'package:xml/xml.dart' as xml;
 
 import 'local_send_db.dart';
 
-class WebService{
-  static Future<Response> sendRequest(String methodName, String sendDataXML) async {
-    var uri;
+class WebService {
+  static Future<Response> sendRequest(
+      String methodName, String sendDataXML) async {
+    Uri uri;
     if (kIsWeb) {
-      uri = Uri.parse("http://localhost:8081/agromis1/agromisservice/service.asmx");
+      uri = Uri.parse(
+          'http://localhost:8081/agromis/agromisservice_denmo/service.asmx');
     } else {
-      uri = Uri.parse("http://194.135.95.23:8081/agromis1/agromisservice/service.asmx");
+      uri = Uri.parse(
+          'http://194.135.95.23:8081/agromis1/agromisservice/service.asmx');
+      //eger database deyiserse veb servisde queryler icindeki db leri de deyismeyi unutma
     }
 
-    Response response = Response(isConnected: true);
+    Response response = Response(isConnected: true, result: []);
 
-    final envelope = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
-        "<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">"
-          "<soap:Body>"
-            "<$methodName xmlns=\"https://hisaz.az/\">"
-              "$sendDataXML"
-            "</$methodName>"
-          "</soap:Body>"
-        "</soap:Envelope>";
+    final envelope = '<?xml version="1.0" encoding="utf-8"?>'
+        '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">'
+        '<soap:Body>'
+        '<$methodName xmlns="https://hisaz.az/">'
+        '$sendDataXML'
+        '</$methodName>'
+        '</soap:Body>'
+        '</soap:Envelope>';
 
-    try{
+    try {
       final responseXML = await http.post(
         uri,
         headers: {
           //"Access-Control-Allow-Origin": "*",
-          "Content-Type": "text/xml; charset=utf-8",
-          "SOAPAction": "https://hisaz.az/$methodName",
-          "Host": "localhost",
-          "Accept": "text/xml"
+          'Content-Type': 'text/xml; charset=utf-8',
+          'SOAPAction': 'https://hisaz.az/$methodName',
+          'Host': 'localhost',
+          'Accept': 'text/xml'
         },
         body: envelope,
       );
 
-      response.result = xml.XmlDocument.parse(responseXML.body).findAllElements("${methodName}Result");
+      response.result = xml.XmlDocument.parse(responseXML.body)
+          .findAllElements('${methodName}Result');
 
       await LocalDB().updateOrInsert(methodName, sendDataXML, responseXML.body);
 
@@ -48,25 +53,30 @@ class WebService{
       //print(responseDoc.toXmlString(pretty: true, indent: '\t'));
 
     } on SocketException {
-      print("No Internet connection 😑");
+      print('No Internet connection 😑');
 
-      if(methodName == "ChangeTaskState" || methodName == "SendRFIDToTask" || methodName == "SendRequest"){
+      if (methodName == 'ChangeTaskState' ||
+          methodName == 'SendRFIDToTask' ||
+          methodName == 'SendRequest') {
         await LocalSendDB().insert(methodName, sendDataXML);
-        response.result = xml.XmlDocument.parse("<body><IsSuccessful>true</IsSuccessful></body>").findAllElements("body");
-      } else if(methodName == "UserRegister" || methodName == "UserLogin" || methodName == "AddTask"){
+        response.result = xml.XmlDocument.parse(
+                '<body><IsSuccessful>true</IsSuccessful></body>')
+            .findAllElements('body');
+      } else if (methodName == 'UserRegister' ||
+          methodName == 'UserLogin' ||
+          methodName == 'AddTask') {
         response.isConnected = false;
       } else {
-        await LocalDB().getData(methodName, sendDataXML).then((value) => response.result = xml.XmlDocument.parse(value).findAllElements("${methodName}Result"));
+        await LocalDB().getData(methodName, sendDataXML).then((value) =>
+            response.result = xml.XmlDocument.parse(value!)
+                .findAllElements('${methodName}Result'));
       }
-
     } on HttpException {
       print("Couldn't find the post 😱");
     } on FormatException {
-      print("Bad response format 👎");
+      print('Bad response format 👎');
     }
 
     return response;
   }
-
-
 }

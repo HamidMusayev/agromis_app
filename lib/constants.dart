@@ -28,26 +28,26 @@ const kYellowOpacityColor = Color(0xFFFFF8E6);
 const kInputFillColor = Color(0xFFF5F5F5);
 const kInputTextColor = Color(0xFFCFD2D4);
 
-const kDefaultPadding = EdgeInsets.all(24.0);
+const kDefaultPadding = EdgeInsets.all(16.0);
 const kSmallPadding = EdgeInsets.all(12.0);
 const kDefaultRadius = Radius.circular(15.0);
 const kDefaultIconSize = 30.0;
 const kLargeIconSize = 90.0;
 
-final headingStyle = TextStyle(fontSize: 30.0, fontWeight: FontWeight.w700, color: kTextColor);
-final headingWhiteStyle = TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700, color: kWhiteColor);
-final buttonStyle = TextStyle(color: kTextColor, fontSize: 16, fontWeight: FontWeight.w600);
-final semibold14WhiteStyle = TextStyle(color: kWhiteColor, fontSize: 14, fontWeight: FontWeight.w600);
-final semibold14PrimaryStyle = TextStyle(color: kPrimaryColor, fontSize: 14, fontWeight: FontWeight.w600);
-final semibold16WhiteStyle = TextStyle(color: kWhiteColor, fontSize: 16, fontWeight: FontWeight.w600);
-final light12WhiteStyle = TextStyle(color: kWhiteColor, fontSize: 12, fontWeight: FontWeight.w400);
-final light14WhiteStyle = TextStyle(color: kWhiteColor, fontSize: 14, fontWeight: FontWeight.w400);
-final light16WhiteStyle = TextStyle(color: kWhiteColor, fontSize: 16, fontWeight: FontWeight.w400);
-final semibold14Style = TextStyle(color: kTextColor, fontSize: 14, fontWeight: FontWeight.w600);
-final semibold16Style = TextStyle(color: kTextColor, fontSize: 16, fontWeight: FontWeight.w600);
-final light14Style = TextStyle(color: kLightTextColor, fontSize: 14, fontWeight: FontWeight.w400);
-final rfidStyle =TextStyle(fontSize: 48.0,fontWeight: FontWeight.w700,color: kWhiteColor);
+const headingStyle = TextStyle(fontSize: 30.0, fontWeight: FontWeight.w700, color: kTextColor);
+const headingWhiteStyle = TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700, color: kWhiteColor);
+const buttonStyle = TextStyle(color: kTextColor, fontSize: 16, fontWeight: FontWeight.w600);
+const semibold14WhiteStyle = TextStyle(color: kWhiteColor, fontSize: 14, fontWeight: FontWeight.w600);
+const semibold14PrimaryStyle = TextStyle(color: kPrimaryColor, fontSize: 14, fontWeight: FontWeight.w600);
+const semibold16WhiteStyle = TextStyle(color: kWhiteColor, fontSize: 16, fontWeight: FontWeight.w600);
+const light12WhiteStyle = TextStyle(color: kWhiteColor, fontSize: 12, fontWeight: FontWeight.w400);
+const light14WhiteStyle = TextStyle(color: kWhiteColor, fontSize: 14, fontWeight: FontWeight.w400);
+const light16WhiteStyle = TextStyle(color: kWhiteColor, fontSize: 16, fontWeight: FontWeight.w400);
+const semibold14Style = TextStyle(color: kTextColor, fontSize: 14, fontWeight: FontWeight.w600);
+const semibold16Style = TextStyle(color: kTextColor, fontSize: 16, fontWeight: FontWeight.w600);
+const light14Style = TextStyle(color: kLightTextColor, fontSize: 14, fontWeight: FontWeight.w400);
+const rfidStyle =TextStyle(fontSize: 48.0,fontWeight: FontWeight.w700,color: kWhiteColor);
 
-final RegExp emailValidatorRegExp = RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+final RegExp emailValidatorRegExp = RegExp(r'^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+');
 
 const kAnimationDuration = Duration(milliseconds: 1000);

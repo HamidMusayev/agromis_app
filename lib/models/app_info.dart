@@ -1,4 +1,4 @@
-class AppInfo{
+class AppInfo {
   int userTaskCount;
   String name;
   double version;
@@ -8,5 +8,14 @@ class AppInfo{
   String developerPhone;
   String developerSite;
   String developerEmail;
-  AppInfo({this.userTaskCount, this.name, this.version, this.updatedDate, this.downloadLink, this.developerName, this.developerPhone, this.developerSite, this.developerEmail});
+  AppInfo(
+      {required this.userTaskCount,
+      required this.name,
+      required this.version,
+      required this.updatedDate,
+      required this.downloadLink,
+      required this.developerName,
+      required this.developerPhone,
+      required this.developerSite,
+      required this.developerEmail});
 }

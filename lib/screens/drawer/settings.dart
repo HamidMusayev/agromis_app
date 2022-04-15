@@ -1,6 +1,5 @@
 import 'package:aqromis_application/data/shared_prefs.dart';
 import 'package:aqromis_application/screens/home.dart';
-import 'package:aqromis_application/size_config.dart';
 import 'package:aqromis_application/widgets/default_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -24,29 +23,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   getPrefs() async {
-    await SharedData.getBool("tipsOpen").then((value) => setState(() => value == null ? _tipsValue = false : _tipsValue = value));
-    await SharedData.getInt("range").then((value) => setState(() => value == null ? _readLength = 5 : _readLength = value));
+    await SharedData.getBool('tipsOpen').then((value) => setState(() => value == null ? _tipsValue = false : _tipsValue = value));
+    await SharedData.getInt('range').then((value) => setState(() => value == null ? _readLength = 5 : _readLength = value));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kInputFillColor,
-      appBar: AppBar(title: Text(Constants.tSettings, style: semibold16Style)),
+      appBar: AppBar(title: const Text(Constants.tSettings, style: semibold16Style)),
       body: Padding(
         padding: kSmallPadding,
         child: Column(
           children: <Widget>[
             Container(
               padding: kSmallPadding,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   borderRadius: BorderRadius.all(kDefaultRadius),
                   color: kWhiteColor),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(Constants.tReadLength, style: semibold16Style),
-                  Text(Constants.tReadLengthDescription, style: light14Style),
+                  const Text(Constants.tReadLength, style: semibold16Style),
+                  const Text(Constants.tReadLengthDescription, style: light14Style),
                   Slider(
                     min: 5,
                     max: 30,
@@ -54,29 +53,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     value: _readLength.toDouble(),
                     onChanged: (value) =>
                         setState(() => _readLength = value.toInt()),
-                    label: "$_readLength",
+                    label: '$_readLength',
                     activeColor: kPrimaryColor,
                     inactiveColor: kPrimaryOpacityColor,
                   )
                 ],
               ),
             ),
-            SizedBox(height: getProportionateScreenHeight(12.0)),
+            const SizedBox(height: 12),
             Container(
               padding: kSmallPadding,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   borderRadius: BorderRadius.all(kDefaultRadius),
                   color: kWhiteColor),
               child: Row(
                 children: <Widget>[
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
+                    children: const <Widget>[
                       Text(Constants.tOpenTips, style: semibold16Style),
                       Text(Constants.tOpenTipsDescription, style: light14Style),
                     ],
                   ),
-                  Spacer(),
+                  const Spacer(),
                   CupertinoSwitch(
                       value: _tipsValue,
                       activeColor: kPrimaryColor,
@@ -84,7 +83,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ],
               ),
             ),
-            Spacer(),
+            const Spacer(),
             DefaultButton(
               text: Constants.tSave,
               textColor: kWhiteColor,
@@ -98,9 +97,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   saveSettings() async {
-    SharedData.setBool("tipsOpen", _tipsValue);
-    SharedData.setInt("range", _readLength);
+    SharedData.setBool('tipsOpen', _tipsValue);
+    SharedData.setInt('range', _readLength);
     Navigator.pop(
-        context, MaterialPageRoute(builder: (context) => HomeScreen()));
+        context, MaterialPageRoute(builder: (context) => const HomeScreen()));
   }
 }

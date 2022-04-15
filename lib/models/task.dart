@@ -1,17 +1,17 @@
 class Task {
-  int id;
+  int? id;
   int typeId;
   int gardenId;
-  int createUserId;
-  int readedRFIDCount;
-  int readState; //1 başlamamış	2 başlamış 3 bitmiş
+  int? createUserId;
+  int? readedRFIDCount;
+  int? readState; //1 başlamamış	2 başlamış 3 bitmiş
   String startDate;
   String endDate;
   String name;
-  String type;
+  String? type;
   String description;
-  String gardenName;
-  String createdUser;
+  String? gardenName;
+  String? createdUser;
 
   Task(
       this.id,
@@ -27,5 +27,12 @@ class Task {
       this.description,
       this.gardenName,
       this.createdUser);
-  Task.tosend({this.typeId, this.gardenId, this.startDate, this.endDate, this.name, this.description});
+
+  Task.tosend(
+      {required this.typeId,
+      required this.gardenId,
+      required this.startDate,
+      required this.endDate,
+      required this.name,
+      required this.description});
 }

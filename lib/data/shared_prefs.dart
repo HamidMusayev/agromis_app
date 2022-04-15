@@ -18,17 +18,17 @@ class SharedData {
     prefs.setBool(key, value);
   }
 
-  static Future<String> getString(String key) async {
+  static Future<String?> getString(String key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(key);
   }
 
-  static Future<int> getInt(String key) async {
+  static Future<int?> getInt(String key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getInt(key);
   }
 
-  static Future<bool> getBool(String key) async {
+  static Future<bool?> getBool(String key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getBool(key);
   }
@@ -40,7 +40,7 @@ class SharedData {
 
   static Future<dynamic> readJson(String key) async {
     final prefs = await SharedPreferences.getInstance();
-    return json.decode(prefs.getString(key));
+    return json.decode(prefs.getString(key)!);
   }
 
   static Future<dynamic> removeJson(String key) async {

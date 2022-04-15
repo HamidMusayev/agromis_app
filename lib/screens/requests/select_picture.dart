@@ -6,7 +6,6 @@ import 'package:aqromis_application/data/shared_prefs.dart';
 import 'package:aqromis_application/models/picture.dart';
 import 'package:aqromis_application/models/request.dart';
 import 'package:aqromis_application/models/user.dart';
-import 'package:aqromis_application/size_config.dart';
 import 'package:aqromis_application/widgets/default_button.dart';
 import 'package:aqromis_application/widgets/picture_holder.dart';
 import 'package:aqromis_application/widgets/custom_loading.dart';
@@ -19,16 +18,16 @@ import '../../constants.dart';
 
 class SelectPictureScreen extends StatefulWidget {
   final Request request;
-  SelectPictureScreen({this.request});
+  const SelectPictureScreen({required this.request});
   @override
   _SelectPictureScreenState createState() => _SelectPictureScreenState(request);
 }
 
 class _SelectPictureScreenState extends State<SelectPictureScreen> {
-  Request request;
+  late Request request;
   _SelectPictureScreenState(this.request);
   int count = 0;
-  String photoBase64;
+  String? photoBase64;
   List<Picture> pictures = [];
 
   final ImagePicker _picker = ImagePicker();
@@ -37,17 +36,19 @@ class _SelectPictureScreenState extends State<SelectPictureScreen> {
 
   void _onImageButtonPressed(ImageSource source) async {
     try {
-      final pickedFile = await _picker.getImage(source: source);// maxWidth: maxWidth,// maxHeight: maxHeight,// imageQuality: quality,
+      final pickedFile = await _picker.getImage(
+          source:
+              source); // maxWidth: maxWidth,// maxHeight: maxHeight,// imageQuality: quality,
 
       File imageResized = await FlutterNativeImage.compressImage(
-          pickedFile.path,
-          quality: 60);//targetWidth: 1000, targetHeight: 1000
+          pickedFile!.path,
+          quality: 60); //targetWidth: 1000, targetHeight: 1000
       List<int> imageBytes = imageResized.readAsBytesSync();
       photoBase64 = base64Encode(imageBytes);
 
-      Picture picture = Picture();
+      Picture picture = Picture(path: '', base64: '');
       picture.path = pickedFile.path;
-      picture.base64 = photoBase64;
+      picture.base64 = photoBase64!;
 
       setState(() => pictures.add(picture));
     } catch (e) {}
@@ -68,10 +69,9 @@ class _SelectPictureScreenState extends State<SelectPictureScreen> {
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(Constants.tSelectPhotos, style: semibold16Style)),
+          title: const Text(Constants.tSelectPhotos, style: semibold16Style)),
       body: SingleChildScrollView(
         child: Padding(
           padding: kSmallPadding,
@@ -86,24 +86,27 @@ class _SelectPictureScreenState extends State<SelectPictureScreen> {
                               color: kBlueOpacityColor,
                               splashColor: kWhiteColor,
                               highlightColor: Colors.transparent,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(kDefaultRadius)),
-                              child: Icon(Icons.add_a_photo_rounded, color: kBlueColor, size: getProportionateScreenHeight(50.0)),
-                              onPressed: () => _onImageButtonPressed(ImageSource.camera),
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(kDefaultRadius)),
+                              child: const Icon(Icons.add_a_photo_rounded,
+                                  color: kBlueColor, size: 50),
+                              onPressed: () =>
+                                  _onImageButtonPressed(ImageSource.camera),
                             )
                           : FlatButton(
                               padding: kDefaultPadding,
                               color: kInputFillColor,
                               splashColor: Colors.transparent,
                               highlightColor: Colors.transparent,
-                              shape: RoundedRectangleBorder(
+                              shape: const RoundedRectangleBorder(
                                   borderRadius:
                                       BorderRadius.all(kDefaultRadius)),
-                              child: Icon(Icons.add_a_photo_rounded,
-                                  color: kInputTextColor,
-                                  size: getProportionateScreenHeight(50.0)),
+                              child: const Icon(Icons.add_a_photo_rounded,
+                                  color: kInputTextColor, size: 52),
                               onPressed: () {},
                             )),
-                  SizedBox(width: getProportionateScreenHeight(10.0)),
+                  const SizedBox(width: 12),
                   Expanded(
                       child: pictures.length < 5
                           ? FlatButton(
@@ -111,12 +114,11 @@ class _SelectPictureScreenState extends State<SelectPictureScreen> {
                               color: kPrimaryOpacityColor,
                               splashColor: kWhiteColor,
                               highlightColor: Colors.transparent,
-                              shape: RoundedRectangleBorder(
+                              shape: const RoundedRectangleBorder(
                                   borderRadius:
                                       BorderRadius.all(kDefaultRadius)),
-                              child: Icon(Icons.add_photo_alternate_rounded,
-                                  color: kPrimaryColor,
-                                  size: getProportionateScreenHeight(50.0)),
+                              child: const Icon(Icons.add_photo_alternate_rounded,
+                                  color: kPrimaryColor, size: 50),
                               onPressed: () {
                                 _onImageButtonPressed(ImageSource.gallery);
                               },
@@ -126,12 +128,11 @@ class _SelectPictureScreenState extends State<SelectPictureScreen> {
                               color: kInputFillColor,
                               splashColor: Colors.transparent,
                               highlightColor: Colors.transparent,
-                              shape: RoundedRectangleBorder(
+                              shape: const RoundedRectangleBorder(
                                   borderRadius:
                                       BorderRadius.all(kDefaultRadius)),
-                              child: Icon(Icons.add_photo_alternate_rounded,
-                                  color: kInputTextColor,
-                                  size: getProportionateScreenHeight(50.0)),
+                              child: const Icon(Icons.add_photo_alternate_rounded,
+                                  color: kInputTextColor, size: 50),
                               onPressed: () {},
                             )),
                 ],
@@ -149,25 +150,31 @@ class _SelectPictureScreenState extends State<SelectPictureScreen> {
                                   setState(() => pictures.remove(holder));
                                 }))
                       ])),
-              SizedBox(height: getProportionateScreenHeight(100.0)),
+              const SizedBox(height: 100),
               TextField(
                   controller: titleTxt,
-                  decoration: InputDecoration(hintText: Constants.tAddTitle)),
-              SizedBox(height: getProportionateScreenHeight(10.0)),
+                  decoration:
+                      const InputDecoration(hintText: Constants.tAddTitle)),
+              const SizedBox(height: 12),
               TextField(
                   controller: noteTxt,
                   maxLines: 4,
-                  decoration: InputDecoration(hintText: Constants.tAddNote)),
-              SizedBox(height: getProportionateScreenHeight(30.0)),
+                  decoration:
+                      const InputDecoration(hintText: Constants.tAddNote)),
+              const SizedBox(height: 30),
               DefaultButton(
                 text: Constants.tSend,
                 textColor: kWhiteColor,
                 backColor: kPrimaryColor,
                 onPress: () {
-                  if (pictures.length == 0) {
-                    showAlert(Constants.tPhotosError).timeout(Duration(seconds: 3), onTimeout: () => Navigator.pop(context));
-                  } else if (titleTxt == null || titleTxt.text.trim().isEmpty) {
-                    showAlert(Constants.tTtileError).timeout(Duration(seconds: 3), onTimeout: () => Navigator.pop(context));
+                  if (pictures.isEmpty) {
+                    showAlert(Constants.tPhotosError).timeout(
+                        const Duration(seconds: 3),
+                        onTimeout: () => Navigator.pop(context));
+                  } else if (titleTxt.text.trim().isEmpty) {
+                    showAlert(Constants.tTtileError).timeout(
+                        const Duration(seconds: 3),
+                        onTimeout: () => Navigator.pop(context));
                   } else {
                     uploadData();
                   }
@@ -189,17 +196,17 @@ class _SelectPictureScreenState extends State<SelectPictureScreen> {
         elevation: 0,
         titleTextStyle: semibold14Style,
         contentTextStyle: semibold14Style,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(kDefaultRadius)),
         title: StatefulBuilder(
           builder: (BuildContext context, StateSetter setSt) {
             return Column(
               children: <Widget>[
-                Icon(Icons.cloud_upload_rounded,
+                const Icon(Icons.cloud_upload_rounded,
                     color: kPrimaryColor, size: 50.0),
-                SizedBox(height: 10.0),
-                Text(Constants.tUploading),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 10.0),
+                const Text(Constants.tUploading),
+                const SizedBox(height: 16.0),
                 CustomLoading()
               ],
             );
@@ -218,11 +225,12 @@ class _SelectPictureScreenState extends State<SelectPictureScreen> {
         elevation: 0,
         titleTextStyle: semibold14Style,
         contentTextStyle: semibold14Style,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(kDefaultRadius)),
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(kDefaultRadius)),
         title: Column(
           children: <Widget>[
-            Icon(Icons.info, color: kBlueColor, size: 50.0),
-            SizedBox(height: 12.0),
+            const Icon(Icons.info, color: kBlueColor, size: 50.0),
+            const SizedBox(height: 12.0),
             Text(text, textAlign: TextAlign.center),
           ],
         ),
@@ -232,27 +240,29 @@ class _SelectPictureScreenState extends State<SelectPictureScreen> {
 
   uploadData() async {
     buildSendDialog();
-    User user = User.fromJson(await SharedData.readJson("user"));
+    User user = User.fromJson(await SharedData.readJson('user'));
 
     List<String> picsbase64 = [];
-    pictures.forEach((pic) => picsbase64.add(pic.base64));
-    while(picsbase64.length < 5){
-      picsbase64.add("empty");
+    for (var pic in pictures) {
+      picsbase64.add(pic.base64);
+    }
+    while (picsbase64.length < 5) {
+      picsbase64.add('empty');
     }
 
     request.pictures = picsbase64;
     request.title = titleTxt.text.trim();
     request.description = noteTxt.text.trim();
-    request.createusercode = user.id;
+    request.createusercode = user.id!;
 
     await RequestOperations.sendRequest(request).then((value) {
-      if(value){
+      if (value) {
         goToMain();
       }
     });
   }
 
-  goToMain(){
+  goToMain() {
     return Navigator.of(context).popUntil((route) => route.isFirst);
   }
 }

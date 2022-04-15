@@ -8,13 +8,13 @@ import '../../constants.dart';
 
 class RequestEnterTypeScreen extends StatefulWidget {
   final Request request;
-  RequestEnterTypeScreen(this.request);
+  const RequestEnterTypeScreen(this.request);
   @override
   _RequestEnterTypeScreenState createState() => _RequestEnterTypeScreenState();
 }
 
 class _RequestEnterTypeScreenState extends State<RequestEnterTypeScreen> {
-  List<bool> _enterType = [
+  final List<bool> _enterType = [
     false,
     false
   ];
@@ -23,7 +23,7 @@ class _RequestEnterTypeScreenState extends State<RequestEnterTypeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(Constants.tSelectEnterType, style: semibold16Style),
+        title: const Text(Constants.tSelectEnterType, style: semibold16Style),
       ),
       body: Padding(
         padding: kDefaultPadding,
@@ -41,7 +41,7 @@ class _RequestEnterTypeScreenState extends State<RequestEnterTypeScreen> {
                 },
               ),
             ),
-            SizedBox(height: 24.0),
+            const SizedBox(height: 24.0),
             Expanded(
               child: DefaultCard(
                 color: kBlueColor,

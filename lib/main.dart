@@ -9,19 +9,22 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    systemNavigationBarColor: Colors.transparent,//navigation bar color
-    statusBarColor: Colors.transparent,// status bar color
-    statusBarBrightness: Brightness.dark,//status bar brightness
-    statusBarIconBrightness:Brightness.dark,//status barIcon Brightness
-    systemNavigationBarDividerColor: Colors.black,//Navigation bar divider color
-    systemNavigationBarIconBrightness: Brightness.dark,//navigation bar icon
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    systemNavigationBarColor: Colors.transparent, //navigation bar color
+    statusBarColor: Colors.transparent, // status bar color
+    statusBarBrightness: Brightness.dark, //status bar brightness
+    statusBarIconBrightness: Brightness.dark, //status barIcon Brightness
+    systemNavigationBarDividerColor:
+        Colors.black, //Navigation bar divider color
+    systemNavigationBarIconBrightness: Brightness.dark, //navigation bar icon
   ));
 
-  runApp(MainScreen());
+  runApp(const MainScreen());
 }
 
 class MainScreen extends StatefulWidget {
+  const MainScreen({Key? key}) : super(key: key);
+
   @override
   _MainScreenState createState() => _MainScreenState();
 }
@@ -30,12 +33,12 @@ class _MainScreenState extends State<MainScreen> {
   bool isSave = false;
   @override
   void initState() {
-    getPrefs();
+    getPrefs().then((value) => setState(() => isSave = value ?? false));
     super.initState();
   }
 
-  getPrefs() async{
-    await SharedData.getBool("isLoginSave").then((value) => setState(() => isSave = value != null ? value : false));
+  Future<bool?> getPrefs() async {
+    return await SharedData.getBool('isLoginSave');
   }
 
   @override
@@ -44,8 +47,7 @@ class _MainScreenState extends State<MainScreen> {
       title: 'AGROMIS',
       theme: theme(),
       debugShowCheckedModeBanner: false,
-      home: isSave ? HomeScreen() : SignInScreen(),
+      home: isSave ? const HomeScreen() : const SignInScreen(),
     );
   }
 }
-

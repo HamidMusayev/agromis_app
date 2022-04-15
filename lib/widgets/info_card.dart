@@ -4,29 +4,25 @@ import 'package:aqromis_application/text_constants.dart' as Constants;
 
 class InfoCard extends StatelessWidget {
   final String text;
-  InfoCard({this.text});
+  const InfoCard({required this.text});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: kSmallPadding,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
           borderRadius: BorderRadius.all(kDefaultRadius),
           gradient: LinearGradient(
-              colors: [
-                kBlueLightColor,
-                kBlueColor
-              ],
+              colors: [kBlueLightColor, kBlueColor],
               begin: Alignment.topLeft,
-              end: Alignment.bottomRight
-          )
-      ),
+              end: Alignment.bottomRight)),
       child: Stack(
         children: <Widget>[
-          Positioned(
+          const Positioned(
             right: -10,
             bottom: -12,
-            child: Icon(Icons.help_outline_rounded, color: Colors.white30, size: kLargeIconSize),
+            child: Icon(Icons.help_outline_rounded,
+                color: Colors.white30, size: kLargeIconSize),
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),
@@ -35,11 +31,12 @@ class InfoCard extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(Constants.tInfoTitle, style: semibold14WhiteStyle),
+                    const Text(Constants.tInfoTitle,
+                        style: semibold14WhiteStyle),
                     Text(text, style: light12WhiteStyle),
                   ],
                 ),
-                Spacer()
+                const Spacer()
               ],
             ),
           ),

@@ -6,7 +6,6 @@ import 'package:aqromis_application/models/request.dart';
 import 'package:aqromis_application/models/rfid_garden_result.dart';
 import 'package:aqromis_application/screens/requests/select_picture.dart';
 import 'package:aqromis_application/screens/requests/select_tree.dart';
-import 'package:aqromis_application/size_config.dart';
 import 'package:aqromis_application/widgets/info_card.dart';
 import 'package:flutter/material.dart';
 import 'package:aqromis_application/text_constants.dart' as Constants;
@@ -20,7 +19,7 @@ import '../../constants.dart';
 
 class SelectRFIDScreen extends StatefulWidget {
   final Request request;
-  SelectRFIDScreen(this.request);
+  const SelectRFIDScreen(this.request);
   @override
   _SelectRFIDScreenState createState() => _SelectRFIDScreenState();
 }
@@ -47,13 +46,14 @@ class _SelectRFIDScreenState extends State<SelectRFIDScreen> {
   }
 
   getPrefs() async {
-    await SharedData.getBool("tipsOpen").then((value) => setState(() => tips = value));
+    await SharedData.getBool('tipsOpen')
+        .then((value) => setState(() => tips = value ?? false));
   }
 
   Future<void> stopConnection() async {
     await UhfC72Plugin.clearData;
-    bool str = await UhfC72Plugin.isStarted;
-    if(str){
+    bool? str = await UhfC72Plugin.isStarted;
+    if (str ?? false) {
       await UhfC72Plugin.stop;
     }
   }
@@ -62,23 +62,21 @@ class _SelectRFIDScreenState extends State<SelectRFIDScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(Constants.tSelectAutomatic, style: semibold16Style),
+        title: const Text(Constants.tSelectAutomatic, style: semibold16Style),
       ),
       body: Column(
         children: <Widget>[
-          tips != null && tips
-              ? InfoCard(text: Constants.tInfo1Text)
-              : Container(),
+          tips ? const InfoCard(text: Constants.tInfo1Text) : Container(),
           Padding(
             padding: kSmallPadding,
             child: TextField(
                 enabled: false,
                 controller: rfidTxt,
-                decoration: InputDecoration(hintText: Constants.tRFID)),
+                decoration: const InputDecoration(hintText: Constants.tRFID)),
           ),
           loading
               ? Center(
-                  child: Lottie.asset("assets/lottie/loading.json", width: getProportionateScreenWidth(200.0)))
+                  child: Lottie.asset('assets/lottie/loading.json', width: 200))
               : Expanded(
                   child: Padding(
                     padding: kDefaultPadding,
@@ -90,20 +88,22 @@ class _SelectRFIDScreenState extends State<SelectRFIDScreen> {
                       onPressed: () async {
                         data = [];
                         await UhfC72Plugin.clearData;
-                        UhfC72Plugin.tagsStatusStream.receiveBroadcastStream().listen(updateTags);
+                        UhfC72Plugin.tagsStatusStream
+                            .receiveBroadcastStream()
+                            .listen(updateTags);
                         await UhfC72Plugin.startSingle;
                       },
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(kDefaultRadius)),
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(kDefaultRadius)),
                       child: Row(
                         children: <Widget>[
-                          Spacer(),
+                          const Spacer(),
                           Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
+                              children: const <Widget>[
                                 Icon(Icons.speaker_phone_rounded,
-                                    size: getProportionateScreenHeight(100.0),
-                                    color: kBlueColor),
+                                    size: 100, color: kBlueColor),
                                 Text(
                                   Constants.tRead,
                                   style: TextStyle(
@@ -112,7 +112,7 @@ class _SelectRFIDScreenState extends State<SelectRFIDScreen> {
                                       color: kBlueColor),
                                 ),
                               ]),
-                          Spacer()
+                          const Spacer()
                         ],
                       ),
                     ),
@@ -142,38 +142,49 @@ class _SelectRFIDScreenState extends State<SelectRFIDScreen> {
   }
 
   Future<void> getRFID(List<TagEpc> data) async {
-
-    if (data.isNotEmpty){
+    if (data.isNotEmpty) {
       playSound();
       setState(() => rfidTxt.text = data.first.epc.toString());
       setState(() => loading = true);
 
       _checkConnection().then((value) async {
-        if(value){
-          RFIDGardenResult result;
+        if (value) {
+          RFIDGardenResult? result;
           await RFIDOperations.getGardenByRFID(rfidTxt.text).then((value) =>
-          value != false ? result = value : showAlert(Constants.tCantFindRFIDNetworkError));
+              value != false
+                  ? result = value
+                  : showAlert(Constants.tCantFindRFIDNetworkError));
 
-          if (result.isOneTree) {
+          if (result!.isOneTree) {
             widget.request.isonetree = true;
             widget.request.epc = rfidTxt.text;
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SelectPictureScreen(request: widget.request)));
-          }
-          else {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        SelectPictureScreen(request: widget.request)));
+          } else {
             widget.request.isonetree = false;
-            if (result.minTreeCount == 0 && result.maxTreeCount == 0) {
+            if (result!.minTreeCount == 0 && result!.maxTreeCount == 0) {
               showAlert(Constants.tCantFindRFIDxy);
             } else {
               widget.request.epc = rfidTxt.text;
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SelectTreeScreen(gardenResult: result, request: widget.request)));
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => SelectTreeScreen(
+                          gardenResult: result, request: widget.request)));
             }
           }
-        }
-        else{
+        } else {
           widget.request.isonetree = true;
           widget.request.epc = rfidTxt.text;
 
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SelectPictureScreen(request: widget.request)));
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      SelectPictureScreen(request: widget.request)));
         }
       });
     }
@@ -192,8 +203,10 @@ class _SelectRFIDScreenState extends State<SelectRFIDScreen> {
     // print('isSetWorkArea $isSetWorkArea');
   }
 
-  Future playSound() async{
-    int soundId = await rootBundle.load("assets/sounds/success.wav").then((ByteData soundData) {
+  Future playSound() async {
+    int soundId = await rootBundle
+        .load('assets/sounds/success.wav')
+        .then((ByteData soundData) {
       return pool.load(soundData);
     });
     int streamId = await pool.play(soundId);
@@ -208,12 +221,12 @@ class _SelectRFIDScreenState extends State<SelectRFIDScreen> {
         elevation: 0,
         titleTextStyle: semibold14Style,
         contentTextStyle: semibold14Style,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(kDefaultRadius)),
         title: Column(
           children: <Widget>[
-            Icon(Icons.info, color: kBlueColor, size: 50.0),
-            SizedBox(height: 12.0),
+            const Icon(Icons.info, color: kBlueColor, size: 50.0),
+            const SizedBox(height: 12.0),
             Text(text, textAlign: TextAlign.center),
           ],
         ),

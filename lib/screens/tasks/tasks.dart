@@ -4,7 +4,6 @@ import 'package:aqromis_application/models/task.dart';
 import 'package:aqromis_application/screens/tasks/completed_tasks.dart';
 import 'package:aqromis_application/screens/tasks/task_add.dart';
 import 'package:aqromis_application/screens/tasks/task_detail.dart';
-import 'package:aqromis_application/size_config.dart';
 import 'package:aqromis_application/widgets/task_card.dart';
 import 'package:flutter/material.dart';
 import 'package:aqromis_application/text_constants.dart' as Constants;
@@ -30,32 +29,51 @@ class _TasksScreenState extends State<TasksScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text(Constants.tMyTasks, style: semibold16Style), actions: <Widget>[
-          IconButton(icon: Icon(Icons.history_rounded, size: kDefaultIconSize), tooltip: Constants.tTaskComplete, onPressed: gotoCompletedTasks)
-        ],),
-        floatingActionButton: FloatingActionButton(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(kDefaultRadius)),
-          tooltip: Constants.tAddTask,
-          child: Icon(Icons.add_rounded, size: 40.0),
-          backgroundColor: kTextColor,
-          onPressed: () => gotoTaskAdd(),
+      appBar: AppBar(
+        title: const Text(Constants.tMyTasks, style: semibold16Style),
+        actions: <Widget>[
+          IconButton(
+              icon: const Icon(Icons.history_rounded, size: kDefaultIconSize),
+              tooltip: Constants.tTaskComplete,
+              onPressed: gotoCompletedTasks)
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(kDefaultRadius)),
+        tooltip: Constants.tAddTask,
+        child: const Icon(Icons.add_rounded, size: 40.0),
+        backgroundColor: kTextColor,
+        onPressed: () => gotoTaskAdd(),
+      ),
+      body: AnimatedCrossFade(
+        duration: kAnimationDuration,
+        crossFadeState:
+            loading ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+        firstChild: ListView(
+          shrinkWrap: true,
+          children: [
+            SizedBox(
+              child: Center(
+                child: Lottie.asset('assets/lottie/loading.json', width: 70),
+              ),
+            )
+          ],
         ),
-        body: AnimatedCrossFade(
-          duration: kAnimationDuration,
-          crossFadeState: loading ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-          firstChild: ListView(shrinkWrap: true, children: [
-            SizedBox(child: Center(child: Lottie.asset("assets/lottie/loading.json", width: getProportionateScreenWidth(200.0))))
-          ]),
-          secondChild: ListView.separated(
-            shrinkWrap: true,
-            itemCount: tasks.length,
-            padding: kSmallPadding,
-            itemBuilder: (context, i) {
-                return TaskCard(task: tasks[i], onPress: () => gotoTaskDetail(tasks[i]));
-              },
-            separatorBuilder: (BuildContext context, int index) => const Divider(),
-          ),
+        secondChild: ListView.separated(
+          shrinkWrap: true,
+          itemCount: tasks.length,
+          padding: kSmallPadding,
+          itemBuilder: (context, i) {
+            return TaskCard(
+              task: tasks[i],
+              onPress: () => gotoTaskDetail(tasks[i]),
+            );
+          },
+          separatorBuilder: (BuildContext context, int index) =>
+              const Divider(),
         ),
+      ),
     );
   }
 
@@ -82,12 +100,14 @@ class _TasksScreenState extends State<TasksScreen> {
   }
 
   void gotoTaskDetail(Task task) {
-    Route route = MaterialPageRoute(builder: (context) => TaskDetailScreen(task));
+    Route route =
+        MaterialPageRoute(builder: (context) => TaskDetailScreen(task));
     Navigator.push(context, route).then(onGoBack);
   }
 
   void gotoCompletedTasks() {
-    Route route = MaterialPageRoute(builder: (context) => CompletedTasksScreen());
+    Route route =
+        MaterialPageRoute(builder: (context) => CompletedTasksScreen());
     Navigator.push(context, route).then(onGoBack);
   }
 }

@@ -3,7 +3,6 @@ import 'package:aqromis_application/data/operations/rfid_operations.dart';
 import 'package:aqromis_application/models/add_tree/alan.dart';
 import 'package:aqromis_application/models/add_tree/alan_rfid.dart';
 import 'package:aqromis_application/models/add_tree/bitkicesit.dart';
-import 'package:aqromis_application/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:aqromis_application/text_constants.dart' as Constants;
 import 'package:flutter/services.dart';
@@ -28,8 +27,8 @@ class _SetTreeScreenState extends State<SetTreeScreen> {
 
   List<Alan> _alans = [];
   List<BitkiCesid> _cesids = [];
-  Alan _activeAlan;
-  BitkiCesid _activeCesid;
+  Alan? _activeAlan;
+  BitkiCesid? _activeCesid;
 
   @override
   void initState() {
@@ -45,8 +44,8 @@ class _SetTreeScreenState extends State<SetTreeScreen> {
 
   Future<void> stopConnection() async {
     await UhfC72Plugin.clearData;
-    bool str = await UhfC72Plugin.isStarted;
-    if (str) {
+    bool? str = await UhfC72Plugin.isStarted;
+    if (str ?? false) {
       await UhfC72Plugin.stop;
     }
   }
@@ -66,11 +65,14 @@ class _SetTreeScreenState extends State<SetTreeScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: Text("Etiket tanıtma", style: TextStyle(color: Colors.black, fontSize: 17)),
-        iconTheme: IconThemeData(color: Colors.black),
+        title: const Text('Etiket tanıtma',
+            style: TextStyle(color: Colors.black, fontSize: 17)),
+        iconTheme: const IconThemeData(color: Colors.black),
         actions: [
           TextButton(
-              onPressed: () => reset(), child: Text("Sıfırla", style: TextStyle(color: Colors.red)))],
+              onPressed: () => reset(),
+              child: const Text('Sıfırla', style: TextStyle(color: Colors.red)))
+        ],
       ),
       body: SafeArea(
         child: Padding(
@@ -82,32 +84,37 @@ class _SetTreeScreenState extends State<SetTreeScreen> {
                 child: TextField(
                     controller: rfidTxt,
                     enabled: false,
-                    decoration: InputDecoration(hintText: Constants.tRFID)),
+                    decoration:
+                        const InputDecoration(hintText: Constants.tRFID)),
               ),
               Container(
                 padding: const EdgeInsets.all(5),
                 decoration: BoxDecoration(
                     color: Colors.blueGrey.shade50,
-                    borderRadius: BorderRadius.all(kDefaultRadius)),
+                    borderRadius: const BorderRadius.all(kDefaultRadius)),
                 child: DropdownButton<Alan>(
                   value: _activeAlan,
-                  icon: Icon(Icons.arrow_drop_down_rounded),
+                  icon: const Icon(Icons.arrow_drop_down_rounded),
                   iconSize: 30,
                   isExpanded: true,
-                  hint: Text("Sıra seçin"),
+                  hint: const Text('Sıra seçin'),
                   underline: Container(),
                   onChanged: (alan) {
-                    setState(() {
-                      _activeAlan = alan;
-                      _activeCesid = _cesids.singleWhere((element) => element.pin == _activeAlan.pinbitkicesid);
-                    });
+                    _activeAlan = alan;
+                    for (BitkiCesid cesid in _cesids) {
+                      if (cesid.pin == _activeAlan?.pinbitkicesid) {
+                        _activeCesid = cesid;
+                      }
+                    }
+                    setState(() {});
                   },
                   items: _alans.map((alan) {
                     return DropdownMenuItem<Alan>(
-                        value: alan, child: Row(
+                        value: alan,
+                        child: Row(
                           children: [
-                            Text(alan.pin + "-" + alan.alanname),
-                            Spacer(),
+                            Text(alan.pin + '-' + alan.alanname),
+                            const Spacer(),
                             Text(alan.rfid),
                           ],
                         ));
@@ -119,12 +126,12 @@ class _SetTreeScreenState extends State<SetTreeScreen> {
                 padding: const EdgeInsets.all(5),
                 decoration: BoxDecoration(
                     color: Colors.blueGrey.shade50,
-                    borderRadius: BorderRadius.all(kDefaultRadius)),
+                    borderRadius: const BorderRadius.all(kDefaultRadius)),
                 child: DropdownButton<BitkiCesid>(
                   value: _activeCesid,
                   isExpanded: true,
-                  hint: Text("Bitki Növü seçin"),
-                  icon: Icon(Icons.arrow_drop_down_rounded),
+                  hint: const Text('Bitki Növü seçin'),
+                  icon: const Icon(Icons.arrow_drop_down_rounded),
                   iconSize: 30,
                   underline: Container(),
                   onChanged: (cesid) => setState(() => _activeCesid = cesid),
@@ -142,18 +149,17 @@ class _SetTreeScreenState extends State<SetTreeScreen> {
                         onPressed: () {
                           saveAlanRFID();
                         },
-                        shape: RoundedRectangleBorder(
+                        shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(kDefaultRadius)),
                         child: Row(
                           children: <Widget>[
-                            Spacer(),
+                            const Spacer(),
                             Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
+                                children: const <Widget>[
                                   Icon(Icons.check_rounded,
-                                      size: getProportionateScreenHeight(100.0),
-                                      color: Colors.white),
+                                      size: 100, color: Colors.white),
                                   Text(
                                     Constants.tSave,
                                     style: TextStyle(
@@ -162,7 +168,7 @@ class _SetTreeScreenState extends State<SetTreeScreen> {
                                         color: Colors.white),
                                   ),
                                 ]),
-                            Spacer()
+                            const Spacer()
                           ],
                         ),
                       ),
@@ -179,18 +185,17 @@ class _SetTreeScreenState extends State<SetTreeScreen> {
                               .listen(updateTags);
                           await UhfC72Plugin.startSingle;
                         },
-                        shape: RoundedRectangleBorder(
+                        shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(kDefaultRadius)),
                         child: Row(
                           children: <Widget>[
-                            Spacer(),
+                            const Spacer(),
                             Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
+                                children: const <Widget>[
                                   Icon(Icons.speaker_phone_rounded,
-                                      size: getProportionateScreenHeight(100.0),
-                                      color: Colors.white),
+                                      size: 100, color: Colors.white),
                                   Text(
                                     Constants.tRead,
                                     style: TextStyle(
@@ -199,7 +204,7 @@ class _SetTreeScreenState extends State<SetTreeScreen> {
                                         color: Colors.white),
                                   ),
                                 ]),
-                            Spacer()
+                            const Spacer()
                           ],
                         ),
                       ),
@@ -241,7 +246,7 @@ class _SetTreeScreenState extends State<SetTreeScreen> {
 
   Future playSound() async {
     int soundId = await rootBundle
-        .load("assets/sounds/success.wav")
+        .load('assets/sounds/success.wav')
         .then((ByteData soundData) {
       return pool.load(soundData);
     });
@@ -257,12 +262,12 @@ class _SetTreeScreenState extends State<SetTreeScreen> {
         elevation: 0,
         titleTextStyle: semibold14Style,
         contentTextStyle: semibold14Style,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(kDefaultRadius)),
         title: Column(
           children: <Widget>[
-            Icon(Icons.info, color: kBlueColor, size: 50.0),
-            SizedBox(height: 12.0),
+            const Icon(Icons.info, color: kBlueColor, size: 50.0),
+            const SizedBox(height: 12.0),
             Text(text, textAlign: TextAlign.center),
           ],
         ),
@@ -271,32 +276,33 @@ class _SetTreeScreenState extends State<SetTreeScreen> {
   }
 
   void saveAlanRFID() {
-    if(rfidTxt.text == null || rfidTxt.text.isEmpty){
-      showAlert("RFID Boşdur!");
-    } else if(_activeAlan == null){
-      showAlert("Sıra seçilməyib!");
-    } else if(_activeCesid == null){
-      showAlert("Bitki növü seçilməyib!");
-    }
-    else{
-      RFIDOperations.saveAlanRFID(AlanRFID(rfidTxt.text, _activeAlan.pin, _activeCesid.pin))
+    if (rfidTxt.text.isEmpty) {
+      showAlert('RFID Boşdur!');
+    } else if (_activeAlan == null) {
+      showAlert('Sıra seçilməyib!');
+    } else if (_activeCesid == null) {
+      showAlert('Bitki növü seçilməyib!');
+    } else {
+      RFIDOperations.saveAlanRFID(
+              AlanRFID(rfidTxt.text, _activeAlan!.pin, _activeCesid!.pin))
           .then((value) {
-            if(value == "true"){
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: Colors.green, content: Text("Yadda saxlanıldı! - ${rfidTxt.text} / ${_activeAlan.alanname}")));
-              reset();
-            }
-            else{
-              showAlert(value);
-            }
-          }
-      );
+        if (value == 'true') {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              backgroundColor: Colors.green,
+              content: Text(
+                  'Yadda saxlanıldı! - ${rfidTxt.text} / ${_activeAlan!.alanname}')));
+          reset();
+        } else {
+          showAlert(value);
+        }
+      });
     }
   }
 
   void reset() {
     setState(() {
       _found = false;
-      rfidTxt.text=null;
+      rfidTxt.clear();
       _activeCesid = null;
       _activeAlan = null;
     });

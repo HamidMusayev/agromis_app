@@ -1,9 +1,9 @@
-class User{
+class User {
   String name;
   String surname;
   String email;
   String password;
-  int id;
+  int? id;
 
   User(this.name, this.surname, this.email, this.password);
   User.withid(this.id, this.name, this.surname, this.email, this.password);
@@ -16,10 +16,10 @@ class User{
         password = json['password'];
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'name': name,
-    'surname': surname,
-    'email': email,
-    'password': password
-  };
+        'id': id,
+        'name': name,
+        'surname': surname,
+        'email': email,
+        'password': password
+      };
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../constants.dart';
-import '../size_config.dart';
 
 class DefaultTypeCard extends StatelessWidget {
   final Color color;
@@ -10,31 +9,29 @@ class DefaultTypeCard extends StatelessWidget {
   final Function onPress;
   final IconData icon;
   final String text;
-  DefaultTypeCard({this.color, this.lightColor, this.onPress, this.icon, this.text, this.selected});
+  const DefaultTypeCard({required this.color, required this.lightColor, required this.onPress, required this.icon, required this.text, required this.selected});
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
-
     return GestureDetector(
-      onTap: onPress,
+      onTap: ()=>onPress.call(),
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(kDefaultRadius),
+          borderRadius: const BorderRadius.all(kDefaultRadius),
           color: selected ? color : lightColor,
         ),
         child: Row(
           children: <Widget>[
-            Spacer(),
+            const Spacer(),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Icon(icon, color: selected ? kWhiteColor : color, size: getProportionateScreenHeight(75.0)),
+                Icon(icon, color: selected ? kWhiteColor : color, size: 75),
                 Text(text, style: TextStyle(fontSize: 16.0, color: selected ? kWhiteColor : color)),
               ],
             ),
-            Spacer()
+            const Spacer()
           ],
         ),
       ),

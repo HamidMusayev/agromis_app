@@ -11,7 +11,6 @@ import 'package:aqromis_application/screens/tasks/tasks.dart';
 import 'package:aqromis_application/screens/update_app.dart';
 import 'package:aqromis_application/utils/date_time.dart';
 import 'package:aqromis_application/widgets/error_card.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:location/location.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -21,31 +20,32 @@ import 'package:xml/xml.dart' as xml;
 import '../data/local_send_db.dart';
 import '../data/web_service.dart';
 import '../models/send_data_db.dart';
-import '../size_config.dart';
 import 'drawer/set_tree.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  CustomDate date = CustomDate("", "", "");
-  User _user = User.withid(0, "", "", "", "");
+  CustomDate date = CustomDate('', '', '');
+  User _user = User.withid(0, '', '', '', '');
   AppInfo _info = AppInfo(
-      name: "AGROMIS",
+      name: 'AGROMIS',
       userTaskCount: 0,
       version: 2,
-      updatedDate: " ",
-      downloadLink: " ",
-      developerEmail: " ",
-      developerName: " ",
-      developerPhone: " ",
-      developerSite: " ");
+      updatedDate: ' ',
+      downloadLink: ' ',
+      developerEmail: ' ',
+      developerName: ' ',
+      developerPhone: ' ',
+      developerSite: ' ');
   int _cnnStatus = 0;
   int _locStatus = 0;
 
-  Location location = new Location();
+  Location location = Location();
 
   List<SendDataDB> _mustSendTasks = [];
 
@@ -100,22 +100,22 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _offlineOperations() async {
-    _mustSendTasks.forEach((element) async {
+    for (var element in _mustSendTasks) {
       await WebService.sendRequest(element.methodName, element.sendDataXml)
           .then((value) async {
-        if (value.result.single.findElements("IsSuccessful").single.innerText ==
-            "true") {
+        if (value.result.single.findElements('IsSuccessful').single.innerText ==
+            'true') {
           await LocalSendDB().delete(element.pinData);
           setState(() => _mustSendTasks.remove(element));
         }
       });
-    });
+    }
   }
 
   Future<void> initPlatformState() async {
-    String range = "6";
-    await SharedData.getInt("range").then(
-        (value) => value != null ? range = value.toString() : range = "6");
+    String range = '6';
+    await SharedData.getInt('range').then(
+        (value) => value != null ? range = value.toString() : range = '6');
 
     UhfC72Plugin.connectedStatusStream.receiveBroadcastStream();
     //UhfC72Plugin.tagsStatusStream.receiveBroadcastStream().listen(updateTags);
@@ -130,18 +130,19 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   stopConnection() async {
-    String range;
-    await SharedData.getInt("range").then(
-        (value) => value != null ? range = value.toString() : range = "6");
+    String range = '6';
+    await SharedData.getInt('range').then((value) {
+      if (value != null) range = value.toString();
+    });
     await UhfC72Plugin.setPowerLevel(range);
   }
 
   getPrefsAndDB() async {
-    User user = User.fromJson(await SharedData.readJson("user"));
+    User user = User.fromJson(await SharedData.readJson('user'));
     setState(() => _user = user);
-    await SharedData.getBool("tipsOpen").then(
-        (value) => value == null ? SharedData.setBool("tipsOpen", true) : true);
-    await AppOperations.getAppInfo(_user.id)
+    await SharedData.getBool('tipsOpen').then(
+        (value) => value == null ? SharedData.setBool('tipsOpen', true) : true);
+    await AppOperations.getAppInfo(_user.id!)
         .then((value) => value != false ? setState(() => _info = value) : null);
     await LocalSendDB().getDataList().then((value) => _mustSendTasks = value);
   }
@@ -156,172 +157,179 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return _info.version == 4 ? Scaffold(
-      appBar: AppBar(
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(date.curDate, style: semibold16Style),
-            Text(_user.name, style: light14Style),
-          ],
-        ),
-        actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: _locStatus == 1
-                ? Icon(Icons.location_on_rounded,
-                    color: kGreenColor, size: kDefaultIconSize)
-                : Icon(Icons.location_off_rounded,
-                    color: kRedColor, size: kDefaultIconSize),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(right: 12.0),
-            child: _cnnStatus == 1
-                ? Icon(Icons.wifi_rounded,
-                    color: kGreenColor, size: kDefaultIconSize)
-                : Icon(Icons.wifi_off_rounded,
-                    color: kRedColor, size: kDefaultIconSize),
-          ),
-        ],
-      ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              child: Column(
+    return _info.version == 4
+        ? Scaffold(
+            appBar: AppBar(
+              title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Spacer(),
-                  Text(_user.name),
-                  Text(Constants.tMainMenu, style: light14Style),
+                  Text(date.curDate, style: semibold16Style),
+                  Text(_user.name, style: light14Style),
                 ],
               ),
-              decoration: BoxDecoration(color: kWhiteColor),
+              actions: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: _locStatus == 1
+                      ? const Icon(Icons.location_on_rounded,
+                          color: kGreenColor, size: kDefaultIconSize)
+                      : const Icon(Icons.location_off_rounded,
+                          color: kRedColor, size: kDefaultIconSize),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 12.0),
+                  child: _cnnStatus == 1
+                      ? const Icon(Icons.wifi_rounded,
+                          color: kGreenColor, size: kDefaultIconSize)
+                      : const Icon(Icons.wifi_off_rounded,
+                          color: kRedColor, size: kDefaultIconSize),
+                ),
+              ],
             ),
-            ListTile(
-              title: Text(Constants.tSetTree),
-              leading: Icon(Icons.park),
-              onTap: () =>  Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => SetTreeScreen())),
-            ),
-            ListTile(
-              title: Text(Constants.tAppDetail),
-              leading: Icon(Icons.info_rounded),
-              onTap: () => showAbout(_info),
-            ),
-            ListTile(
-              title: Text(Constants.tSettings),
-              leading: Icon(Icons.settings_rounded),
-              onTap: () => Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => SettingsScreen()))
-                  .then(onGoBack),
-            ),
-            ListTile(
-              title: Text(Constants.tLogOut),
-              leading: Icon(Icons.logout, color: kRedColor),
-              onTap: () => buildLogOutDialog(),
-            ),
-          ],
-        ),
-      ),
-      body: Container(
-        padding: kSmallPadding,
-        child: Column(
-          children: <Widget>[
-            AnimatedCrossFade(
-              duration: const Duration(milliseconds: 1000),
-              crossFadeState: _mustSendTasks.length == 0
-                  ? CrossFadeState.showFirst
-                  : CrossFadeState.showSecond,
-              firstChild: Container(),
-              secondChild: ErrorCard(
-                title: _mustSendTasks.length.toString() +
-                    Constants.tHaveSendableActionsTitle,
-                text: Constants.tHaveSendableActionsText,
+            drawer: Drawer(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: <Widget>[
+                  DrawerHeader(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        const Spacer(),
+                        Text(_user.name),
+                        const Text(Constants.tMainMenu, style: light14Style),
+                      ],
+                    ),
+                    decoration: const BoxDecoration(color: kWhiteColor),
+                  ),
+                  ListTile(
+                    title: const Text(Constants.tSetTree),
+                    leading: const Icon(Icons.park),
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SetTreeScreen())),
+                  ),
+                  ListTile(
+                    title: const Text(Constants.tAppDetail),
+                    leading: const Icon(Icons.info_rounded),
+                    onTap: () => showAbout(_info),
+                  ),
+                  ListTile(
+                    title: const Text(Constants.tSettings),
+                    leading: const Icon(Icons.settings_rounded),
+                    onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SettingsScreen()))
+                        .then(onGoBack),
+                  ),
+                  ListTile(
+                    title: const Text(Constants.tLogOut),
+                    leading: const Icon(Icons.logout, color: kRedColor),
+                    onTap: () => buildLogOutDialog(),
+                  ),
+                ],
               ),
             ),
-            SizedBox(height: 8.0),
-            SizedBox(
-              height: 160.0,
-              child: Row(
+            body: Container(
+              padding: kSmallPadding,
+              child: Column(
                 children: <Widget>[
-                  Expanded(
-                    child: FlatButton(
-                      splashColor: kInputFillColor,
-                      padding: kDefaultPadding,
-                      onPressed: () => Navigator.push(context,
-                          MaterialPageRoute(
-                              builder: (context) => TasksScreen())),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(kDefaultRadius)),
-                      color: kPrimaryColor,
-                      height: getProportionateScreenHeight(70.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text(_info.userTaskCount.toString(),
-                              style: TextStyle(
-                                  color: kWhiteColor,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize:
-                                      getProportionateScreenHeight(60.0))),
-                          Text(Constants.tTasksTitle.toString(),
-                              style: semibold16WhiteStyle)
-                        ],
-                      ),
+                  AnimatedCrossFade(
+                    duration: const Duration(milliseconds: 1000),
+                    crossFadeState: _mustSendTasks.isEmpty
+                        ? CrossFadeState.showFirst
+                        : CrossFadeState.showSecond,
+                    firstChild: Container(),
+                    secondChild: ErrorCard(
+                      title: _mustSendTasks.length.toString() +
+                          Constants.tHaveSendableActionsTitle,
+                      text: Constants.tHaveSendableActionsText,
                     ),
                   ),
-                  SizedBox(width: 8.0),
-                  Expanded(
-                    child: FlatButton(
-                      splashColor: kInputFillColor,
-                      padding: kDefaultPadding,
-                      onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => RequestTypeScreen())),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(kDefaultRadius)),
-                      color: kGreenColor,
-                      height: getProportionateScreenHeight(70.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Icon(Icons.forward_to_inbox_rounded,
-                              color: Colors.white,
-                              size: getProportionateScreenHeight(90.0)),
-                          Text(Constants.tRequestsTitle,
-                              style: semibold16WhiteStyle)
-                        ],
-                      ),
+                  const SizedBox(height: 8.0),
+                  SizedBox(
+                    height: 160.0,
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: FlatButton(
+                            splashColor: kInputFillColor,
+                            padding: kDefaultPadding,
+                            onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => TasksScreen())),
+                            shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(kDefaultRadius)),
+                            color: kPrimaryColor,
+                            height: 70,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  _info.userTaskCount.toString(),
+                                  style: const TextStyle(
+                                      color: kWhiteColor,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 70),
+                                ),
+                                Text(Constants.tTasksTitle.toString(),
+                                    style: semibold16WhiteStyle)
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8.0),
+                        Expanded(
+                          child: FlatButton(
+                            splashColor: kInputFillColor,
+                            padding: kDefaultPadding,
+                            onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => RequestTypeScreen())),
+                            shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(kDefaultRadius)),
+                            color: kGreenColor,
+                            height: 70,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const <Widget>[
+                                Icon(Icons.forward_to_inbox_rounded,
+                                    color: Colors.white, size: 90),
+                                Text(Constants.tRequestsTitle,
+                                    style: semibold16WhiteStyle)
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                   )
                 ],
               ),
-            )
-          ],
-        ),
-      ),
-    ) : UpdateAppPage(_info.downloadLink);
+            ),
+          )
+        : UpdateAppPage(_info.downloadLink);
   }
 
   showAbout(AppInfo info) {
     return showAboutDialog(
       context: context,
       applicationIcon: Image.asset(
-        "assets/images/ic_launcher.png",
+        'assets/images/ic_launcher.png',
         width: 60,
       ),
       applicationName: info.name,
-      applicationVersion: "v" + info.version.toString(),
+      applicationVersion: 'v' + info.version.toString(),
       children: <Widget>[
-        Text("Tərtibatçı: " + info.developerName),
-        Text("E-mail: " + info.developerEmail),
-        Text("Keçid linki: " + info.developerSite),
-        Text("Telefon: " + info.developerPhone),
+        Text('Tərtibatçı: ' + info.developerName),
+        Text('E-mail: ' + info.developerEmail),
+        Text('Keçid linki: ' + info.developerSite),
+        Text('Telefon: ' + info.developerPhone),
       ],
     );
   }
@@ -336,10 +344,10 @@ class _HomeScreenState extends State<HomeScreen> {
         contentPadding: kDefaultPadding,
         titleTextStyle: semibold14Style,
         contentTextStyle: semibold14Style,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(kDefaultRadius)),
         title: Column(
-          children: <Widget>[
+          children: const <Widget>[
             Icon(Icons.logout, color: kRedColor, size: 50.0),
             SizedBox(height: 12.0),
             Text(Constants.tLogOutQuestion, textAlign: TextAlign.center),
@@ -348,21 +356,26 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: <Widget>[
           FlatButton(
               onPressed: () => logOut(),
-              child: Text(
+              child: const Text(
                 Constants.tYes,
                 style: TextStyle(color: kTextColor),
               )),
           FlatButton(
               onPressed: () => Navigator.pop(context),
-              child: Text(Constants.tNo, style: TextStyle(color: kTextColor)))
+              child: const Text(Constants.tNo,
+                  style: TextStyle(color: kTextColor)))
         ],
       ),
     );
   }
 
   logOut() {
-    SharedData.removeJson("user");
-    SharedData.setBool("isLoginSave", false);
-    Navigator.pushAndRemoveUntil<dynamic>(context, MaterialPageRoute<dynamic>(builder: (BuildContext context) => SignInScreen()), (route) => false);
+    SharedData.removeJson('user');
+    SharedData.setBool('isLoginSave', false);
+    Navigator.pushAndRemoveUntil<dynamic>(
+        context,
+        MaterialPageRoute<dynamic>(
+            builder: (BuildContext context) => const SignInScreen()),
+        (route) => false);
   }
 }

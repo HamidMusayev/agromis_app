@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 class ErrorCard extends StatelessWidget {
   final String title;
   final String text;
-  ErrorCard({this.title, this.text});
+  const ErrorCard({required this.title, required this.text});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
           borderRadius: BorderRadius.all(kDefaultRadius),
           gradient: LinearGradient(
               colors: [
@@ -22,7 +22,7 @@ class ErrorCard extends StatelessWidget {
       ),
       child: Stack(
         children: <Widget>[
-          Positioned(
+          const Positioned(
             right: -10,
             bottom: -12,
             child: Icon(Icons.restore_rounded, color: Colors.white30, size: kLargeIconSize),

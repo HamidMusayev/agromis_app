@@ -18,11 +18,11 @@ class RequestTypeScreen extends StatefulWidget {
 }
 
 class _RequestTypeScreenState extends State<RequestTypeScreen> {
-  Agronom _selectedItem;
-  Request request = Request();
+  Agronom? _selectedItem;
+  Request request = Request(description: '', pictures: [], epc: '', title: '', selectedtrees: [], infotype: 0, createusercode: 0, isonetree: false, isselectedall: false);
   List<Agronom> agronoms = [];
   bool loading = true;
-  List<bool> _types = [false, false, false, false];
+  final List<bool> _types = [false, false, false, false];
 
   @override
   void initState() {
@@ -40,7 +40,7 @@ class _RequestTypeScreenState extends State<RequestTypeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(Constants.tSelectType, style: semibold16Style),
+        title: const Text(Constants.tSelectType, style: semibold16Style),
       ),
       body: Padding(
         padding: kSmallPadding,
@@ -120,18 +120,18 @@ class _RequestTypeScreenState extends State<RequestTypeScreen> {
                 : Container(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 10.0, vertical: 4.0),
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                         color: kInputFillColor,
                         borderRadius: BorderRadius.all(kDefaultRadius)),
                     child: DropdownButton<Agronom>(
                       isExpanded: true,
-                      hint: Text(Constants.tGardenerSelect),
+                      hint: const Text(Constants.tGardenerSelect),
                       value: _selectedItem,
-                      icon: Icon(Icons.arrow_drop_down_rounded),
+                      icon: const Icon(Icons.arrow_drop_down_rounded),
                       iconSize: kDefaultIconSize,
                       elevation: 2,
-                      underline: SizedBox(),
-                      onChanged: (Agronom value) {
+                      underline: const SizedBox(),
+                      onChanged: (Agronom? value) {
                         setState(() => _selectedItem = value);
                       },
                       items: agronoms
@@ -143,7 +143,7 @@ class _RequestTypeScreenState extends State<RequestTypeScreen> {
                       }).toList(),
                     ),
                   ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             DefaultButton(
               text: Constants.tNext,
               textColor: kWhiteColor,
@@ -164,7 +164,7 @@ class _RequestTypeScreenState extends State<RequestTypeScreen> {
                   }
                   Navigator.push(context, MaterialPageRoute(builder: (context) => SelectRFIDScreen(request))).then(onGoBack);
                 } else {
-                  showAlert().timeout(Duration(seconds: 3),
+                  showAlert().timeout(const Duration(seconds: 3),
                       onTimeout: () => Navigator.pop(context));
                 }
               },
@@ -180,8 +180,8 @@ class _RequestTypeScreenState extends State<RequestTypeScreen> {
   }
 
   Future<void> stopConnection() async {
-    bool cnn = await UhfC72Plugin.isConnected;
-    if(cnn){
+    bool? cnn = await UhfC72Plugin.isConnected;
+    if(cnn??false){
       await UhfC72Plugin.clearData;
     }
   }
@@ -195,10 +195,10 @@ class _RequestTypeScreenState extends State<RequestTypeScreen> {
         elevation: 0,
         titleTextStyle: semibold14Style,
         contentTextStyle: semibold14Style,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(kDefaultRadius)),
         title: Column(
-          children: <Widget>[
+          children: const <Widget>[
             Icon(Icons.info, color: kBlueColor, size: 50.0),
             SizedBox(height: 12.0),
             Text(Constants.tAlertSelectType, textAlign: TextAlign.center),

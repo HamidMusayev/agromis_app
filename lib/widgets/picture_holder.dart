@@ -8,7 +8,7 @@ import '../constants.dart';
 class PictureHolder extends StatefulWidget {
   final String path;
   final Function onPress;
-  PictureHolder(this.path, this.onPress);
+  const PictureHolder(this.path, this.onPress);
 
   @override
   _PictureHolderState createState() => _PictureHolderState();
@@ -22,25 +22,25 @@ class _PictureHolderState extends State<PictureHolder> {
         widget.path.isNotEmpty
             ? ClipRRect(
                 child: Image.file(File(widget.path)),
-                borderRadius: BorderRadius.all(Radius.circular(5.0)))
+                borderRadius: const BorderRadius.all(Radius.circular(5.0)))
             : Container(
-                child: Center(
+                child: const Center(
                     child: Text(Constants.tEmpty,
                         style: TextStyle(color: kInputTextColor))),
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(kDefaultRadius),
                     color: kInputFillColor)),
         Align(
           alignment: Alignment.topRight,
           child: GestureDetector(
-            onTap: widget.onPress,
+            onTap: () => widget.onPress.call(),
             child: Container(
               height: 24.0,
               width: 28.0,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(5.0)),
                   color: kRedLightColor),
-              child: Icon(
+              child: const Icon(
                 Icons.remove_rounded,
                 color: kWhiteColor,
               ),

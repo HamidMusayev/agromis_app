@@ -4,5 +4,5 @@ class Response{
   bool isConnected;
   Iterable<xml.XmlElement> result;
 
-  Response({this.isConnected, this.result});
+  Response({required this.isConnected, required this.result});
 }

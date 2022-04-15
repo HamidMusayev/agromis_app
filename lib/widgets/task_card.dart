@@ -7,7 +7,7 @@ class TaskCard extends StatefulWidget {
   final Task task;
   final Function onPress;
 
-  TaskCard({this.task, this.onPress});
+  const TaskCard({required this.task, required this.onPress});
   @override
   _TaskCardState createState() => _TaskCardState();
 }
@@ -16,23 +16,24 @@ class _TaskCardState extends State<TaskCard> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: widget.onPress,
+      onTap: ()=> widget.onPress.call(),
       child: Stack(
         children: <Widget>[
           Container(
             padding: const EdgeInsets.only(left: 12.0, top: 12.0, bottom: 12.0),
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(kDefaultRadius),
-                color: getColor(widget.task.readState)),
+                borderRadius: const BorderRadius.all(kDefaultRadius),
+                color: getColor(widget.task.readState!)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    Icon(Icons.location_on_rounded, size: kDefaultIconSize, color: kWhiteColor),
+                    const Icon(Icons.location_on_rounded,
+                        size: kDefaultIconSize, color: kWhiteColor),
                     Flexible(
                       child: Text(
-                          widget.task.gardenName + " - " + widget.task.type,
+                          widget.task.gardenName! + ' - ' + widget.task.type!,
                           style: semibold16WhiteStyle,
                           overflow: TextOverflow.fade,
                           softWrap: true),
@@ -44,7 +45,7 @@ class _TaskCardState extends State<TaskCard> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(Constants.tTaskAuthor + widget.task.createdUser,
+                      Text(Constants.tTaskAuthor + widget.task.createdUser!,
                           style: light12WhiteStyle),
                       Text(Constants.tTaskStartDate + widget.task.startDate,
                           style: light12WhiteStyle),
@@ -60,16 +61,21 @@ class _TaskCardState extends State<TaskCard> {
             top: 12,
             right: 0,
             child: Container(
-                padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 12.0),
-                decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(15.0), bottomLeft: Radius.circular(15.0)), color: Colors.black26),
-                child: Text(widget.task.readedRFIDCount.toString(), style: semibold16WhiteStyle)),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 4.0, horizontal: 12.0),
+                decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(15.0),
+                        bottomLeft: Radius.circular(15.0)),
+                    color: Colors.black26),
+                child: Text(widget.task.readedRFIDCount.toString(),
+                    style: semibold16WhiteStyle)),
           ),
           Positioned(
             right: 0.0,
             bottom: 0.0,
-            child: Icon(getIcon(widget.task.readState),
-                color: Colors.white30,
-                size: kLargeIconSize),
+            child: Icon(getIcon(widget.task.readState!),
+                color: Colors.white30, size: kLargeIconSize),
           )
         ],
       ),

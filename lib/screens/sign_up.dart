@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 import '../constants.dart';
-import '../size_config.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -23,7 +22,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController emailTxt = TextEditingController();
   TextEditingController passwordTxt = TextEditingController();
 
-  List<FocusNode> _focusNodes = [
+  final List<FocusNode> _focusNodes = [
     FocusNode(),
     FocusNode(),
     FocusNode(),
@@ -32,21 +31,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   void initState() {
-    Future.delayed(Duration(seconds: 0), () {
+    Future.delayed(const Duration(seconds: 0), () {
       setState(() => animate = true);
     });
-    _focusNodes.forEach((node) {
+    for (var node in _focusNodes) {
       node.addListener(() {
         setState(() {});
       });
-    });
+    }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
-    double space = getProportionateScreenHeight(60.0);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Padding(
@@ -55,27 +52,40 @@ class _SignUpScreenState extends State<SignUpScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SizedBox(height: space),
-              Text("HESAB YARAT", style: headingStyle),
+              const SizedBox(height: 12),
+              const Text('HESAB YARAT', style: headingStyle),
               buildLine(),
-              Text("   Hesabınız yoxdursa, yeni istifadəçi yaradın"),
-              Spacer(),
+              const Text('   Hesabınız yoxdursa, yeni istifadəçi yaradın'),
+              const Spacer(),
               buildFormField(formKey),
-              Spacer(),
+              const Spacer(),
               Container(
                 alignment: Alignment.center,
-                child: isLoading ? Center(child: Lottie.asset("assets/lottie/loading_small.json", width: getProportionateScreenWidth(100.0))) : DefaultButton(
-                    text: "Yarat",
-                    backColor: kPrimaryColor,
-                    textColor: kWhiteColor,
-                    onPress: () {
-                      if (formKey.currentState.validate()) {
-                        setState(() => isLoading = true);
-                        UserOperations.registerUser(User(nameTxt.text, surnameTxt.text.trim(), emailTxt.text.trim(), passwordTxt.text)).then((value) => value
-                                ? Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SignInScreen()))
-                                : showAlert());
-                      }
-                    }),
+                child: isLoading
+                    ? Center(
+                        child: Lottie.asset('assets/lottie/loading_small.json',
+                            width: 100))
+                    : DefaultButton(
+                        text: 'Yarat',
+                        backColor: kPrimaryColor,
+                        textColor: kWhiteColor,
+                        onPress: () {
+                          if (formKey.currentState?.validate() ?? false) {
+                            setState(() => isLoading = true);
+                            UserOperations.registerUser(User(
+                                    nameTxt.text,
+                                    surnameTxt.text.trim(),
+                                    emailTxt.text.trim(),
+                                    passwordTxt.text))
+                                .then((value) => value
+                                    ? Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const SignInScreen()))
+                                    : showAlert());
+                          }
+                        }),
               ),
             ],
           ),
@@ -87,9 +97,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   AnimatedContainer buildLine() {
     return AnimatedContainer(
       duration: kAnimationDuration,
-      margin: EdgeInsets.symmetric(vertical: 2.0, horizontal: 8.0),
+      margin: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 8.0),
       height: 6,
-      width: animate ? getProportionateScreenWidth(70.0) : 0,
+      width: animate ? 70 : 0,
       decoration: BoxDecoration(
         color: kSecondaryColor,
         borderRadius: BorderRadius.circular(3),
@@ -105,47 +115,45 @@ class _SignUpScreenState extends State<SignUpScreen> {
         child: Column(
           children: <Widget>[
             TextFormField(
-                validator: (val) => TextValidator().validateName(val),
+                validator: (val) => TextValidator().validateName(val ?? ''),
                 controller: nameTxt,
                 focusNode: _focusNodes[0],
                 decoration: InputDecoration(
-                    hintText: "Adınız",
+                    hintText: 'Adınız',
                     prefixIcon: Icon(Icons.person,
                         color: _focusNodes[0].hasFocus
                             ? kPrimaryColor
                             : kInputTextColor))),
-            SizedBox(height: getProportionateScreenHeight(10.0)),
+            const SizedBox(height: 12),
             TextFormField(
-                validator: (val) {
-                  return TextValidator().validateSurname(val);
-                },
+                validator: (val) => TextValidator().validateSurname(val ?? ''),
                 controller: surnameTxt,
                 focusNode: _focusNodes[1],
                 decoration: InputDecoration(
-                    hintText: "Soyadınız",
+                    hintText: 'Soyadınız',
                     prefixIcon: Icon(Icons.person,
                         color: _focusNodes[1].hasFocus
                             ? kPrimaryColor
                             : kInputTextColor))),
-            SizedBox(height: getProportionateScreenHeight(10.0)),
+            const SizedBox(height: 12),
             TextFormField(
-                validator: (val) => TextValidator().validateEmail(val),
+                validator: (val) => TextValidator().validateEmail(val ?? ''),
                 controller: emailTxt,
                 focusNode: _focusNodes[2],
                 decoration: InputDecoration(
-                    hintText: "E-mail",
+                    hintText: 'E-mail',
                     prefixIcon: Icon(Icons.email,
                         color: _focusNodes[2].hasFocus
                             ? kPrimaryColor
                             : kInputTextColor))),
-            SizedBox(height: getProportionateScreenHeight(10.0)),
+            const SizedBox(height: 12),
             TextFormField(
                 obscureText: true,
-                validator: (val) => TextValidator().validatePassword(val),
+                validator: (val) => TextValidator().validatePassword(val ?? ''),
                 controller: passwordTxt,
                 focusNode: _focusNodes[3],
                 decoration: InputDecoration(
-                    hintText: "Şifrə",
+                    hintText: 'Şifrə',
                     prefixIcon: Icon(Icons.lock,
                         color: _focusNodes[3].hasFocus
                             ? kPrimaryColor
@@ -166,13 +174,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
         elevation: 0,
         titleTextStyle: semibold14Style,
         contentTextStyle: semibold14Style,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(kDefaultRadius)),
         title: Column(
-          children: <Widget>[
+          children: const <Widget>[
             Icon(Icons.error_rounded, color: kRedColor, size: 50.0),
             SizedBox(height: 12.0),
-            Text("Xəta baş verdi!", textAlign: TextAlign.center),
+            Text('Xəta baş verdi!', textAlign: TextAlign.center),
           ],
         ),
       ),
