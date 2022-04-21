@@ -11,8 +11,12 @@ dependencies:
   flutter:
     sdk: flutter
 
+  uhf_c72_plugin:
+    path: './uhf_c72_plugin-master'
+
+
+
   location: ^4.3.0
-  uhf_c72_plugin: ^0.1.0
   flutter_native_image: ^0.0.5+3
   image_picker: ^0.8.4+2
   shared_preferences: ^2.0.8
@@ -24,8 +28,6 @@ dependencies:
   http:
   xml:
   intl:
-
-  cupertino_icons: ^1.0.0
 
 dev_dependencies:
   flutter_test:

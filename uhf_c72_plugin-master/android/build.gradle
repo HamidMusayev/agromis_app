@@ -1,0 +1,56 @@
+group 'com.amorenew.c72.uhf_plugin'
+version '1.0'
+
+buildscript {
+    repositories {
+        google()
+        jcenter()
+        flatDir {
+            dirs 'libs'
+        }
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:4.0.1'
+    }
+}
+
+rootProject.allprojects {
+    repositories {
+        google()
+        jcenter()
+        flatDir {
+            dirs 'libs'
+        }
+    }
+}
+
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 30
+
+    defaultConfig {
+        minSdkVersion 26
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    lintOptions {
+        disable 'InvalidPackage'
+    }
+    buildToolsVersion '30.0.2'
+}
+
+dependencies {
+    //rx Android for updating status
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.19'
+
+//    implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+
+    implementation files('libs/xUtils-2.5.5.jar') //implementation files('org.xutils:xutils:2.5.+')
+    implementation files('libs/jxl.jar')
+    implementation(name: 'DeviceAPI-20211216', ext: 'aar')
+
+    //implementation files('/Users/apple/Desktop/sdks/flutter/bin/cache/artifacts/engine/android-x64/flutter.jar')
+
+}
