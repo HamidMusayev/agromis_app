@@ -6,7 +6,7 @@ import 'package:aqromis_application/utils/text_validators.dart';
 import 'package:aqromis_application/widgets/default_button.dart';
 import 'package:aqromis_application/widgets/info_card.dart';
 import 'package:flutter/material.dart';
-import 'package:aqromis_application/text_constants.dart' as Constants;
+import 'package:aqromis_application/text_constants.dart' as constants;
 import 'package:flutter/services.dart';
 
 import '../../constants.dart';
@@ -42,24 +42,24 @@ class _SelectTreeScreenState extends State<SelectTreeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: const Text(Constants.tSelectTree, style: semibold16Style)),
+          title: const Text(constants.tSelectTree, style: semibold16Style)),
       body: Column(
         children: <Widget>[
-          tips ? const InfoCard(text: Constants.tInfo2Text) : Container(),
+          tips ? const InfoCard(text: constants.tInfo2Text) : Container(),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                const Text(Constants.tSelectedTrees, style: semibold16Style),
+                const Text(constants.tSelectedTrees, style: semibold16Style),
                 const Spacer(),
                 Checkbox(
                     value: isSelectedAll,
                     activeColor: kPrimaryColor,
                     onChanged: (value) =>
                         setState(() => isSelectedAll = value ?? false)),
-                const Text(Constants.tSelectAll, style: semibold14Style),
+                const Text(constants.tSelectAll, style: semibold14Style),
               ],
             ),
           ),
@@ -127,7 +127,7 @@ class _SelectTreeScreenState extends State<SelectTreeScreen> {
                                       FilteringTextInputFormatter.digitsOnly
                                     ],
                                     decoration: const InputDecoration(
-                                      labelText: Constants.tSelectNumber,
+                                      labelText: constants.tSelectNumber,
                                       prefixIcon: Icon(Icons.park),
                                       enabledBorder: UnderlineInputBorder(
                                           borderSide: BorderSide(
@@ -157,7 +157,7 @@ class _SelectTreeScreenState extends State<SelectTreeScreen> {
                                 },
                                 backColor: kSecondaryColor,
                                 textColor: kPrimaryColor,
-                                text: Constants.tSave,
+                                text: constants.tSave,
                               )
                             ],
                           ),
@@ -169,7 +169,7 @@ class _SelectTreeScreenState extends State<SelectTreeScreen> {
                 const SizedBox(width: 12.0),
                 Expanded(
                   child: DefaultButton(
-                    text: Constants.tNext,
+                    text: constants.tNext,
                     textColor: kWhiteColor,
                     backColor: kPrimaryColor,
                     onPress: () {
@@ -203,7 +203,7 @@ class _SelectTreeScreenState extends State<SelectTreeScreen> {
           children: const <Widget>[
             Icon(Icons.park, color: kRedColor, size: 50.0),
             SizedBox(height: 12.0),
-            Text(Constants.tNotSelected, textAlign: TextAlign.center),
+            Text(constants.tNotSelected, textAlign: TextAlign.center),
           ],
         ),
       ),

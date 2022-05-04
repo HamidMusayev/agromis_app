@@ -1,7 +1,7 @@
 import 'package:aqromis_application/constants.dart';
 import 'package:aqromis_application/models/task.dart';
 import 'package:flutter/material.dart';
-import 'package:aqromis_application/text_constants.dart' as Constants;
+import 'package:aqromis_application/text_constants.dart' as constants;
 
 class TaskCard extends StatefulWidget {
   final Task task;
@@ -45,11 +45,11 @@ class _TaskCardState extends State<TaskCard> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(Constants.tTaskAuthor + widget.task.createdUser!,
+                      Text(constants.tTaskAuthor + widget.task.createdUser!,
                           style: light12WhiteStyle),
-                      Text(Constants.tTaskStartDate + widget.task.startDate,
+                      Text(constants.tTaskStartDate + widget.task.startDate,
                           style: light12WhiteStyle),
-                      Text(Constants.tTaskEndDate + widget.task.endDate,
+                      Text(constants.tTaskEndDate + widget.task.endDate,
                           style: light12WhiteStyle),
                     ],
                   ),
@@ -86,16 +86,12 @@ class _TaskCardState extends State<TaskCard> {
     switch (colorType) {
       case 0:
         return Colors.blue.withOpacity(0.9);
-        break;
       case 1:
         return Colors.amber.withOpacity(0.9);
-        break;
       case 2:
         return Colors.green.withOpacity(0.9);
-        break;
       default:
         return kBlueColor;
-        break;
     }
   }
 
@@ -103,16 +99,12 @@ class _TaskCardState extends State<TaskCard> {
     switch (iconType) {
       case 0:
         return Icons.play_arrow_rounded;
-        break;
       case 1:
         return Icons.pause_rounded;
-        break;
       case 2:
         return Icons.stop_rounded;
-        break;
       default:
         return Icons.play_arrow_rounded;
-        break;
     }
   }
 }

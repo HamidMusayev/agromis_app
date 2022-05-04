@@ -51,6 +51,7 @@ class WebService {
 
       //final responseDoc = xml.XmlDocument.parse(responseXML.body);
       //print(responseDoc.toXmlString(pretty: true, indent: '\t'));
+      print(response.result);
 
     } on SocketException {
       print('No Internet connection 😑');

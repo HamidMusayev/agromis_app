@@ -6,7 +6,7 @@ import 'package:aqromis_application/widgets/default_button.dart';
 import 'package:aqromis_application/widgets/info_card.dart';
 import 'package:aqromis_application/widgets/custom_loading.dart';
 import 'package:flutter/material.dart';
-import 'package:aqromis_application/text_constants.dart' as Constants;
+import 'package:aqromis_application/text_constants.dart' as constants;
 import 'package:flutter/services.dart';
 
 import '../../constants.dart';
@@ -50,25 +50,23 @@ class _SelectGardenScreenState extends State<SelectGardenScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(Constants.tSelectGarden, style: semibold16Style),
+        title: const Text(constants.tSelectGarden, style: semibold16Style),
       ),
       body: Column(
         children: <Widget>[
-          tips ? const InfoCard(text: Constants.tInfo3Text) : Container(),
+          tips ? const InfoCard(text: constants.tInfo3Text) : Container(),
           Padding(
             padding: kSmallPadding,
             child: Row(
               children: <Widget>[
-                Container(
-                  child: Expanded(
-                    child: TextField(
-                      controller: searchTxt,
-                      onChanged: onSearchTextChanged,
-                      decoration: const InputDecoration(
-                          hintText: Constants.tGardenSearch,
-                          prefixIcon:
-                              Icon(Icons.search_rounded, color: kTextColor)),
-                    ),
+                Expanded(
+                  child: TextField(
+                    controller: searchTxt,
+                    onChanged: onSearchTextChanged,
+                    decoration: const InputDecoration(
+                        hintText: constants.tGardenSearch,
+                        prefixIcon:
+                            Icon(Icons.search_rounded, color: kTextColor)),
                   ),
                 ),
               ],
@@ -138,8 +136,7 @@ class _SelectGardenScreenState extends State<SelectGardenScreen> {
                                                           ],
                                                           decoration:
                                                               const InputDecoration(
-                                                            labelText: Constants
-                                                                .tSelectxNumber,
+                                                            labelText: constants.tSelectxNumber,
                                                             prefixIcon: Icon(Icons
                                                                 .border_top_rounded),
                                                             enabledBorder: UnderlineInputBorder(
@@ -174,8 +171,7 @@ class _SelectGardenScreenState extends State<SelectGardenScreen> {
                                                           ],
                                                           decoration:
                                                               const InputDecoration(
-                                                            labelText: Constants
-                                                                .tSelectyNumber,
+                                                            labelText: constants.tSelectyNumber,
                                                             prefixIcon: Icon(Icons
                                                                 .border_left_rounded),
                                                             enabledBorder: UnderlineInputBorder(
@@ -203,7 +199,7 @@ class _SelectGardenScreenState extends State<SelectGardenScreen> {
                                                 DefaultButton(
                                                   backColor: kSecondaryColor,
                                                   textColor: kPrimaryColor,
-                                                  text: Constants.tNext,
+                                                  text: constants.tNext,
                                                   onPress: () {
                                                     if (ysiraTxt.text
                                                         .trim()

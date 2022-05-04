@@ -8,7 +8,7 @@ import 'package:aqromis_application/widgets/default_button.dart';
 import 'package:aqromis_application/widgets/default_type_card.dart';
 import 'package:aqromis_application/widgets/custom_loading.dart';
 import 'package:flutter/material.dart';
-import 'package:aqromis_application/text_constants.dart' as Constants;
+import 'package:aqromis_application/text_constants.dart' as constants;
 import 'package:uhf_c72_plugin/uhf_c72_plugin.dart';
 import '../../constants.dart';
 
@@ -40,7 +40,7 @@ class _RequestTypeScreenState extends State<RequestTypeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(Constants.tSelectType, style: semibold16Style),
+        title: const Text(constants.tSelectType, style: semibold16Style),
       ),
       body: Padding(
         padding: kSmallPadding,
@@ -57,7 +57,7 @@ class _RequestTypeScreenState extends State<RequestTypeScreen> {
                     lightColor: kGreenOpacityColor,
                     selected: _types[0],
                     icon: Icons.contact_support,
-                    text: Constants.tTypeQuestion,
+                    text: constants.tTypeQuestion,
                     onPress: () {
                       setState(() {
                         _types[0] = !_types[0];
@@ -72,7 +72,7 @@ class _RequestTypeScreenState extends State<RequestTypeScreen> {
                     lightColor: kBlueOpacityColor,
                     selected: _types[1],
                     icon: Icons.info_rounded,
-                    text: Constants.tTypeInfo,
+                    text: constants.tTypeInfo,
                     onPress: () {
                       setState(() {
                         _types[1] = !_types[1];
@@ -87,7 +87,7 @@ class _RequestTypeScreenState extends State<RequestTypeScreen> {
                     lightColor: kRedOpacityColor,
                     selected: _types[2],
                     icon: Icons.bug_report_rounded,
-                    text: Constants.tTypeDisease,
+                    text: constants.tTypeDisease,
                     onPress: () {
                       setState(() {
                         _types[2] = !_types[2];
@@ -102,7 +102,7 @@ class _RequestTypeScreenState extends State<RequestTypeScreen> {
                     lightColor: kYellowOpacityColor,
                     selected: _types[3],
                     icon: Icons.textsms_rounded,
-                    text: Constants.tTypeRequest,
+                    text: constants.tTypeRequest,
                     onPress: () {
                       setState(() {
                         _types[3] = !_types[3];
@@ -125,7 +125,7 @@ class _RequestTypeScreenState extends State<RequestTypeScreen> {
                         borderRadius: BorderRadius.all(kDefaultRadius)),
                     child: DropdownButton<Agronom>(
                       isExpanded: true,
-                      hint: const Text(Constants.tGardenerSelect),
+                      hint: const Text(constants.tGardenerSelect),
                       value: _selectedItem,
                       icon: const Icon(Icons.arrow_drop_down_rounded),
                       iconSize: kDefaultIconSize,
@@ -145,7 +145,7 @@ class _RequestTypeScreenState extends State<RequestTypeScreen> {
                   ),
             const SizedBox(height: 20.0),
             DefaultButton(
-              text: Constants.tNext,
+              text: constants.tNext,
               textColor: kWhiteColor,
               backColor: kPrimaryColor,
               onPress: () {
@@ -201,7 +201,7 @@ class _RequestTypeScreenState extends State<RequestTypeScreen> {
           children: const <Widget>[
             Icon(Icons.info, color: kBlueColor, size: 50.0),
             SizedBox(height: 12.0),
-            Text(Constants.tAlertSelectType, textAlign: TextAlign.center),
+            Text(constants.tAlertSelectType, textAlign: TextAlign.center),
           ],
         ),
       ),

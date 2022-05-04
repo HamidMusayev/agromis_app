@@ -8,7 +8,7 @@ import 'package:aqromis_application/models/user.dart';
 import 'package:aqromis_application/screens/tasks/tasks.dart';
 import 'package:aqromis_application/widgets/default_button.dart';
 import 'package:flutter/material.dart';
-import 'package:aqromis_application/text_constants.dart' as Constants;
+import 'package:aqromis_application/text_constants.dart' as constants;
 import 'package:lottie/lottie.dart';
 
 import '../../constants.dart';
@@ -42,7 +42,7 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: const Text(Constants.tAddTask, style: semibold16Style),
+          title: const Text(constants.tAddTask, style: semibold16Style),
         ),
         body: Padding(
           padding: kSmallPadding,
@@ -86,7 +86,7 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
               borderRadius: BorderRadius.all(kDefaultRadius)),
           child: DropdownButton<TaskType>(
             isExpanded: true,
-            hint: const Text(Constants.tTaskType, style: semibold16Style),
+            hint: const Text(constants.tTaskType, style: semibold16Style),
             value: selectedType,
             icon: const Icon(Icons.arrow_drop_down_rounded),
             iconSize: kDefaultIconSize,
@@ -110,7 +110,7 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
               borderRadius: BorderRadius.all(kDefaultRadius)),
           child: DropdownButton<Garden>(
             isExpanded: true,
-            hint: const Text(Constants.tTaskGarden, style: semibold16Style),
+            hint: const Text(constants.tTaskGarden, style: semibold16Style),
             value: selectedGarden,
             icon: const Icon(Icons.arrow_drop_down_rounded),
             iconSize: kDefaultIconSize,
@@ -130,12 +130,12 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
         TextField(
             controller: titleTxt,
             maxLines: 1,
-            decoration: const InputDecoration(hintText: Constants.tAddTitle)),
+            decoration: const InputDecoration(hintText: constants.tAddTitle)),
         const Divider(color: kWhiteColor),
         TextField(
             controller: noteTxt,
             maxLines: 4,
-            decoration: const InputDecoration(hintText: Constants.tAddNote)),
+            decoration: const InputDecoration(hintText: constants.tAddNote)),
         const Divider(
           color: kPrimaryColor,
           thickness: 2.0,
@@ -148,27 +148,27 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
                 child: Lottie.asset('assets/lottie/loading_small.json',
                     width: 150))
             : DefaultButton(
-                text: Constants.tCreate,
+                text: constants.tCreate,
                 textColor: kWhiteColor,
                 backColor: kPrimaryColor,
                 onPress: () {
                   if (selectedType == null) {
-                    showAlert(Constants.tTaskTypeError).timeout(
+                    showAlert(constants.tTaskTypeError).timeout(
                         const Duration(seconds: 3),
                         onTimeout: () => Navigator.pop(context));
                   } else if (selectedGarden == null) {
-                    showAlert(Constants.tTaskGardenError).timeout(
+                    showAlert(constants.tTaskGardenError).timeout(
                         const Duration(seconds: 3),
                         onTimeout: () => Navigator.pop(context));
                   } else if (noteTxt.text.trim().isEmpty) {
-                    showAlert(Constants.tTaskNoteError).timeout(
+                    showAlert(constants.tTaskNoteError).timeout(
                         const Duration(seconds: 3),
                         onTimeout: () => Navigator.pop(context));
                   } else {
                     setState(() => loading = true);
                     sendTask().then((value) => value
                         ? Navigator.pop(context, TasksScreen())
-                        : showAlert(Constants.tTaskAddError));
+                        : showAlert(constants.tTaskAddError));
                   }
                 },
               )

@@ -6,7 +6,7 @@ import 'package:aqromis_application/screens/tasks/task_add.dart';
 import 'package:aqromis_application/screens/tasks/task_detail.dart';
 import 'package:aqromis_application/widgets/task_card.dart';
 import 'package:flutter/material.dart';
-import 'package:aqromis_application/text_constants.dart' as Constants;
+import 'package:aqromis_application/text_constants.dart' as constants;
 import 'package:lottie/lottie.dart';
 
 import '../../constants.dart';
@@ -30,18 +30,18 @@ class _TasksScreenState extends State<TasksScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(Constants.tMyTasks, style: semibold16Style),
+        title: const Text(constants.tMyTasks, style: semibold16Style),
         actions: <Widget>[
           IconButton(
               icon: const Icon(Icons.history_rounded, size: kDefaultIconSize),
-              tooltip: Constants.tTaskComplete,
+              tooltip: constants.tTaskComplete,
               onPressed: gotoCompletedTasks)
         ],
       ),
       floatingActionButton: FloatingActionButton(
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(kDefaultRadius)),
-        tooltip: Constants.tAddTask,
+        tooltip: constants.tAddTask,
         child: const Icon(Icons.add_rounded, size: 40.0),
         backgroundColor: kTextColor,
         onPressed: () => gotoTaskAdd(),

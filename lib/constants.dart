@@ -9,15 +9,13 @@ const kTextColor = Color(0xFF424852);
 const kLightTextColor = Color(0xFFB7B7B7);
 
 const kWhiteColor = Color(0xFFFFFFFF);
-const kLightWhiteColor = Color(0xFFFFFFFF);
 const kRedColor = Color(0xFFEB5463);
 const kRedLightColor = Color(0xFFF76C82);
-const kGreenColor = Color(0xFF9ED26A);
-const kGreenLightColor = Color(0xFFB4DF80);
+const kGreenColor = Color(0xFF96D457);
 const kBlueColor = Color(0xFF4FC0E8);
 const kBlueLightColor = Color(0xFF66D4F1);
-const kYellowColor = Color(0xFFFDCD56);
-const kYellowLightColor = Color(0xFFFBD277);
+const kYellowColor = Color(0xFFECBE4A);
+const kLavendeColor = Color(0xFF967ADA);
 
 const kPrimaryOpacityColor = Color(0xFFE7FAF5);
 const kGreenOpacityColor = Color(0xFFF1F8E9);

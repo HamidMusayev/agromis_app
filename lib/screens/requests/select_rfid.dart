@@ -8,7 +8,7 @@ import 'package:aqromis_application/screens/requests/select_picture.dart';
 import 'package:aqromis_application/screens/requests/select_tree.dart';
 import 'package:aqromis_application/widgets/info_card.dart';
 import 'package:flutter/material.dart';
-import 'package:aqromis_application/text_constants.dart' as Constants;
+import 'package:aqromis_application/text_constants.dart' as constants;
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:soundpool/soundpool.dart';
@@ -31,7 +31,8 @@ class _SelectRFIDScreenState extends State<SelectRFIDScreen> {
   bool loading = false;
 
   List<TagEpc> data = [];
-  Soundpool pool = Soundpool(streamType: StreamType.notification);
+  Soundpool pool = Soundpool.fromOptions(
+      options: const SoundpoolOptions(streamType: StreamType.notification));
 
   @override
   void initState() {
@@ -62,17 +63,17 @@ class _SelectRFIDScreenState extends State<SelectRFIDScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(Constants.tSelectAutomatic, style: semibold16Style),
+        title: const Text(constants.tSelectAutomatic, style: semibold16Style),
       ),
       body: Column(
         children: <Widget>[
-          tips ? const InfoCard(text: Constants.tInfo1Text) : Container(),
+          tips ? const InfoCard(text: constants.tInfo1Text) : Container(),
           Padding(
             padding: kSmallPadding,
             child: TextField(
                 enabled: false,
                 controller: rfidTxt,
-                decoration: const InputDecoration(hintText: Constants.tRFID)),
+                decoration: const InputDecoration(hintText: constants.tRFID)),
           ),
           loading
               ? Center(
@@ -80,11 +81,14 @@ class _SelectRFIDScreenState extends State<SelectRFIDScreen> {
               : Expanded(
                   child: Padding(
                     padding: kDefaultPadding,
-                    child: FlatButton(
-                      padding: kDefaultPadding,
-                      color: kBlueOpacityColor,
-                      splashColor: kWhiteColor,
-                      highlightColor: Colors.transparent,
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        padding: kDefaultPadding,
+                        backgroundColor: kBlueOpacityColor,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(kDefaultRadius),
+                        ),
+                      ),
                       onPressed: () async {
                         data = [];
                         await UhfC72Plugin.clearData;
@@ -93,8 +97,6 @@ class _SelectRFIDScreenState extends State<SelectRFIDScreen> {
                             .listen(updateTags);
                         await UhfC72Plugin.startSingle;
                       },
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(kDefaultRadius)),
                       child: Row(
                         children: <Widget>[
                           const Spacer(),
@@ -105,7 +107,7 @@ class _SelectRFIDScreenState extends State<SelectRFIDScreen> {
                                 Icon(Icons.speaker_phone_rounded,
                                     size: 100, color: kBlueColor),
                                 Text(
-                                  Constants.tRead,
+                                  constants.tRead,
                                   style: TextStyle(
                                       fontSize: 22.0,
                                       fontWeight: FontWeight.w600,
@@ -153,7 +155,7 @@ class _SelectRFIDScreenState extends State<SelectRFIDScreen> {
           await RFIDOperations.getGardenByRFID(rfidTxt.text).then((value) =>
               value != false
                   ? result = value
-                  : showAlert(Constants.tCantFindRFIDNetworkError));
+                  : showAlert(constants.tCantFindRFIDNetworkError));
 
           if (result!.isOneTree) {
             widget.request.isonetree = true;
@@ -166,7 +168,7 @@ class _SelectRFIDScreenState extends State<SelectRFIDScreen> {
           } else {
             widget.request.isonetree = false;
             if (result!.minTreeCount == 0 && result!.maxTreeCount == 0) {
-              showAlert(Constants.tCantFindRFIDxy);
+              showAlert(constants.tCantFindRFIDxy);
             } else {
               widget.request.epc = rfidTxt.text;
               Navigator.pushReplacement(

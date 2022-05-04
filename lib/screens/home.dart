@@ -8,19 +8,20 @@ import 'package:aqromis_application/screens/drawer/settings.dart';
 import 'package:aqromis_application/screens/requests/request_type.dart';
 import 'package:aqromis_application/screens/sign_in.dart';
 import 'package:aqromis_application/screens/tasks/tasks.dart';
+import 'package:aqromis_application/screens/treeinfo/pick_tree.dart';
 import 'package:aqromis_application/screens/update_app.dart';
 import 'package:aqromis_application/utils/date_time.dart';
 import 'package:aqromis_application/widgets/error_card.dart';
 import 'package:location/location.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:aqromis_application/text_constants.dart' as Constants;
+import 'package:aqromis_application/text_constants.dart' as constants;
 import 'package:uhf_c72_plugin/uhf_c72_plugin.dart';
 import 'package:xml/xml.dart' as xml;
 import '../data/local_send_db.dart';
 import '../data/web_service.dart';
 import '../models/send_data_db.dart';
-import 'drawer/set_tree.dart';
+import 'set_tree.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -196,26 +197,18 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: <Widget>[
                         const Spacer(),
                         Text(_user.name),
-                        const Text(Constants.tMainMenu, style: light14Style),
+                        const Text(constants.tMainMenu, style: light14Style),
                       ],
                     ),
                     decoration: const BoxDecoration(color: kWhiteColor),
                   ),
                   ListTile(
-                    title: const Text(Constants.tSetTree),
-                    leading: const Icon(Icons.park),
-                    onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => SetTreeScreen())),
-                  ),
-                  ListTile(
-                    title: const Text(Constants.tAppDetail),
+                    title: const Text(constants.tAppDetail),
                     leading: const Icon(Icons.info_rounded),
                     onTap: () => showAbout(_info),
                   ),
                   ListTile(
-                    title: const Text(Constants.tSettings),
+                    title: const Text(constants.tSettings),
                     leading: const Icon(Icons.settings_rounded),
                     onTap: () => Navigator.push(
                             context,
@@ -224,93 +217,185 @@ class _HomeScreenState extends State<HomeScreen> {
                         .then(onGoBack),
                   ),
                   ListTile(
-                    title: const Text(Constants.tLogOut),
+                    title: const Text(constants.tLogOut),
                     leading: const Icon(Icons.logout, color: kRedColor),
                     onTap: () => buildLogOutDialog(),
                   ),
                 ],
               ),
             ),
-            body: Container(
-              padding: kSmallPadding,
-              child: Column(
-                children: <Widget>[
-                  AnimatedCrossFade(
-                    duration: const Duration(milliseconds: 1000),
-                    crossFadeState: _mustSendTasks.isEmpty
-                        ? CrossFadeState.showFirst
-                        : CrossFadeState.showSecond,
-                    firstChild: Container(),
-                    secondChild: ErrorCard(
+            body: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                AnimatedCrossFade(
+                  duration: const Duration(milliseconds: 1000),
+                  crossFadeState: _mustSendTasks.isEmpty
+                      ? CrossFadeState.showFirst
+                      : CrossFadeState.showSecond,
+                  firstChild: Container(),
+                  secondChild: Padding(
+                    padding: kSmallPadding,
+                    child: ErrorCard(
                       title: _mustSendTasks.length.toString() +
-                          Constants.tHaveSendableActionsTitle,
-                      text: Constants.tHaveSendableActionsText,
+                          constants.tHaveSendableActionsTitle,
+                      text: constants.tHaveSendableActionsText,
                     ),
                   ),
-                  const SizedBox(height: 8.0),
-                  SizedBox(
-                    height: 160.0,
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: FlatButton(
-                            splashColor: kInputFillColor,
-                            padding: kDefaultPadding,
-                            onPressed: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => TasksScreen())),
-                            shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(kDefaultRadius)),
-                            color: kPrimaryColor,
-                            height: 70,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Text(
-                                  _info.userTaskCount.toString(),
-                                  style: const TextStyle(
-                                      color: kWhiteColor,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 70),
-                                ),
-                                Text(Constants.tTasksTitle.toString(),
-                                    style: semibold16WhiteStyle)
-                              ],
-                            ),
+                ),
+                const SizedBox(height: 8.0),
+                Expanded(
+                  child: GridView.count(
+                    mainAxisSpacing: 8,
+                    crossAxisSpacing: 8,
+                    padding: kSmallPadding,
+                    physics: const BouncingScrollPhysics(),
+                    crossAxisCount: 2,
+                    children: <Widget>[
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          padding: kDefaultPadding,
+                          backgroundColor: kPrimaryColor,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(kDefaultRadius),
                           ),
                         ),
-                        const SizedBox(width: 8.0),
-                        Expanded(
-                          child: FlatButton(
-                            splashColor: kInputFillColor,
-                            padding: kDefaultPadding,
-                            onPressed: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => RequestTypeScreen())),
-                            shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(kDefaultRadius)),
-                            color: kGreenColor,
-                            height: 70,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const <Widget>[
-                                Icon(Icons.forward_to_inbox_rounded,
-                                    color: Colors.white, size: 90),
-                                Text(Constants.tRequestsTitle,
-                                    style: semibold16WhiteStyle)
-                              ],
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TasksScreen()),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              _info.userTaskCount.toString(),
+                              style: const TextStyle(
+                                color: kWhiteColor,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 60,
+                              ),
                             ),
+                            Text(constants.tTasksTitle.toString(),
+                                style: semibold16WhiteStyle)
+                          ],
+                        ),
+                      ),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          backgroundColor: kGreenColor,
+                          padding: kDefaultPadding,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(kDefaultRadius),
                           ),
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
+                        ),
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => RequestTypeScreen()),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const <Widget>[
+                            Icon(
+                              Icons.forward_to_inbox_rounded,
+                              color: Colors.white,
+                              size: 80,
+                            ),
+                            Text(constants.tRequestsTitle,
+                                style: semibold16WhiteStyle)
+                          ],
+                        ),
+                      ),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          padding: kDefaultPadding,
+                          backgroundColor: kYellowColor,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(kDefaultRadius),
+                          ),
+                        ),
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SetTreeScreen()),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            const Icon(
+                              Icons.park_rounded,
+                              color: Colors.white,
+                              size: 80,
+                            ),
+                            Text(constants.tTreeTitle.toString(),
+                                style: semibold16WhiteStyle)
+                          ],
+                        ),
+                      ),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          padding: kDefaultPadding,
+                          backgroundColor: kRedColor,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(kDefaultRadius),
+                          ),
+                        ),
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const PickTreeScreen()),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            const Icon(
+                              Icons.info_rounded,
+                              color: Colors.white,
+                              size: 80,
+                            ),
+                            Text(constants.tTreeInfoTitle.toString(),
+                                style: semibold16WhiteStyle)
+                          ],
+                        ),
+                      ),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          padding: kDefaultPadding,
+                          backgroundColor: kLavendeColor,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(kDefaultRadius),
+                          ),
+                        ),
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SetTreeScreen()),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            const Icon(
+                              Icons.notifications_on_rounded,
+                              color: Colors.white,
+                              size: 80,
+                            ),
+                            Text(
+                              constants.tTreeNotificationsTitle.toString(),
+                              style: semibold16WhiteStyle,
+                              textAlign: TextAlign.center,
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
             ),
           )
         : UpdateAppPage(_info.downloadLink);
@@ -350,19 +435,19 @@ class _HomeScreenState extends State<HomeScreen> {
           children: const <Widget>[
             Icon(Icons.logout, color: kRedColor, size: 50.0),
             SizedBox(height: 12.0),
-            Text(Constants.tLogOutQuestion, textAlign: TextAlign.center),
+            Text(constants.tLogOutQuestion, textAlign: TextAlign.center),
           ],
         ),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
               onPressed: () => logOut(),
               child: const Text(
-                Constants.tYes,
+                constants.tYes,
                 style: TextStyle(color: kTextColor),
               )),
-          FlatButton(
+          TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text(Constants.tNo,
+              child: const Text(constants.tNo,
                   style: TextStyle(color: kTextColor)))
         ],
       ),

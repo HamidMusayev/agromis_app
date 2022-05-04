@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:aqromis_application/text_constants.dart' as Constants;
+import 'package:aqromis_application/text_constants.dart' as constants;
 
 import '../constants.dart';
 
@@ -25,7 +25,7 @@ class _PictureHolderState extends State<PictureHolder> {
                 borderRadius: const BorderRadius.all(Radius.circular(5.0)))
             : Container(
                 child: const Center(
-                    child: Text(Constants.tEmpty,
+                    child: Text(constants.tEmpty,
                         style: TextStyle(color: kInputTextColor))),
                 decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(kDefaultRadius),

@@ -48,47 +48,45 @@ class _SignUpScreenState extends State<SignUpScreen> {
       resizeToAvoidBottomInset: false,
       body: Padding(
         padding: kDefaultPadding,
-        child: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const SizedBox(height: 12),
-              const Text('HESAB YARAT', style: headingStyle),
-              buildLine(),
-              const Text('   Hesabınız yoxdursa, yeni istifadəçi yaradın'),
-              const Spacer(),
-              buildFormField(formKey),
-              const Spacer(),
-              Container(
-                alignment: Alignment.center,
-                child: isLoading
-                    ? Center(
-                        child: Lottie.asset('assets/lottie/loading_small.json',
-                            width: 100))
-                    : DefaultButton(
-                        text: 'Yarat',
-                        backColor: kPrimaryColor,
-                        textColor: kWhiteColor,
-                        onPress: () {
-                          if (formKey.currentState?.validate() ?? false) {
-                            setState(() => isLoading = true);
-                            UserOperations.registerUser(User(
-                                    nameTxt.text,
-                                    surnameTxt.text.trim(),
-                                    emailTxt.text.trim(),
-                                    passwordTxt.text))
-                                .then((value) => value
-                                    ? Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const SignInScreen()))
-                                    : showAlert());
-                          }
-                        }),
-              ),
-            ],
-          ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            const SizedBox(height: 12),
+            const Text('HESAB YARAT', style: headingStyle),
+            buildLine(),
+            const Text('   Hesabınız yoxdursa, yeni istifadəçi yaradın'),
+            const Spacer(),
+            buildFormField(formKey),
+            const Spacer(),
+            Container(
+              alignment: Alignment.center,
+              child: isLoading
+                  ? Center(
+                      child: Lottie.asset('assets/lottie/loading_small.json',
+                          width: 100))
+                  : DefaultButton(
+                      text: 'Yarat',
+                      backColor: kPrimaryColor,
+                      textColor: kWhiteColor,
+                      onPress: () {
+                        if (formKey.currentState?.validate() ?? false) {
+                          setState(() => isLoading = true);
+                          UserOperations.registerUser(User(
+                                  nameTxt.text,
+                                  surnameTxt.text.trim(),
+                                  emailTxt.text.trim(),
+                                  passwordTxt.text))
+                              .then((value) => value
+                                  ? Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const SignInScreen()))
+                                  : showAlert());
+                        }
+                      }),
+            ),
+          ],
         ),
       ),
     );

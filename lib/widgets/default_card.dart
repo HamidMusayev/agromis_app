@@ -19,14 +19,14 @@ class DefaultCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
-      color: lightColor,
-      splashColor: Colors.transparent,
-      highlightColor: color.withOpacity(0.4),
-      onPressed: ()=> onPress.call(),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(kDefaultRadius),
+    return TextButton(
+      style: TextButton.styleFrom(
+        backgroundColor: lightColor,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(kDefaultRadius),
+        ),
       ),
+      onPressed: () => onPress.call(),
       child: Row(
         children: <Widget>[
           const Spacer(),
@@ -34,9 +34,7 @@ class DefaultCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Icon(icon,
-                  color: selected ? kWhiteColor : color,
-                  size: 75),
+              Icon(icon, color: selected ? kWhiteColor : color, size: 75),
               Text(text,
                   style: TextStyle(
                       fontSize: 16.0, color: selected ? kWhiteColor : color)),

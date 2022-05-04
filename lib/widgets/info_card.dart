@@ -1,6 +1,6 @@
 import 'package:aqromis_application/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:aqromis_application/text_constants.dart' as Constants;
+import 'package:aqromis_application/text_constants.dart' as constants;
 
 class InfoCard extends StatelessWidget {
   final String text;
@@ -31,7 +31,7 @@ class InfoCard extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const Text(Constants.tInfoTitle,
+                    const Text(constants.tInfoTitle,
                         style: semibold14WhiteStyle),
                     Text(text, style: light12WhiteStyle),
                   ],

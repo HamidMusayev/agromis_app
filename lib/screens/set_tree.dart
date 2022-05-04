@@ -7,13 +7,13 @@ import 'package:aqromis_application/models/add_tree/bitkicesit.dart';
 import 'package:aqromis_application/models/add_tree/bitkitur.dart';
 import 'package:aqromis_application/models/garden.dart';
 import 'package:flutter/material.dart';
-import 'package:aqromis_application/text_constants.dart' as Constants;
+import 'package:aqromis_application/text_constants.dart' as constants;
 import 'package:flutter/services.dart';
 import 'package:soundpool/soundpool.dart';
 import 'package:uhf_c72_plugin/tag_epc.dart';
 import 'package:uhf_c72_plugin/uhf_c72_plugin.dart';
 
-import '../../constants.dart';
+import '../constants.dart';
 
 class SetTreeScreen extends StatefulWidget {
   const SetTreeScreen({Key? key}) : super(key: key);
@@ -28,7 +28,8 @@ class _SetTreeScreenState extends State<SetTreeScreen> {
   bool _found = false;
 
   List<TagEpc> data = [];
-  Soundpool pool = Soundpool(streamType: StreamType.notification);
+  Soundpool pool = Soundpool.fromOptions(
+      options: const SoundpoolOptions(streamType: StreamType.notification));
 
   List<Garden> _gardens = [];
   List<Alan> _alans = [];
@@ -65,7 +66,7 @@ class _SetTreeScreenState extends State<SetTreeScreen> {
   Future<void> getDropDownData() async {
     await ListOperations.getGardenList().then((value) => value != false
         ? setState(() => _gardens = value)
-        : showAlert(Constants.tCantFindRFIDNetworkError));
+        : showAlert(constants.tCantFindRFIDNetworkError));
   }
 
   // Future<void> getDropDownData() async {
@@ -100,7 +101,7 @@ class _SetTreeScreenState extends State<SetTreeScreen> {
               TextField(
                   controller: rfidTxt,
                   enabled: false,
-                  decoration: const InputDecoration(hintText: Constants.tRFID)),
+                  decoration: const InputDecoration(hintText: constants.tRFID)),
               const SizedBox(height: 8),
               Container(
                 padding: const EdgeInsets.all(5),
@@ -223,65 +224,73 @@ class _SetTreeScreenState extends State<SetTreeScreen> {
               const SizedBox(height: 8),
               _found
                   ? Expanded(
-                      child: FlatButton(
-                        padding: kSmallPadding,
-                        color: kGreenColor,
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                          padding: kSmallPadding,
+                          backgroundColor: kGreenColor,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(kDefaultRadius),
+                          ),
+                        ),
                         onPressed: () async => saveAlanRFID(),
-                        shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(kDefaultRadius)),
                         child: Row(
                           children: <Widget>[
                             const Spacer(),
-                            Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: const <Widget>[
-                                  Icon(Icons.check_rounded,
-                                      size: 70, color: Colors.white),
-                                  Text(
-                                    Constants.tSave,
-                                    style: TextStyle(
-                                        fontSize: 22,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.white),
-                                  ),
-                                ]),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: const <Widget>[
+                                Icon(Icons.check_rounded,
+                                    size: 70, color: Colors.white),
+                                Text(
+                                  constants.tSave,
+                                  style: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white),
+                                ),
+                              ],
+                            ),
                             const Spacer()
                           ],
                         ),
                       ),
                     )
                   : Expanded(
-                      child: FlatButton(
-                        padding: kSmallPadding,
-                        color: kBlueColor,
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                          padding: kSmallPadding,
+                          backgroundColor: kBlueColor,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(kDefaultRadius),
+                          ),
+                        ),
                         onPressed: () async {
-                          data = [];
+                          data.clear();
                           await UhfC72Plugin.clearData;
                           UhfC72Plugin.tagsStatusStream
                               .receiveBroadcastStream()
                               .listen(updateTags);
                           await UhfC72Plugin.startSingle;
                         },
-                        shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(kDefaultRadius)),
                         child: Row(
                           children: <Widget>[
                             const Spacer(),
-                            Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: const <Widget>[
-                                  Icon(Icons.speaker_phone_rounded,
-                                      size: 70, color: Colors.white),
-                                  Text(
-                                    Constants.tRead,
-                                    style: TextStyle(
-                                        fontSize: 22,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.white),
-                                  ),
-                                ]),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: const <Widget>[
+                                Icon(Icons.speaker_phone_rounded,
+                                    size: 70, color: Colors.white),
+                                Text(
+                                  constants.tRead,
+                                  style: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white),
+                                ),
+                              ],
+                            ),
                             const Spacer()
                           ],
                         ),
@@ -324,7 +333,7 @@ class _SetTreeScreenState extends State<SetTreeScreen> {
 
   Future playSound() async {
     int soundId = await rootBundle
-        .load('assets/sounds/success.wav')
+        .load('assets/sounds/barcodebeep.ogg')
         .then((ByteData soundData) {
       return pool.load(soundData);
     });
@@ -406,7 +415,7 @@ class _SetTreeScreenState extends State<SetTreeScreen> {
     await ListOperations.getAlanList(_activeGarden!.pin.toString()).then(
         (value) => value != false
             ? setState(() => _alans = value)
-            : showAlert(Constants.tCantFindRFIDNetworkError));
+            : showAlert(constants.tCantFindRFIDNetworkError));
   }
 
   alanChanged(Alan? val) async {
@@ -415,7 +424,7 @@ class _SetTreeScreenState extends State<SetTreeScreen> {
     await ListOperations.getAlanDetList(_activeAlan!.pin.toString()).then(
         (value) => value != false
             ? setState(() => _alandets = value)
-            : showAlert(Constants.tCantFindRFIDNetworkError));
+            : showAlert(constants.tCantFindRFIDNetworkError));
   }
 
   alanDetChanged(AlanDet? val) async {
@@ -423,10 +432,10 @@ class _SetTreeScreenState extends State<SetTreeScreen> {
 
     await ListOperations.getBitkiCesitList().then((value) => value != false
         ? setState(() => _cesids = value)
-        : showAlert(Constants.tCantFindRFIDNetworkError));
+        : showAlert(constants.tCantFindRFIDNetworkError));
 
     await ListOperations.getBitkiTurList().then((value) => value != false
         ? setState(() => _turs = value)
-        : showAlert(Constants.tCantFindRFIDNetworkError));
+        : showAlert(constants.tCantFindRFIDNetworkError));
   }
 }

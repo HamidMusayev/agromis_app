@@ -5,7 +5,7 @@ import 'package:aqromis_application/models/task.dart';
 import 'package:aqromis_application/screens/tasks/task_detail.dart';
 import 'package:aqromis_application/widgets/task_card.dart';
 import 'package:flutter/material.dart';
-import 'package:aqromis_application/text_constants.dart' as Constants;
+import 'package:aqromis_application/text_constants.dart' as constants;
 import 'package:lottie/lottie.dart';
 
 import '../../constants.dart';
@@ -42,7 +42,7 @@ class _CompletedTasksScreenState extends State<CompletedTasksScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: const Text(Constants.tTaskComplete, style: semibold16Style)),
+          title: const Text(constants.tTaskComplete, style: semibold16Style)),
       body: AnimatedCrossFade(
         duration: kAnimationDuration,
         crossFadeState:

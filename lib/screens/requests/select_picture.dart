@@ -10,7 +10,7 @@ import 'package:aqromis_application/widgets/default_button.dart';
 import 'package:aqromis_application/widgets/picture_holder.dart';
 import 'package:aqromis_application/widgets/custom_loading.dart';
 import 'package:flutter/material.dart';
-import 'package:aqromis_application/text_constants.dart' as Constants;
+import 'package:aqromis_application/text_constants.dart' as constants;
 import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -36,7 +36,7 @@ class _SelectPictureScreenState extends State<SelectPictureScreen> {
 
   void _onImageButtonPressed(ImageSource source) async {
     try {
-      final pickedFile = await _picker.getImage(
+      final pickedFile = await _picker.pickImage(
           source:
               source); // maxWidth: maxWidth,// maxHeight: maxHeight,// imageQuality: quality,
 
@@ -71,7 +71,7 @@ class _SelectPictureScreenState extends State<SelectPictureScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: const Text(Constants.tSelectPhotos, style: semibold16Style)),
+          title: const Text(constants.tSelectPhotos, style: semibold16Style)),
       body: SingleChildScrollView(
         child: Padding(
           padding: kSmallPadding,
@@ -81,27 +81,29 @@ class _SelectPictureScreenState extends State<SelectPictureScreen> {
                 children: <Widget>[
                   Expanded(
                       child: pictures.length < 5
-                          ? FlatButton(
-                              padding: kDefaultPadding,
-                              color: kBlueOpacityColor,
-                              splashColor: kWhiteColor,
-                              highlightColor: Colors.transparent,
-                              shape: const RoundedRectangleBorder(
+                          ? TextButton(
+                              style: TextButton.styleFrom(
+                                padding: kDefaultPadding,
+                                backgroundColor: kBlueOpacityColor,
+                                shape: const RoundedRectangleBorder(
                                   borderRadius:
-                                      BorderRadius.all(kDefaultRadius)),
+                                      BorderRadius.all(kDefaultRadius),
+                                ),
+                              ),
                               child: const Icon(Icons.add_a_photo_rounded,
                                   color: kBlueColor, size: 50),
                               onPressed: () =>
                                   _onImageButtonPressed(ImageSource.camera),
                             )
-                          : FlatButton(
-                              padding: kDefaultPadding,
-                              color: kInputFillColor,
-                              splashColor: Colors.transparent,
-                              highlightColor: Colors.transparent,
-                              shape: const RoundedRectangleBorder(
+                          : TextButton(
+                              style: TextButton.styleFrom(
+                                padding: kDefaultPadding,
+                                backgroundColor: kInputFillColor,
+                                shape: const RoundedRectangleBorder(
                                   borderRadius:
-                                      BorderRadius.all(kDefaultRadius)),
+                                      BorderRadius.all(kDefaultRadius),
+                                ),
+                              ),
                               child: const Icon(Icons.add_a_photo_rounded,
                                   color: kInputTextColor, size: 52),
                               onPressed: () {},
@@ -109,30 +111,36 @@ class _SelectPictureScreenState extends State<SelectPictureScreen> {
                   const SizedBox(width: 12),
                   Expanded(
                       child: pictures.length < 5
-                          ? FlatButton(
-                              padding: kDefaultPadding,
-                              color: kPrimaryOpacityColor,
-                              splashColor: kWhiteColor,
-                              highlightColor: Colors.transparent,
-                              shape: const RoundedRectangleBorder(
+                          ? TextButton(
+                              style: TextButton.styleFrom(
+                                padding: kDefaultPadding,
+                                backgroundColor: kPrimaryOpacityColor,
+                                shape: const RoundedRectangleBorder(
                                   borderRadius:
-                                      BorderRadius.all(kDefaultRadius)),
-                              child: const Icon(Icons.add_photo_alternate_rounded,
-                                  color: kPrimaryColor, size: 50),
+                                      BorderRadius.all(kDefaultRadius),
+                                ),
+                              ),
+                              child: const Icon(
+                                  Icons.add_photo_alternate_rounded,
+                                  color: kPrimaryColor,
+                                  size: 50),
                               onPressed: () {
                                 _onImageButtonPressed(ImageSource.gallery);
                               },
                             )
-                          : FlatButton(
-                              padding: kDefaultPadding,
-                              color: kInputFillColor,
-                              splashColor: Colors.transparent,
-                              highlightColor: Colors.transparent,
-                              shape: const RoundedRectangleBorder(
+                          : TextButton(
+                              style: TextButton.styleFrom(
+                                padding: kDefaultPadding,
+                                backgroundColor: kInputFillColor,
+                                shape: const RoundedRectangleBorder(
                                   borderRadius:
-                                      BorderRadius.all(kDefaultRadius)),
-                              child: const Icon(Icons.add_photo_alternate_rounded,
-                                  color: kInputTextColor, size: 50),
+                                      BorderRadius.all(kDefaultRadius),
+                                ),
+                              ),
+                              child: const Icon(
+                                  Icons.add_photo_alternate_rounded,
+                                  color: kInputTextColor,
+                                  size: 50),
                               onPressed: () {},
                             )),
                 ],
@@ -154,25 +162,25 @@ class _SelectPictureScreenState extends State<SelectPictureScreen> {
               TextField(
                   controller: titleTxt,
                   decoration:
-                      const InputDecoration(hintText: Constants.tAddTitle)),
+                      const InputDecoration(hintText: constants.tAddTitle)),
               const SizedBox(height: 12),
               TextField(
                   controller: noteTxt,
                   maxLines: 4,
                   decoration:
-                      const InputDecoration(hintText: Constants.tAddNote)),
+                      const InputDecoration(hintText: constants.tAddNote)),
               const SizedBox(height: 30),
               DefaultButton(
-                text: Constants.tSend,
+                text: constants.tSend,
                 textColor: kWhiteColor,
                 backColor: kPrimaryColor,
                 onPress: () {
                   if (pictures.isEmpty) {
-                    showAlert(Constants.tPhotosError).timeout(
+                    showAlert(constants.tPhotosError).timeout(
                         const Duration(seconds: 3),
                         onTimeout: () => Navigator.pop(context));
                   } else if (titleTxt.text.trim().isEmpty) {
-                    showAlert(Constants.tTtileError).timeout(
+                    showAlert(constants.tTtileError).timeout(
                         const Duration(seconds: 3),
                         onTimeout: () => Navigator.pop(context));
                   } else {
@@ -205,7 +213,7 @@ class _SelectPictureScreenState extends State<SelectPictureScreen> {
                 const Icon(Icons.cloud_upload_rounded,
                     color: kPrimaryColor, size: 50.0),
                 const SizedBox(height: 10.0),
-                const Text(Constants.tUploading),
+                const Text(constants.tUploading),
                 const SizedBox(height: 16.0),
                 CustomLoading()
               ],

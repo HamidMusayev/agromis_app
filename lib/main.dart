@@ -15,7 +15,7 @@ void main() {
     statusBarBrightness: Brightness.dark, //status bar brightness
     statusBarIconBrightness: Brightness.dark, //status barIcon Brightness
     systemNavigationBarDividerColor:
-        Colors.black, //Navigation bar divider color
+        Colors.white, //Navigation bar divider color
     systemNavigationBarIconBrightness: Brightness.dark, //navigation bar icon
   ));
 

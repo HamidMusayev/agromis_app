@@ -3,7 +3,7 @@ import 'package:aqromis_application/screens/home.dart';
 import 'package:aqromis_application/widgets/default_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:aqromis_application/text_constants.dart' as Constants;
+import 'package:aqromis_application/text_constants.dart' as constants;
 
 import '../../constants.dart';
 
@@ -23,15 +23,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   getPrefs() async {
-    await SharedData.getBool('tipsOpen').then((value) => setState(() => value == null ? _tipsValue = false : _tipsValue = value));
-    await SharedData.getInt('range').then((value) => setState(() => value == null ? _readLength = 5 : _readLength = value));
+    await SharedData.getBool('tipsOpen')
+        .then((value) => setState(() => _tipsValue = value ?? false));
+    await SharedData.getInt('range')
+        .then((value) => setState(() => _readLength = value ?? 5));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kInputFillColor,
-      appBar: AppBar(title: const Text(Constants.tSettings, style: semibold16Style)),
+      appBar: AppBar(
+          title: const Text(constants.tSettings, style: semibold16Style)),
       body: Padding(
         padding: kSmallPadding,
         child: Column(
@@ -44,8 +47,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  const Text(Constants.tReadLength, style: semibold16Style),
-                  const Text(Constants.tReadLengthDescription, style: light14Style),
+                  const Text(constants.tReadLength, style: semibold16Style),
+                  const Text(constants.tReadLengthDescription,
+                      style: light14Style),
                   Slider(
                     min: 5,
                     max: 30,
@@ -71,8 +75,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: const <Widget>[
-                      Text(Constants.tOpenTips, style: semibold16Style),
-                      Text(Constants.tOpenTipsDescription, style: light14Style),
+                      Text(constants.tOpenTips, style: semibold16Style),
+                      Text(constants.tOpenTipsDescription, style: light14Style),
                     ],
                   ),
                   const Spacer(),
@@ -85,7 +89,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             const Spacer(),
             DefaultButton(
-              text: Constants.tSave,
+              text: constants.tSave,
               textColor: kWhiteColor,
               backColor: kPrimaryColor,
               onPress: saveSettings,

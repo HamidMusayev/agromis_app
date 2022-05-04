@@ -5,7 +5,7 @@ import 'package:aqromis_application/models/task.dart';
 import 'package:aqromis_application/widgets/action_button.dart';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
-import 'package:aqromis_application/text_constants.dart' as Constants;
+import 'package:aqromis_application/text_constants.dart' as constants;
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:soundpool/soundpool.dart';
@@ -36,7 +36,8 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>
   bool animate3 = false;
   List<TagEpc> _data = [];
 
-  Soundpool pool = Soundpool(streamType: StreamType.notification);
+  Soundpool pool = Soundpool.fromOptions(
+      options: const SoundpoolOptions(streamType: StreamType.notification));
 
   @override
   void initState() {
@@ -109,7 +110,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>
                     children: <Widget>[
                       Lottie.asset('assets/lottie/success.json',
                           width: 250, controller: _animateSuccess),
-                      const Text(Constants.tTaskCompletedSuccess,
+                      const Text(constants.tTaskCompletedSuccess,
                           style: headingWhiteStyle),
                     ],
                   ))
@@ -118,10 +119,10 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>
                     children: <Widget>[
                       Text(
                           widget.task.readState == 0
-                              ? Constants.tTaskDetail
+                              ? constants.tTaskDetail
                               : widget.task.readState == 2
-                                  ? Constants.tTaskCompleted
-                                  : Constants.tResumingTask,
+                                  ? constants.tTaskCompleted
+                                  : constants.tResumingTask,
                           style: headingWhiteStyle),
                       Text(task.description, style: light14WhiteStyle),
                       const SizedBox(height: 12.0),
@@ -139,7 +140,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>
                       const Spacer(),
                       Text((task.readedRFIDCount! + _data.length).toString(),
                           style: rfidStyle),
-                      const Text(Constants.tReadedRFID,
+                      const Text(constants.tReadedRFID,
                           style: light16WhiteStyle),
                       const Spacer(),
                       task.readState == 2
@@ -150,7 +151,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>
                                   ActionButton(
                                     loading: animate3,
                                     color: kRedColor,
-                                    text: Constants.tFinish,
+                                    text: constants.tFinish,
                                     icon: Icons.stop_rounded,
                                     onPress: () async {
                                       setState(() => animate3 = true);
@@ -188,7 +189,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>
                                   ActionButton(
                                     loading: animate2,
                                     color: kBlueColor,
-                                    text: Constants.tPause,
+                                    text: constants.tPause,
                                     icon: Icons.pause_rounded,
                                     onPress: () async {
                                       setState(() => animate2 = true);
@@ -212,7 +213,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>
                               secondChild: ActionButton(
                                 loading: false,
                                 color: kBlueColor,
-                                text: Constants.tStart,
+                                text: constants.tStart,
                                 icon: Icons.play_arrow_rounded,
                                 onPress: task.readState == 1
                                     ? () async {
@@ -299,7 +300,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>
     return ActionButton(
       loading: false,
       color: kPrimaryColor,
-      text: Constants.tTaskCompleted,
+      text: constants.tTaskCompleted,
       icon: Icons.check_rounded,
       onPress: () async {},
     );
@@ -307,10 +308,10 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>
 
   Future playSound() async {
     int soundId = await rootBundle
-        .load('assets/sounds/success.wav')
+        .load('assets/sounds/barcodebeep.ogg')
         .then((ByteData soundData) {
       return pool.load(soundData);
     });
-    int streamId = await pool.play(soundId);
+    await pool.play(soundId);
   }
 }

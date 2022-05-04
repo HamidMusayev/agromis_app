@@ -26,12 +26,13 @@ class ActionButton extends StatelessWidget {
               colors: [color, color.withAlpha(80)],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight)),
-      child: FlatButton(
-        padding: kDefaultPadding,
-        splashColor: Colors.transparent,
-        highlightColor: color.withOpacity(0.3),
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(kDefaultRadius)),
+      child: TextButton(
+        style: TextButton.styleFrom(
+          padding: kDefaultPadding,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(kDefaultRadius),
+          ),
+        ),
         child: Row(
           children: <Widget>[
             const Spacer(),

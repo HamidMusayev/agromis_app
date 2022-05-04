@@ -3,7 +3,7 @@ import 'package:aqromis_application/screens/requests/select_garden.dart';
 import 'package:aqromis_application/screens/requests/select_rfid.dart';
 import 'package:aqromis_application/widgets/default_card.dart';
 import 'package:flutter/material.dart';
-import 'package:aqromis_application/text_constants.dart' as Constants;
+import 'package:aqromis_application/text_constants.dart' as constants;
 import '../../constants.dart';
 
 class RequestEnterTypeScreen extends StatefulWidget {
@@ -23,7 +23,7 @@ class _RequestEnterTypeScreenState extends State<RequestEnterTypeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(Constants.tSelectEnterType, style: semibold16Style),
+        title: const Text(constants.tSelectEnterType, style: semibold16Style),
       ),
       body: Padding(
         padding: kDefaultPadding,
@@ -34,7 +34,7 @@ class _RequestEnterTypeScreenState extends State<RequestEnterTypeScreen> {
                 color: kGreenColor,
                 lightColor: kGreenOpacityColor,
                 selected: _enterType[0],
-                text: Constants.tSelectGarden,
+                text: constants.tSelectGarden,
                 icon: Icons.grass_rounded,
                 onPress: (){
                   Navigator.push(context, MaterialPageRoute(builder: (context) => SelectGardenScreen()));
@@ -47,7 +47,7 @@ class _RequestEnterTypeScreenState extends State<RequestEnterTypeScreen> {
                 color: kBlueColor,
                 lightColor: kBlueOpacityColor,
                 selected: _enterType[1],
-                text: Constants.tSelectAutomatic,
+                text: constants.tSelectAutomatic,
                 icon: Icons.speaker_phone_rounded,
                 onPress: (){
                   Navigator.push(context, MaterialPageRoute(builder: (context) => SelectRFIDScreen(widget.request)));

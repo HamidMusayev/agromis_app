@@ -5,6 +5,7 @@ import 'package:aqromis_application/models/agronom.dart';
 import 'package:aqromis_application/models/garden.dart';
 import 'package:aqromis_application/models/response.dart';
 import 'package:aqromis_application/models/task_type.dart';
+import 'package:aqromis_application/models/tree_notification.dart';
 
 import '../../models/add_tree/alandet.dart';
 import '../web_service.dart';
@@ -176,6 +177,40 @@ class ListOperations {
       });
 
       return bitkiturs;
+    } else {
+      return false;
+    }
+  }
+
+  static Future<dynamic> getNotificationList(
+      String rfid, String pinAlanDet, bool isRfid) async {
+    final List<TreeNotification> notifications = [];
+    String dataXML = '<rfid>$rfid</rfid>'
+        '<pinAlanDet>$pinAlanDet</pinAlanDet>'
+        '<isRfid>$isRfid</isRfid>';
+
+    final Response response =
+        await WebService.sendRequest('TreeNotificationList', dataXML);
+
+    if (response.isConnected) {
+      response.result.single
+          .findAllElements('TreeNotification')
+          .forEach((element) {
+        notifications.add(
+          TreeNotification(
+            int.parse(element.findElements('PinNotification').single.innerText),
+            element.findElements('Title').single.innerText,
+            element.findElements('Description').single.innerText,
+            element.findElements('CreatedUserCode').single.innerText,
+            element.findElements('CreatedUser').single.innerText,
+            element.findElements('CreatedDate').single.innerText,
+            int.parse(element.findElements('Completed').single.innerText),
+            int.parse(element.findElements('Type').single.innerText),
+          ),
+        );
+      });
+
+      return notifications;
     } else {
       return false;
     }

@@ -26,6 +26,9 @@ const String tInfo4Text = '1. Tapşırığa başlamaq üçün Başlat düyməsin
 //MAIN-CARDS
 const String tTasksTitle = 'Tapşırıqlarım';
 const String tRequestsTitle = 'Şəkilli müraciət';
+const String tTreeTitle = 'Ağac tanımlama';
+const String tTreeInfoTitle = 'Ağac məlumatı';
+const String tTreeNotificationsTitle = 'Bildirişlər və qeydlər';
 
 //REQUEST-TYPES
 const String tSelectType = 'Müraciət formasını seçin';
