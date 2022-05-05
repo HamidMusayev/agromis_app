@@ -1,4 +1,5 @@
 import 'package:aqromis_application/constants.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:aqromis_application/text_constants.dart' as constants;
 
@@ -49,6 +50,9 @@ class _TreeInfoScreenState extends State<TreeInfoScreen>
         _all = value;
         _notes = _all.where((element) => element.type == 1).toList();
         _alarms = _all.where((element) => element.type == 0).toList();
+        debugPrintThrottled(
+            '_notes: ${_notes.length}, _alarms: ${_alarms.length}');
+
         setState(() => isLoading = false);
       } else {
         showAlert(constants.tCantFindRFIDNetworkError);
@@ -139,17 +143,28 @@ class _TreeInfoScreenState extends State<TreeInfoScreen>
           ],
           body: TabBarView(
             controller: tabController,
+            physics: const BouncingScrollPhysics(),
             children: [
               ListView.builder(
                 itemCount: _notes.length,
-                itemBuilder: (context, index) => ListTile(
+                itemBuilder: (context, index) => ExpansionTile(
+                  childrenPadding: kSmallPadding,
+                  expandedAlignment: Alignment.centerLeft,
                   title: Text(_notes[index].title),
+                  subtitle: Text(
+                      '${_notes[index].createdDate} - ${_notes[index].createdUser}'),
+                  children: [Text(_notes[index].description)],
                 ),
               ),
               ListView.builder(
                 itemCount: _alarms.length,
-                itemBuilder: (context, index) => ListTile(
+                itemBuilder: (context, index) => ExpansionTile(
+                  childrenPadding: kSmallPadding,
+                  expandedAlignment: Alignment.centerLeft,
                   title: Text(_alarms[index].title),
+                  subtitle: Text(
+                      '${_alarms[index].createdDate} - ${_alarms[index].createdUser}'),
+                  children: [Text(_alarms[index].description)],
                 ),
               ),
             ],

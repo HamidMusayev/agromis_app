@@ -204,8 +204,8 @@ class ListOperations {
             element.findElements('CreatedUserCode').single.innerText,
             element.findElements('CreatedUser').single.innerText,
             element.findElements('CreatedDate').single.innerText,
-            int.parse(element.findElements('Completed').single.innerText),
             int.parse(element.findElements('Type').single.innerText),
+            int.parse(element.findElements('Completed').single.innerText),
           ),
         );
       });
