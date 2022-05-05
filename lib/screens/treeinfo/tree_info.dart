@@ -143,10 +143,10 @@ class _TreeInfoScreenState extends State<TreeInfoScreen>
           ],
           body: TabBarView(
             controller: tabController,
-            physics: const BouncingScrollPhysics(),
             children: [
               ListView.builder(
                 itemCount: _notes.length,
+                physics: const BouncingScrollPhysics(),
                 itemBuilder: (context, index) => ExpansionTile(
                   childrenPadding: kSmallPadding,
                   expandedAlignment: Alignment.centerLeft,
@@ -158,6 +158,7 @@ class _TreeInfoScreenState extends State<TreeInfoScreen>
               ),
               ListView.builder(
                 itemCount: _alarms.length,
+                physics: const BouncingScrollPhysics(),
                 itemBuilder: (context, index) => ExpansionTile(
                   childrenPadding: kSmallPadding,
                   expandedAlignment: Alignment.centerLeft,
