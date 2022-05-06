@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 import '../constants.dart';
-import '../data/operations/user_operations.dart';
+import '../data/operations/user.dart';
 import '../models/user.dart';
 import 'home.dart';
 

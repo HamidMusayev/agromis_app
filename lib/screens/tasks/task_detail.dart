@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:math';
-import 'package:aqromis_application/data/operations/task_operations.dart';
+import 'package:aqromis_application/data/operations/task.dart';
 import 'package:aqromis_application/models/task.dart';
 import 'package:aqromis_application/widgets/action_button.dart';
 import 'package:confetti/confetti.dart';

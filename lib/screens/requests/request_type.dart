@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:aqromis_application/data/operations/list_operations.dart';
+import 'package:aqromis_application/data/operations/list.dart';
 import 'package:aqromis_application/models/agronom.dart';
 import 'package:aqromis_application/models/request.dart';
 import 'package:aqromis_application/screens/requests/select_rfid.dart';

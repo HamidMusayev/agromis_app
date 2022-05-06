@@ -5,7 +5,7 @@ import 'package:aqromis_application/models/agronom.dart';
 import 'package:aqromis_application/models/garden.dart';
 import 'package:aqromis_application/models/response.dart';
 import 'package:aqromis_application/models/task_type.dart';
-import 'package:aqromis_application/models/tree_notification.dart';
+import 'package:aqromis_application/models/treeinfo/tree_notification.dart';
 
 import '../../models/add_tree/alandet.dart';
 import '../web_service.dart';

@@ -1,10 +1,12 @@
 import 'package:aqromis_application/constants.dart';
+import 'package:aqromis_application/data/operations/treeinfo.dart';
+import 'package:aqromis_application/models/treeinfo/tree_detail.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:aqromis_application/text_constants.dart' as constants;
 
-import '../../data/operations/list_operations.dart';
-import '../../models/tree_notification.dart';
+import '../../data/operations/list.dart';
+import '../../models/treeinfo/tree_notification.dart';
 
 class TreeInfoScreen extends StatefulWidget {
   final bool isRfid;
@@ -23,6 +25,14 @@ class _TreeInfoScreenState extends State<TreeInfoScreen>
   late TabController tabController;
   bool isLoading = true;
 
+  TreeDetail _treeDetail = TreeDetail(
+      pinAlanDet: 0,
+      bitkiCesit: '',
+      bitkiTur: '',
+      lastVisitDate: '',
+      lastVisitType: '',
+      lastVisitedUser: '');
+
   List<TreeNotification> _all = [];
   List<TreeNotification> _notes = [];
   List<TreeNotification> _alarms = [];
@@ -31,6 +41,7 @@ class _TreeInfoScreenState extends State<TreeInfoScreen>
   void initState() {
     super.initState();
     tabController = TabController(length: 2, vsync: this);
+    getTreeDetail();
     getNotifications();
   }
 
@@ -50,9 +61,22 @@ class _TreeInfoScreenState extends State<TreeInfoScreen>
         _all = value;
         _notes = _all.where((element) => element.type == 1).toList();
         _alarms = _all.where((element) => element.type == 0).toList();
-        debugPrintThrottled(
-            '_notes: ${_notes.length}, _alarms: ${_alarms.length}');
 
+        setState(() => isLoading = false);
+      } else {
+        showAlert(constants.tCantFindRFIDNetworkError);
+      }
+    });
+  }
+
+  Future<void> getTreeDetail() async {
+    setState(() => isLoading = true);
+
+    await TreeInfoOperations.getTreeDetail(
+            widget.rfid, widget.pinAlanDet ?? '', widget.isRfid)
+        .then((value) {
+      if (value != false) {
+        _treeDetail = value;
         setState(() => isLoading = false);
       } else {
         showAlert(constants.tCantFindRFIDNetworkError);
@@ -105,7 +129,7 @@ class _TreeInfoScreenState extends State<TreeInfoScreen>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      height: 160,
+                      height: 180,
                       padding: kSmallPadding,
                       decoration: BoxDecoration(
                         color: Colors.grey.shade200,
@@ -114,17 +138,19 @@ class _TreeInfoScreenState extends State<TreeInfoScreen>
                       child: GridView.count(
                         childAspectRatio: 6,
                         crossAxisCount: 2,
-                        children: const [
-                          Text('PIN_ALANDET:'),
-                          Text('12'),
-                          Text('Bitki növü:'),
-                          Text('chiels'),
-                          Text('Son işlənmə tarixi:'),
-                          Text('12-02-2022'),
-                          Text('Son iş növü:'),
-                          Text('BUDAMA'),
-                          Text('Son işi edən bağban:'),
-                          Text('cvg'),
+                        children: [
+                          const Text('PIN_ALANDET:'),
+                          Text(_treeDetail.pinAlanDet.toString()),
+                          const Text('Bitki növü:'),
+                          Text(_treeDetail.bitkiTur),
+                          const Text('Bitki çeşidi:'),
+                          Text(_treeDetail.bitkiCesit),
+                          const Text('Son iş görülmə tarixi:'),
+                          Text(_treeDetail.lastVisitDate),
+                          const Text('Son iş növü:'),
+                          Text(_treeDetail.lastVisitType),
+                          const Text('Son işi edən bağban:'),
+                          Text(_treeDetail.lastVisitedUser),
                         ],
                       ),
                     ),

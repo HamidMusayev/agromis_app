@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:aqromis_application/data/operations/rfid_operations.dart';
+import 'package:aqromis_application/data/operations/rfid.dart';
 import 'package:aqromis_application/data/shared_prefs.dart';
 import 'package:aqromis_application/models/request.dart';
 import 'package:aqromis_application/models/rfid_garden_result.dart';

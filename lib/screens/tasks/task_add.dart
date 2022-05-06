@@ -1,5 +1,5 @@
-import 'package:aqromis_application/data/operations/list_operations.dart';
-import 'package:aqromis_application/data/operations/task_operations.dart';
+import 'package:aqromis_application/data/operations/list.dart';
+import 'package:aqromis_application/data/operations/task.dart';
 import 'package:aqromis_application/data/shared_prefs.dart';
 import 'package:aqromis_application/models/garden.dart';
 import 'package:aqromis_application/models/task.dart';

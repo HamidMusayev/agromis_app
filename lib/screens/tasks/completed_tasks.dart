@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:aqromis_application/data/operations/task_operations.dart';
+import 'package:aqromis_application/data/operations/task.dart';
 import 'package:aqromis_application/models/task.dart';
 import 'package:aqromis_application/screens/tasks/task_detail.dart';
 import 'package:aqromis_application/widgets/task_card.dart';

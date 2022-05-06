@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:aqromis_application/data/operations/request_operations.dart';
+import 'package:aqromis_application/data/operations/request.dart';
 import 'package:aqromis_application/data/shared_prefs.dart';
 import 'package:aqromis_application/models/picture.dart';
 import 'package:aqromis_application/models/request.dart';

@@ -1,4 +1,4 @@
-import 'package:aqromis_application/data/operations/user_operations.dart';
+import 'package:aqromis_application/data/operations/user.dart';
 import 'package:aqromis_application/models/user.dart';
 import 'package:aqromis_application/screens/sign_in.dart';
 import 'package:aqromis_application/utils/text_validators.dart';

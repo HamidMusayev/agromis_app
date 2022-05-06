@@ -7,7 +7,7 @@ import 'package:uhf_c72_plugin/tag_epc.dart';
 import 'package:uhf_c72_plugin/uhf_c72_plugin.dart';
 import 'package:aqromis_application/text_constants.dart' as constants;
 
-import '../../data/operations/list_operations.dart';
+import '../../data/operations/list.dart';
 import '../../models/add_tree/alan.dart';
 import '../../models/add_tree/alandet.dart';
 import '../../models/garden.dart';

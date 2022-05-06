@@ -8,6 +8,7 @@ class AppInfo {
   String developerPhone;
   String developerSite;
   String developerEmail;
+
   AppInfo(
       {required this.userTaskCount,
       required this.name,

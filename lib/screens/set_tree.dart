@@ -1,5 +1,5 @@
-import 'package:aqromis_application/data/operations/list_operations.dart';
-import 'package:aqromis_application/data/operations/rfid_operations.dart';
+import 'package:aqromis_application/data/operations/list.dart';
+import 'package:aqromis_application/data/operations/rfid.dart';
 import 'package:aqromis_application/models/add_tree/alan.dart';
 import 'package:aqromis_application/models/add_tree/alan_rfid.dart';
 import 'package:aqromis_application/models/add_tree/alandet.dart';

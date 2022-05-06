@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:aqromis_application/constants.dart';
-import 'package:aqromis_application/data/operations/app_operations.dart';
 import 'package:aqromis_application/data/shared_prefs.dart';
 import 'package:aqromis_application/models/app_info.dart';
 import 'package:aqromis_application/models/user.dart';
@@ -19,6 +18,7 @@ import 'package:aqromis_application/text_constants.dart' as constants;
 import 'package:uhf_c72_plugin/uhf_c72_plugin.dart';
 import 'package:xml/xml.dart' as xml;
 import '../data/local_send_db.dart';
+import '../data/operations/app.dart';
 import '../data/web_service.dart';
 import '../models/send_data_db.dart';
 import 'set_tree.dart';
