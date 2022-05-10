@@ -1,7 +1,6 @@
 import 'package:aqromis_application/constants.dart';
 import 'package:aqromis_application/data/operations/treeinfo.dart';
 import 'package:aqromis_application/models/treeinfo/tree_detail.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:aqromis_application/text_constants.dart' as constants;
 

@@ -1,4 +1,3 @@
-import 'package:aqromis_application/models/request.dart';
 import 'package:aqromis_application/models/response.dart';
 import 'package:aqromis_application/models/treeinfo/tree_detail.dart';
 
