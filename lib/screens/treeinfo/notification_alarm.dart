@@ -1,36 +1,22 @@
 import 'package:aqromis_application/constants.dart';
-import 'package:aqromis_application/data/operations/treeinfo.dart';
-import 'package:aqromis_application/models/treeinfo/tree_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:aqromis_application/text_constants.dart' as constants;
 
 import '../../data/operations/list.dart';
 import '../../models/treeinfo/tree_notification.dart';
 
-class TreeInfoScreen extends StatefulWidget {
-  final bool isRfid;
-  final String? pinAlanDet;
-  final String rfid;
-  const TreeInfoScreen(
-      {Key? key, required this.isRfid, this.pinAlanDet, required this.rfid})
-      : super(key: key);
+class NotificationAndAlarmScreen extends StatefulWidget {
+  const NotificationAndAlarmScreen({Key? key}) : super(key: key);
 
   @override
-  State<TreeInfoScreen> createState() => _TreeInfoScreenState();
+  State<NotificationAndAlarmScreen> createState() =>
+      _NotificationAndAlarmScreenState();
 }
 
-class _TreeInfoScreenState extends State<TreeInfoScreen>
+class _NotificationAndAlarmScreenState extends State<NotificationAndAlarmScreen>
     with TickerProviderStateMixin {
   late TabController tabController;
   bool isLoading = true;
-
-  TreeDetail _treeDetail = TreeDetail(
-      pinAlanDet: 0,
-      bitkiCesit: '',
-      bitkiTur: '',
-      lastVisitDate: '',
-      lastVisitType: '',
-      lastVisitedUser: '');
 
   List<TreeNotification> _all = [];
   List<TreeNotification> _notes = [];
@@ -40,7 +26,6 @@ class _TreeInfoScreenState extends State<TreeInfoScreen>
   void initState() {
     super.initState();
     tabController = TabController(length: 2, vsync: this);
-    getTreeDetail();
     getNotifications();
   }
 
@@ -53,29 +38,13 @@ class _TreeInfoScreenState extends State<TreeInfoScreen>
   Future<void> getNotifications() async {
     setState(() => isLoading = true);
 
-    await ListOperations.getNotificationList(
-            widget.rfid, widget.pinAlanDet ?? '', widget.isRfid, false)
+    await ListOperations.getNotificationList('nn', 'nn', false, true)
         .then((value) {
       if (value != false) {
         _all = value;
         _notes = _all.where((element) => element.type == 1).toList();
         _alarms = _all.where((element) => element.type == 0).toList();
 
-        setState(() => isLoading = false);
-      } else {
-        showAlert(constants.tCantFindRFIDNetworkError);
-      }
-    });
-  }
-
-  Future<void> getTreeDetail() async {
-    setState(() => isLoading = true);
-
-    await TreeInfoOperations.getTreeDetail(
-            widget.rfid, widget.pinAlanDet ?? '', widget.isRfid)
-        .then((value) {
-      if (value != false) {
-        _treeDetail = value;
         setState(() => isLoading = false);
       } else {
         showAlert(constants.tCantFindRFIDNetworkError);
@@ -110,7 +79,7 @@ class _TreeInfoScreenState extends State<TreeInfoScreen>
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: const Text('Ağac məlumatları',
+        title: const Text('Bildirişlər və qeydlər',
             style: TextStyle(color: Colors.black, fontSize: 17)),
         iconTheme: const IconThemeData(color: Colors.black),
       ),
@@ -124,43 +93,12 @@ class _TreeInfoScreenState extends State<TreeInfoScreen>
             SliverToBoxAdapter(
               child: Padding(
                 padding: kSmallPadding,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: 180,
-                      padding: kSmallPadding,
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
-                        borderRadius: const BorderRadius.all(kDefaultRadius),
-                      ),
-                      child: GridView.count(
-                        childAspectRatio: 6,
-                        crossAxisCount: 2,
-                        children: [
-                          const Text('PIN_ALANDET:'),
-                          Text(_treeDetail.pinAlanDet.toString()),
-                          const Text('Bitki növü:'),
-                          Text(_treeDetail.bitkiTur),
-                          const Text('Bitki çeşidi:'),
-                          Text(_treeDetail.bitkiCesit),
-                          const Text('Son iş görülmə tarixi:'),
-                          Text(_treeDetail.lastVisitDate),
-                          const Text('Son iş növü:'),
-                          Text(_treeDetail.lastVisitType),
-                          const Text('Son işi edən bağban:'),
-                          Text(_treeDetail.lastVisitedUser),
-                        ],
-                      ),
-                    ),
-                    TabBar(
-                      controller: tabController,
-                      isScrollable: true,
-                      tabs: const [
-                        Tab(child: Text('Qeydlər')),
-                        Tab(child: Text('Bildirişlər')),
-                      ],
-                    ),
+                child: TabBar(
+                  controller: tabController,
+                  isScrollable: true,
+                  tabs: const [
+                    Tab(child: Text('Qeydlər')),
+                    Tab(child: Text('Bildirişlər')),
                   ],
                 ),
               ),

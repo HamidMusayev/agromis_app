@@ -183,11 +183,12 @@ class ListOperations {
   }
 
   static Future<dynamic> getNotificationList(
-      String rfid, String pinAlanDet, bool isRfid) async {
+      String rfid, String pinAlanDet, bool isRfid, bool isAll) async {
     final List<TreeNotification> notifications = [];
     String dataXML = '<rfid>$rfid</rfid>'
         '<pinAlanDet>$pinAlanDet</pinAlanDet>'
-        '<isRfid>$isRfid</isRfid>';
+        '<isRfid>$isRfid</isRfid>'
+        '<isAll>$isAll</isAll>';
 
     final Response response =
         await WebService.sendRequest('TreeNotificationList', dataXML);

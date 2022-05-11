@@ -7,6 +7,7 @@ import 'package:aqromis_application/screens/drawer/settings.dart';
 import 'package:aqromis_application/screens/requests/request_type.dart';
 import 'package:aqromis_application/screens/sign_in.dart';
 import 'package:aqromis_application/screens/tasks/tasks.dart';
+import 'package:aqromis_application/screens/treeinfo/notification_alarm.dart';
 import 'package:aqromis_application/screens/treeinfo/pick_tree.dart';
 import 'package:aqromis_application/screens/update_app.dart';
 import 'package:aqromis_application/utils/date_time.dart';
@@ -373,7 +374,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         onPressed: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const SetTreeScreen()),
+                              builder: (context) =>
+                                  const NotificationAndAlarmScreen()),
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,

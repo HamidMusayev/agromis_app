@@ -9,7 +9,9 @@ class TreeInfoOperations {
       String rfid, String pinAlanDet, bool isRfid) async {
     String dataXML = '<rfid>$rfid</rfid>'
         '<pinAlanDet>$pinAlanDet</pinAlanDet>'
-        '<isRfid>$isRfid</isRfid>';
+        '<isRfid>$isRfid</isRfid>'
+        '<isAlan>false</isAlan>'
+        '<pinAlan>sss</pinAlan>';
 
     final Response response =
         await WebService.sendRequest('GetTreeDetail', dataXML);
