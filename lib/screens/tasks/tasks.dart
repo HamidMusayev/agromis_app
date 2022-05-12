@@ -42,9 +42,9 @@ class _TasksScreenState extends State<TasksScreen> {
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(kDefaultRadius)),
         tooltip: constants.tAddTask,
-        child: const Icon(Icons.add_rounded, size: 40.0),
         backgroundColor: kTextColor,
         onPressed: () => gotoTaskAdd(),
+        child: const Icon(Icons.add_rounded, size: 40.0),
       ),
       body: AnimatedCrossFade(
         duration: kAnimationDuration,

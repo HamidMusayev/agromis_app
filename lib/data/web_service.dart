@@ -64,7 +64,7 @@ class WebService {
             .findAllElements('body');
       } else if (methodName == 'UserRegister' ||
           methodName == 'UserLogin' ||
-          methodName == 'AddTask') {
+          methodName == 'AddTask' || methodName == 'AddTask') {
         response.isConnected = false;
       } else {
         await LocalDB().getData(methodName, sendDataXML).then((value) =>

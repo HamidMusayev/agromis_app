@@ -21,15 +21,15 @@ class _PictureHolderState extends State<PictureHolder> {
       children: <Widget>[
         widget.path.isNotEmpty
             ? ClipRRect(
-                child: Image.file(File(widget.path)),
-                borderRadius: const BorderRadius.all(Radius.circular(5.0)))
+                borderRadius: const BorderRadius.all(Radius.circular(5.0)),
+                child: Image.file(File(widget.path)))
             : Container(
-                child: const Center(
-                    child: Text(constants.tEmpty,
-                        style: TextStyle(color: kInputTextColor))),
                 decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(kDefaultRadius),
-                    color: kInputFillColor)),
+                    color: kInputFillColor),
+                child: const Center(
+                    child: Text(constants.tEmpty,
+                        style: TextStyle(color: kInputTextColor)))),
         Align(
           alignment: Alignment.topRight,
           child: GestureDetector(

@@ -1,5 +1,6 @@
 import 'package:aqromis_application/models/response.dart';
 import 'package:aqromis_application/models/treeinfo/tree_detail.dart';
+import 'package:aqromis_application/models/treeinfo/tree_notification.dart';
 
 import '../web_service.dart';
 import 'package:xml/xml.dart' as xml;
@@ -39,6 +40,37 @@ class TreeInfoOperations {
               treedetail.findElements('LastVisitedUser').single.innerText,
         );
       }
+    } else {
+      return false;
+    }
+  }
+
+  static Future<bool> addNotification(TreeNotification notification) async {
+    final String dataXML = '<notification>'
+        '<PinNotification>${notification.pinNotification}</PinNotification>'
+        '<Title>${notification.title}</Title>'
+        '<Description>${notification.description}</Description>'
+        '<CreatedUserCode>${notification.createdUserCode}</CreatedUserCode>'
+        '<CreatedUser>${notification.createdUser}</CreatedUser>'
+        '<CreatedDate>${notification.createdDate}</CreatedDate>'
+        '<Completed>${notification.completed}</Completed>'
+        '<Type>${notification.type}</Type>'
+        '<PinAlanDet>${notification.pinAlanDet}</PinAlanDet>'
+        '<PinAlan>${notification.pinAlan}</PinAlan>'
+        '</notification>';
+
+    final Response response =
+        await WebService.sendRequest('AddNotification', dataXML);
+
+    if (response.isConnected) {
+      final bool result = response.result.single
+                  .findElements('IsSuccessful')
+                  .single
+                  .innerText ==
+              'true'
+          ? true
+          : false;
+      return result;
     } else {
       return false;
     }

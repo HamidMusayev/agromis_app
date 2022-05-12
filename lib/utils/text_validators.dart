@@ -19,6 +19,6 @@ class TextValidator{
   }
 
   String? validateTreeCount(String text, int min, int max){
-    return int.parse(text) < min || int.parse(text) > max ? 'Nömrə ' + min.toString() + '-' + max.toString() +' aralığında olmalıdır' : null;
+    return int.parse(text) < min || int.parse(text) > max ? 'Nömrə $min-$max aralığında olmalıdır' : null;
   }
 }

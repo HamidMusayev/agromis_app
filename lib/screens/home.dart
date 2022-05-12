@@ -12,7 +12,6 @@ import 'package:aqromis_application/screens/treeinfo/pick_tree.dart';
 import 'package:aqromis_application/screens/update_app.dart';
 import 'package:aqromis_application/utils/date_time.dart';
 import 'package:aqromis_application/widgets/error_card.dart';
-import 'package:location/location.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:aqromis_application/text_constants.dart' as constants;
@@ -45,9 +44,9 @@ class _HomeScreenState extends State<HomeScreen> {
       developerPhone: ' ',
       developerSite: ' ');
   int _cnnStatus = 0;
-  int _locStatus = 0;
+  final int _locStatus = 0;
 
-  Location location = Location();
+  // Location location = Location();
 
   List<SendDataDB> _mustSendTasks = [];
 
@@ -63,9 +62,9 @@ class _HomeScreenState extends State<HomeScreen> {
       if (_cnnStatus == 1) _offlineOperations();
     });
 
-    checkLocationStream().listen((event) {
-      setState(() => _locStatus = event);
-    });
+    // checkLocationStream().listen((event) {
+    //   setState(() => _locStatus = event);
+    // });
   }
 
   Stream<int> checkConnectionStream() async* {
@@ -74,11 +73,11 @@ class _HomeScreenState extends State<HomeScreen> {
     }).asyncMap((event) async => await event);
   }
 
-  Stream<int> checkLocationStream() async* {
-    yield* Stream.periodic(const Duration(seconds: 2), (_) async {
-      return await _checkLocation();
-    }).asyncMap((event) async => await event);
-  }
+  // Stream<int> checkLocationStream() async* {
+  //   yield* Stream.periodic(const Duration(seconds: 2), (_) async {
+  //     return await _checkLocation();
+  //   }).asyncMap((event) async => await event);
+  // }
 
   Future<int> _checkConnection() async {
     try {
@@ -93,13 +92,13 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  Future<int> _checkLocation() async {
-    final bool loc = await location.serviceEnabled();
-    if (loc == false) {
-      _requestService();
-    }
-    return loc ? 1 : 0;
-  }
+  // Future<int> _checkLocation() async {
+  //   final bool loc = await location.serviceEnabled();
+  //   if (loc == false) {
+  //     _requestService();
+  //   }
+  //   return loc ? 1 : 0;
+  // }
 
   Future<void> _offlineOperations() async {
     for (var element in _mustSendTasks) {
@@ -149,13 +148,13 @@ class _HomeScreenState extends State<HomeScreen> {
     await LocalSendDB().getDataList().then((value) => _mustSendTasks = value);
   }
 
-  Future<void> _requestService() async {
-    final bool serviceRequestedResult = await location.requestService();
-    setState(() => _locStatus = serviceRequestedResult ? 1 : 0);
-    if (!serviceRequestedResult) {
-      return;
-    }
-  }
+  // Future<void> _requestService() async {
+  //   final bool serviceRequestedResult = await location.requestService();
+  //   setState(() => _locStatus = serviceRequestedResult ? 1 : 0);
+  //   if (!serviceRequestedResult) {
+  //     return;
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -170,14 +169,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
               actions: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: _locStatus == 1
-                      ? const Icon(Icons.location_on_rounded,
-                          color: kGreenColor, size: kDefaultIconSize)
-                      : const Icon(Icons.location_off_rounded,
-                          color: kRedColor, size: kDefaultIconSize),
-                ),
+                const Padding(
+                    padding: EdgeInsets.only(right: 8.0),
+                    child: Icon(Icons.location_on_rounded,
+                        color: kLightTextColor, size: kDefaultIconSize)
+                    // child: _locStatus == 1
+                    //     ? const Icon(Icons.location_on_rounded,
+                    //         color: kGreenColor, size: kDefaultIconSize)
+                    //     : const Icon(Icons.location_off_rounded,
+                    //         color: kRedColor, size: kDefaultIconSize),
+                    ),
                 Padding(
                   padding: const EdgeInsets.only(right: 12.0),
                   child: _cnnStatus == 1
@@ -193,6 +194,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: EdgeInsets.zero,
                 children: <Widget>[
                   DrawerHeader(
+                    decoration: const BoxDecoration(color: kWhiteColor),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -201,7 +203,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         const Text(constants.tMainMenu, style: light14Style),
                       ],
                     ),
-                    decoration: const BoxDecoration(color: kWhiteColor),
                   ),
                   ListTile(
                     title: const Text(constants.tAppDetail),
@@ -411,12 +412,12 @@ class _HomeScreenState extends State<HomeScreen> {
         width: 60,
       ),
       applicationName: info.name,
-      applicationVersion: 'v' + info.version.toString(),
+      applicationVersion: 'v${info.version}',
       children: <Widget>[
-        Text('Tərtibatçı: ' + info.developerName),
-        Text('E-mail: ' + info.developerEmail),
-        Text('Keçid linki: ' + info.developerSite),
-        Text('Telefon: ' + info.developerPhone),
+        Text('Tərtibatçı: ${info.developerName}'),
+        Text('E-mail: ${info.developerEmail}'),
+        Text('Keçid linki: ${info.developerSite}'),
+        Text('Telefon: ${info.developerPhone}'),
       ],
     );
   }

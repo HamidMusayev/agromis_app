@@ -93,7 +93,7 @@ const String tTaskTypeError = 'Tip seçilməyib!';
 const String tTaskGardenError = 'Bağ seçilməyib!';
 const String tTaskFinishDateError = 'Bitmə tarixi seçin!';
 const String tTaskStartDateError = 'Başlama tarixi seçin!';
-const String tTaskNoteError = 'Qeyd boşdur!';
+const String tTaskNoteError = 'Başlıq və ya qeyd  boşdur!';
 const String tTaskAddError = 'Tapşırıq əlavə etmək üçün internet bağlantınız olmalıdır!';
 
 //SETTINGS

@@ -192,7 +192,7 @@ class _PickTreeScreenState extends State<PickTreeScreen> {
                 items: _gardens.map((val) {
                   return DropdownMenuItem<Garden>(
                     value: val,
-                    child: Text(val.pin.toString() + '-' + val.name),
+                    child: Text('${val.pin}-${val.name}'),
                   );
                 }).toList(),
               ),
@@ -215,7 +215,7 @@ class _PickTreeScreenState extends State<PickTreeScreen> {
                   return DropdownMenuItem<Alan>(
                     value: val,
                     child: ListTile(
-                      title: Text(val.pin + '-' + val.alanname),
+                      title: Text('${val.pin}-${val.alanname}'),
                       subtitle: Text(val.rfid),
                     ),
                   );
@@ -240,10 +240,7 @@ class _PickTreeScreenState extends State<PickTreeScreen> {
                   return DropdownMenuItem<AlanDet>(
                     value: val,
                     child: ListTile(
-                      title: Text('PIN_ALANDET-' +
-                          val.pin +
-                          ' / PINABITKI-' +
-                          val.pinabitki),
+                      title: Text('PIN_ALANDET-${val.pin} / PINABITKI-${val.pinabitki}'),
                       subtitle: Text(val.epc),
                     ),
                   );
@@ -261,6 +258,45 @@ class _PickTreeScreenState extends State<PickTreeScreen> {
             Expanded(
               child: Visibility(
                 visible: _found,
+                replacement: TextButton(
+                  style: TextButton.styleFrom(
+                    padding: kSmallPadding,
+                    backgroundColor: kBlueColor,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(kDefaultRadius),
+                    ),
+                  ),
+                  onPressed: () async {
+                    data.clear();
+                    await UhfC72Plugin.clearData;
+                    UhfC72Plugin.tagsStatusStream
+                        .receiveBroadcastStream()
+                        .listen(updateTags);
+                    await UhfC72Plugin.startSingle;
+                  },
+                  child: Row(
+                    children: <Widget>[
+                      const Spacer(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: const <Widget>[
+                          Icon(Icons.speaker_phone_rounded,
+                              size: 70, color: Colors.white),
+                          Text(
+                            constants.tRead,
+                            style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const Spacer()
+                    ],
+                  ),
+                ),
                 child: TextButton(
                   style: TextButton.styleFrom(
                     padding: kSmallPadding,
@@ -294,45 +330,6 @@ class _PickTreeScreenState extends State<PickTreeScreen> {
                                 fontSize: 22,
                                 fontWeight: FontWeight.w600,
                                 color: Colors.white),
-                          ),
-                        ],
-                      ),
-                      const Spacer()
-                    ],
-                  ),
-                ),
-                replacement: TextButton(
-                  style: TextButton.styleFrom(
-                    padding: kSmallPadding,
-                    backgroundColor: kBlueColor,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(kDefaultRadius),
-                    ),
-                  ),
-                  onPressed: () async {
-                    data.clear();
-                    await UhfC72Plugin.clearData;
-                    UhfC72Plugin.tagsStatusStream
-                        .receiveBroadcastStream()
-                        .listen(updateTags);
-                    await UhfC72Plugin.startSingle;
-                  },
-                  child: Row(
-                    children: <Widget>[
-                      const Spacer(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: const <Widget>[
-                          Icon(Icons.speaker_phone_rounded,
-                              size: 70, color: Colors.white),
-                          Text(
-                            constants.tRead,
-                            style: TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white,
-                            ),
                           ),
                         ],
                       ),

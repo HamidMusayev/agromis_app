@@ -8,6 +8,9 @@ class TreeNotification {
   final int type;
   final int completed;
 
+  int? pinAlanDet;
+  int? pinAlan;
+
   TreeNotification(
     this.pinNotification,
     this.title,
@@ -18,4 +21,17 @@ class TreeNotification {
     this.type,
     this.completed,
   );
+
+  TreeNotification.tosend({
+    this.pinNotification = 0,
+    required this.title,
+    required this.description,
+    required this.createdUserCode,
+    this.createdUser = '',
+    this.createdDate = '',
+    required this.type,
+    this.completed = 0,
+    this.pinAlanDet = 0,
+    this.pinAlan = 0,
+  });
 }

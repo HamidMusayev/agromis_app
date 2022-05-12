@@ -33,7 +33,7 @@ class _TaskCardState extends State<TaskCard> {
                         size: kDefaultIconSize, color: kWhiteColor),
                     Flexible(
                       child: Text(
-                          widget.task.gardenName! + ' - ' + widget.task.type!,
+                          '${widget.task.gardenName!} - ${widget.task.type!}',
                           style: semibold16WhiteStyle,
                           overflow: TextOverflow.fade,
                           softWrap: true),

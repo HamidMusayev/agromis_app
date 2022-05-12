@@ -28,7 +28,7 @@ class CustomDate {
     date.month = months[curDate.month - 1];
     date.day = curDate.day.toString();
     date.year = curDate.year.toString();
-    date.curDate = date.day + ' ' + date.month + ' ' + date.year;
+    date.curDate = '${date.day} ${date.month} ${date.year}';
 
     return date;
   }

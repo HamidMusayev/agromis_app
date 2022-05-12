@@ -1,6 +1,7 @@
 import 'package:aqromis_application/constants.dart';
 import 'package:aqromis_application/data/operations/treeinfo.dart';
 import 'package:aqromis_application/models/treeinfo/tree_detail.dart';
+import 'package:aqromis_application/screens/treeinfo/add_notification.dart';
 import 'package:flutter/material.dart';
 import 'package:aqromis_application/text_constants.dart' as constants;
 
@@ -114,11 +115,19 @@ class _TreeInfoScreenState extends State<TreeInfoScreen>
             style: TextStyle(color: Colors.black, fontSize: 17)),
         iconTheme: const IconThemeData(color: Colors.black),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  AddNotification(pinAlanDet: _treeDetail.pinAlanDet),
+            )),
+        tooltip: 'Əlavə et',
+        backgroundColor: kPrimaryColor,
+        child: const Icon(Icons.add_rounded),
+      ),
       body: Visibility(
         visible: isLoading,
-        child: const Center(
-          child: CircularProgressIndicator(),
-        ),
         replacement: NestedScrollView(
           headerSliverBuilder: (context, value) => [
             SliverToBoxAdapter(
@@ -135,6 +144,7 @@ class _TreeInfoScreenState extends State<TreeInfoScreen>
                         borderRadius: const BorderRadius.all(kDefaultRadius),
                       ),
                       child: GridView.count(
+                        physics: const NeverScrollableScrollPhysics(),
                         childAspectRatio: 6,
                         crossAxisCount: 2,
                         children: [
@@ -195,6 +205,9 @@ class _TreeInfoScreenState extends State<TreeInfoScreen>
               ),
             ],
           ),
+        ),
+        child: const Center(
+          child: CircularProgressIndicator(),
         ),
       ),
     );

@@ -119,7 +119,7 @@ class _SetTreeScreenState extends State<SetTreeScreen> {
                   items: _gardens.map((val) {
                     return DropdownMenuItem<Garden>(
                       value: val,
-                      child: Text(val.pin.toString() + '-' + val.name),
+                      child: Text('${val.pin}-${val.name}'),
                     );
                   }).toList(),
                 ),
@@ -142,7 +142,7 @@ class _SetTreeScreenState extends State<SetTreeScreen> {
                     return DropdownMenuItem<Alan>(
                       value: val,
                       child: ListTile(
-                        title: Text(val.pin + '-' + val.alanname),
+                        title: Text('${val.pin}-${val.alanname}'),
                         subtitle: Text(val.rfid),
                       ),
                     );
@@ -167,10 +167,7 @@ class _SetTreeScreenState extends State<SetTreeScreen> {
                     return DropdownMenuItem<AlanDet>(
                       value: val,
                       child: ListTile(
-                        title: Text('PIN_ALANDET-' +
-                            val.pin +
-                            ' / PINABITKI-' +
-                            val.pinabitki),
+                        title: Text('PIN_ALANDET-${val.pin} / PINABITKI-${val.pinabitki}'),
                         subtitle: Text(val.epc),
                       ),
                     );

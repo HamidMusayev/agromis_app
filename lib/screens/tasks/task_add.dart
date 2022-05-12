@@ -160,7 +160,7 @@ class _TaskAddScreenState extends State<TaskAddScreen> {
                     showAlert(constants.tTaskGardenError).timeout(
                         const Duration(seconds: 3),
                         onTimeout: () => Navigator.pop(context));
-                  } else if (noteTxt.text.trim().isEmpty) {
+                  } else if (noteTxt.text.trim().isEmpty || titleTxt.text.trim().isEmpty) {
                     showAlert(constants.tTaskNoteError).timeout(
                         const Duration(seconds: 3),
                         onTimeout: () => Navigator.pop(context));

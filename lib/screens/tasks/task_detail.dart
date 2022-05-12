@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:aqromis_application/data/operations/task.dart';
 import 'package:aqromis_application/models/task.dart';
 import 'package:aqromis_application/widgets/action_button.dart';
-import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:aqromis_application/text_constants.dart' as constants;
 import 'package:flutter/services.dart';
@@ -18,7 +17,7 @@ import 'tasks.dart';
 
 class TaskDetailScreen extends StatefulWidget {
   final Task task;
-  const TaskDetailScreen(this.task);
+  const TaskDetailScreen(this.task, {Key? key}) : super(key: key);
 
   @override
   _TaskDetailScreenState createState() => _TaskDetailScreenState(task);
@@ -29,7 +28,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>
   Task task;
   _TaskDetailScreenState(this.task);
 
-  late ConfettiController _controllerCenter;
+  // late ConfettiController _controllerCenter;
   late AnimationController _animateSuccess;
   bool animateSuccess = false;
   bool animate2 = false;
@@ -42,8 +41,8 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>
   @override
   void initState() {
     super.initState();
-    _controllerCenter =
-        ConfettiController(duration: const Duration(seconds: 8));
+    // _controllerCenter =
+    //     ConfettiController(duration: const Duration(seconds: 8));
     _animateSuccess = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 1200));
     if (task.readState == 1) setState(() => task.readState = 0);
@@ -52,7 +51,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>
   @override
   void dispose() {
     stopConnection();
-    _controllerCenter.dispose();
+    // _controllerCenter.dispose();
     super.dispose();
   }
 
@@ -240,10 +239,12 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>
                                             await TaskOperations
                                                     .changeTaskState(
                                                         task.id!, 1)
-                                                .then((value) => value != false
-                                                    ? print('CHANGED')
-                                                    : print(
-                                                        'CANT CHANGED DUE CONNECTION'));
+                                                .then(
+                                              (value) => value != false
+                                                  ? print('CHANGED')
+                                                  : print(
+                                                      'CANT CHANGED DUE CONNECTION'),
+                                            );
                                           }
                                         });
                                       },
@@ -251,26 +252,27 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>
                               crossFadeState: task.readState == 0
                                   ? CrossFadeState.showSecond
                                   : CrossFadeState.showFirst,
-                              duration: const Duration(milliseconds: 500))
+                              duration: const Duration(milliseconds: 500),
+                            )
                     ],
                   ),
           ),
-          Positioned(
-            top: 52,
-            left: 18,
-            child: ConfettiWidget(
-              confettiController: _controllerCenter,
-              blastDirectionality: BlastDirectionality.explosive,
-              shouldLoop: false,
-              colors: const [
-                kGreenColor,
-                kBlueColor,
-                kRedColor,
-                kYellowColor,
-              ],
-              createParticlePath: drawStar,
-            ),
-          ),
+          // Positioned(
+          //   top: 52,
+          //   left: 18,
+          //   child: ConfettiWidget(
+          //     confettiController: _controllerCenter,
+          //     blastDirectionality: BlastDirectionality.explosive,
+          //     shouldLoop: false,
+          //     colors: const [
+          //       kGreenColor,
+          //       kBlueColor,
+          //       kRedColor,
+          //       kYellowColor,
+          //     ],
+          //     createParticlePath: drawStar,
+          //   ),
+          // ),
           Positioned(
             top: 52,
             right: -40,
@@ -286,12 +288,12 @@ class _TaskDetailScreenState extends State<TaskDetailScreen>
   }
 
   void updateTags(dynamic result) {
-    _controllerCenter.stop();
+    // _controllerCenter.stop();
     int old = _data.length;
     setState(() => _data = TagEpc.parseTags(result));
     int end = _data.length;
     if (old != end) {
-      _controllerCenter.play();
+      // _controllerCenter.play();
       playSound();
     }
   }

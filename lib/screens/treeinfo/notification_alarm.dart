@@ -85,9 +85,6 @@ class _NotificationAndAlarmScreenState extends State<NotificationAndAlarmScreen>
       ),
       body: Visibility(
         visible: isLoading,
-        child: const Center(
-          child: CircularProgressIndicator(),
-        ),
         replacement: NestedScrollView(
           headerSliverBuilder: (context, value) => [
             SliverToBoxAdapter(
@@ -133,6 +130,9 @@ class _NotificationAndAlarmScreenState extends State<NotificationAndAlarmScreen>
               ),
             ],
           ),
+        ),
+        child: const Center(
+          child: CircularProgressIndicator(),
         ),
       ),
     );
