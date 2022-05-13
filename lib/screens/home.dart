@@ -158,7 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return _info.version == 4
+    return _info.version == 5
         ? Scaffold(
             appBar: AppBar(
               title: Column(
